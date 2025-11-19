@@ -1,0 +1,29 @@
+VolBites/userRecipesStorage.js
+(2025-10-16 ssanthos) NEW: AsyncStorage-backed CRUD for local user recipes
+  + getUserRecipes(), saveUserRecipes(recipes)
+  + addUserRecipe(recipe) assigns id and prepends
+  + removeUserRecipe(id)
+
+VolBites/UploadRecipeScreen.js
+(2025-10-16 ssanthos) NEW: Create recipes matching RecipeDetail structure
+  + Image picker (expo-image-picker)
+  + Inputs: title, summary, ingredients-per-line, instructions
+  + Nutrition: calories/protein/fat/carbs → nutrition.nutrients[]
+  + Save → addUserRecipe() then navigate to RecipeDetail
+
+VolBites/App.js
+(2025-10-16 ssanthos) NAV: Register UploadRecipe screen in navigator
+  + import UploadRecipeScreen
+  + add Stack.Screen name="UploadRecipe"
+
+VolBites/HomeScreen.js
+(2025-10-16 ssanthos) UI: Add header "Add" button → UploadRecipe
+(2025-10-16 ssanthos) FEED: Add "Your Recipes" list with local items
+  + import getUserRecipes/removeUserRecipe
+  + load on focus, tap → RecipeDetail
+(2025-10-16 ssanthos) UX: Long-press delete with Alert confirmation
+
+VolBites/RecipeDetailScreen.js
+(2025-10-16 ssanthos) ACTION: Trash icon for local recipes
+  + if recipe._local show delete; confirm → removeUserRecipe → goBack()
+

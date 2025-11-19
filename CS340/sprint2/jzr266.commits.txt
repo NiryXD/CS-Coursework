@@ -1,0 +1,527 @@
+Generating blame report for Ar-Raniry Nurdin Ar-Rasyid...
+
+## LoginScreen.js
+677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400   1) // LoginScreen.js
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400   2) ^[[mimport React, { useRef, useState } from "react";
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400   3) ^[[mimport {
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400   4) ^[[m  Platform,
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400   5) ^[[m  KeyboardAvoidingView,
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400   6) ^[[m  ScrollView,
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400   7) ^[[m  View,
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400   8) ^[[m  Text,
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400   9) ^[[m  TextInput,
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400  10) ^[[m  TouchableOpacity,
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400  11) ^[[m  StyleSheet,
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400  12) ^[[m  Alert,
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400  13) ^[[m} from "react-native";
+5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400  16) import RememberMeBox from "./RememberMe";
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400  17) ^[[mimport AsyncStorage from '@react-native-async-storage/async-storage';
+677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400  22)   const [loading, setLoading] = useState(false);
+677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400  24)   const passwordRef = useRef(null);
+677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400  26)   const onLogin = async () => {
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400  27) ^[[m    if (!email || !password) {
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400  28) ^[[m      Alert.alert("Missing info", "Enter email and password");
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400  29) ^[[m      return;
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400  30) ^[[m    }
+677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400  38)       setLoading(true);
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400  39) ^[[m      const res = await fetch(
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400  40) ^[[m        `${SUPABASE_URL}/rest/v1/profiles?email=eq.${encodeURIComponent(email)}`,
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400  41) ^[[m        {
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400  42) ^[[m          headers: {
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400  43) ^[[m            apiKey: SUPABASE_ANON_KEY,
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400  44) ^[[m            Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400  45) ^[[m            "Content-Type": "application/json",
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400  46) ^[[m          },
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400  47) ^[[m        }
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400  48) ^[[m      );
+677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400  51)       const rows = await res.json();
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400  52) ^[[m      if (!rows || rows.length === 0) {
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400  53) ^[[m        Alert.alert("Login failed", "No profile found with that email");
+677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400  58)       const profile = rows[0];
+677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400  60)         Alert.alert("Login failed", "Incorrect password");
+5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400  65)       // Cache user id and email locally for quick access in other screens
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400  66) ^[[m      try {
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400  67) ^[[m        await AsyncStorage.setItem('@user_id', String(profile.id));
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400  68) ^[[m        await AsyncStorage.setItem('@user_email', profile.email || email);
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400  69) ^[[m      } catch (e) {
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400  70) ^[[m        console.warn('Failed to cache user info', e);
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400  71) ^[[m      }
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400  72) ^[[m
+677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400  73)       navigation.replace("Home", { userId: profile.id });
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400  74) ^[[m    } catch (e) {
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400  75) ^[[m      Alert.alert("Error", e.message);
+677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400  77)     } finally {
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400  78) ^[[m      setLoading(false);
+677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400  83)     <View style={styles.safe}>
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400  84) ^[[m      <KeyboardAvoidingView
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400  85) ^[[m        style={{ flex: 1 }}
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400  86) ^[[m        behavior={Platform.OS === "ios" ? "padding" : "height"}
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400  87) ^[[m        keyboardVerticalOffset={Platform.select({ ios: 64, android: 0 })}
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400  88) ^[[m      >
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400  89) ^[[m        <ScrollView contentContainerStyle={{ flexGrow: 1 }} keyboardShouldPersistTaps="handled">
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400  90) ^[[m          <View style={styles.header}>
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400  91) ^[[m            <Text style={styles.headerTitle}>VolBites</Text>
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400  92) ^[[m          </View>
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400  93) ^[[m
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400  94) ^[[m          <View style={styles.container}>
+5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400  95)             <Text style={styles.title}>Welcome back Jit</Text>
+677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400  96)
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400  97) ^[[m            <Text style={styles.label}>Email</Text>
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400  98) ^[[m            <TextInput
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400  99) ^[[m              style={styles.input}
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400 100) ^[[m              value={email}
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400 101) ^[[m              onChangeText={setEmail}
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400 102) ^[[m              autoCapitalize="none"
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400 103) ^[[m              autoCorrect={false}
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400 104) ^[[m              keyboardType="email-address"
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400 105) ^[[m              returnKeyType="next"
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400 106) ^[[m              blurOnSubmit={false}
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400 107) ^[[m              onSubmitEditing={() => passwordRef.current?.focus()}
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400 108) ^[[m            />
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400 109) ^[[m
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400 110) ^[[m            <Text style={styles.label}>Password</Text>
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400 111) ^[[m            <TextInput
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400 112) ^[[m              ref={passwordRef}
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400 113) ^[[m              style={styles.input}
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400 114) ^[[m              value={password}
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400 115) ^[[m              onChangeText={setPassword}
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400 116) ^[[m              secureTextEntry
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400 117) ^[[m              returnKeyType="done"
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400 118) ^[[m            />
+5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400 119) <RememberMeBox />
+677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400 125)             <TouchableOpacity
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400 126) ^[[m              style={[styles.btn, loading && styles.btnDisabled]}
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400 127) ^[[m              onPress={onLogin}
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400 128) ^[[m              disabled={loading}
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400 129) ^[[m            >
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400 130) ^[[m              <Text style={styles.btnText}>{loading ? "Logging in..." : "Log in"}</Text>
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400 131) ^[[m            </TouchableOpacity>
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400 132) ^[[m
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400 133) ^[[m            <View style={styles.row}>
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400 134) ^[[m              <Text style={styles.subtle}>No account? </Text>
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400 135) ^[[m              <TouchableOpacity onPress={() => navigation.replace("SignUp")}>
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400 136) ^[[m                <Text style={styles.link}>Sign up</Text>
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400 137) ^[[m              </TouchableOpacity>
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400 138) ^[[m            </View>
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400 139) ^[[m          </View>
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400 140) ^[[m        </ScrollView>
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400 141) ^[[m      </KeyboardAvoidingView>
+677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400 146) const ORANGE = "#f97316", WHITE = "#fff";
+677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400 148)   safe: { flex: 1, backgroundColor: WHITE },
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400 149) ^[[m  header: {
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400 150) ^[[m    backgroundColor: ORANGE,
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400 151) ^[[m    paddingHorizontal: 20,
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400 152) ^[[m    paddingVertical: 14,
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400 153) ^[[m    borderBottomLeftRadius: 16,
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400 154) ^[[m    borderBottomRightRadius: 16,
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400 155) ^[[m    shadowColor: "#000",
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400 156) ^[[m    shadowOpacity: 0.12,
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400 157) ^[[m    shadowRadius: 6,
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400 158) ^[[m    shadowOffset: { width: 0, height: 3 },
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400 159) ^[[m    elevation: 4,
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400 160) ^[[m  },
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400 161) ^[[m  headerTitle: { color: WHITE, fontSize: 20, fontWeight: "700", letterSpacing: 0.3 },
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400 162) ^[[m  container: { flex: 1, padding: 20, justifyContent: "center" },
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400 163) ^[[m  title: { fontSize: 22, fontWeight: "700", marginBottom: 16, color: "#111827" },
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400 164) ^[[m  label: { fontSize: 14, color: "#374151", marginBottom: 6 },
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400 165) ^[[m  input: {
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400 166) ^[[m    height: 48,
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400 167) ^[[m    borderWidth: 1,
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400 168) ^[[m    borderColor: "#e5e7eb",
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400 169) ^[[m    borderRadius: 10,
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400 170) ^[[m    paddingHorizontal: 12,
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400 171) ^[[m    marginBottom: 14,
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400 172) ^[[m    backgroundColor: WHITE,
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400 173) ^[[m  },
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400 174) ^[[m  btn: {
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400 175) ^[[m    backgroundColor: ORANGE,
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400 176) ^[[m    paddingVertical: 12,
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400 177) ^[[m    borderRadius: 10,
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400 178) ^[[m    alignItems: "center",
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400 179) ^[[m    marginTop: 6,
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400 180) ^[[m    marginBottom: 8,
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400 181) ^[[m  },
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400 182) ^[[m  btnDisabled: { opacity: 0.6 },
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400 183) ^[[m  btnText: { color: WHITE, fontWeight: "700" },
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400 184) ^[[m  row: { flexDirection: "row", justifyContent: "center", marginTop: 8 },
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400 185) ^[[m  link: { color: ORANGE, fontWeight: "700" },
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400 186) ^[[m  subtle: { color: "#6b7280" },
+5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400 187) });
+
+## PuzzleCaptcha.js
+5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400  13) import Svg, {
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400  14) ^[[m  Defs,
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400  15) ^[[m  Mask,
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400  16) ^[[m  Rect as SvgRect,
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400  17) ^[[m  ClipPath,
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400  18) ^[[m  Polygon,
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400  19) ^[[m  Circle as SvgCircle,
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400  20) ^[[m  Rect as SvgRectShape,
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400  21) ^[[m  Image as SvgImage,
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400  22) ^[[m  G,
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400  23) ^[[m} from 'react-native-svg';
+5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400  49)   const [shape, setShape] = useState("rounded");
+5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400  65)
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400  66) ^[[m    // Choose a random shape for the cutout/piece
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400  67) ^[[m    const shapes = ["rounded", "circle", "diamond"];
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400  68) ^[[m    const randomShape = shapes[Math.floor(Math.random() * shapes.length)];
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400  69) ^[[m    setShape(randomShape);
+5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400 107)   // helper: render an SVG shape element for a given shape type at x,y
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400 108) ^[[m  const renderSvgShape = (shapeType, x, y, size, extraProps = {}) => {
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400 109) ^[[m    const cx = x + size / 2;
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400 110) ^[[m    const cy = y + size / 2;
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400 111) ^[[m
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400 112) ^[[m    if (shapeType === 'circle') {
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400 113) ^[[m      return (
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400 114) ^[[m        <SvgCircle cx={cx} cy={cy} r={size / 2} {...extraProps} />
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400 115) ^[[m      );
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400 116) ^[[m    }
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400 117) ^[[m
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400 118) ^[[m    if (shapeType === 'diamond') {
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400 119) ^[[m      // four points: top, right, bottom, left
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400 120) ^[[m      const points = `${cx},${y} ${x + size},${cy} ${cx},${y + size} ${x},${cy}`;
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400 121) ^[[m      return <Polygon points={points} {...extraProps} />;
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400 122) ^[[m    }
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400 123) ^[[m
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400 124) ^[[m    // rounded rect (default)
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400 125) ^[[m    return (
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400 126) ^[[m      <SvgRect
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400 127) ^[[m        x={x}
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400 128) ^[[m        y={y}
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400 129) ^[[m        width={size}
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400 130) ^[[m        height={size}
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400 131) ^[[m        rx={8}
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400 132) ^[[m        ry={8}
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400 133) ^[[m        {...extraProps}
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400 134) ^[[m      />
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400 135) ^[[m    );
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400 136) ^[[m  };
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400 137) ^[[m
+5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400 142)         Tap to drag the image into it's corresponding spot
+5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400 147)         {/* Background image with missing piece (SVG mask will create hole) */}
+5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400 156)
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400 157) ^[[m          {/* SVG overlay: darken only the hole area (draw filled shape over hole) */}
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400 158) ^[[m          <Svg
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400 159) ^[[m            width={PUZZLE_WIDTH}
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400 160) ^[[m            height={160}
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400 161) ^[[m            style={{ position: 'absolute', top: 0, left: 0 }}
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400 162) ^[[m          >
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400 163) ^[[m            {/* dark filled shape only on the hole */}
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400 164) ^[[m            {renderSvgShape(shape, targetX, 50, PIECE_SIZE, { fill: 'rgba(0,0,0,0.6)' })}
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400 165) ^[[m
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400 166) ^[[m            {/* dashed border around hole */}
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400 167) ^[[m            <G>
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400 168) ^[[m              {renderSvgShape(shape, targetX, 50, PIECE_SIZE, {
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400 169) ^[[m                fill: 'none',
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400 170) ^[[m                stroke: '#fff',
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400 171) ^[[m                strokeWidth: 2,
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400 172) ^[[m                strokeDasharray: '6,4',
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400 173) ^[[m              })}
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400 174) ^[[m            </G>
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400 175) ^[[m          </Svg>
+5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400 178)         {/* Draggable puzzle piece rendered as an SVG image clipped by the same shape */}
+5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400 190)               <Svg width={PIECE_SIZE} height={PIECE_SIZE}>
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400 191) ^[[m                <Defs>
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400 192) ^[[m                  <ClipPath id="pieceClip">
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400 193) ^[[m                    {/* Define same shape at 0,0 inside the small SVG */}
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400 194) ^[[m                    {shape === 'circle' && (
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400 195) ^[[m                      <SvgCircle cx={PIECE_SIZE / 2} cy={PIECE_SIZE / 2} r={PIECE_SIZE / 2} />
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400 196) ^[[m                    )}
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400 197) ^[[m                    {shape === 'diamond' && (
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400 198) ^[[m                      <Polygon points={`${PIECE_SIZE/2},0 ${PIECE_SIZE},${PIECE_SIZE/2} ${PIECE_SIZE/2},${PIECE_SIZE} 0,${PIECE_SIZE/2}`} />
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400 199) ^[[m                    )}
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400 200) ^[[m                    {shape === 'rounded' && (
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400 201) ^[[m                      <SvgRectShape x={0} y={0} width={PIECE_SIZE} height={PIECE_SIZE} rx={8} ry={8} />
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400 202) ^[[m                    )}
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400 203) ^[[m                  </ClipPath>
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400 204) ^[[m                </Defs>
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400 205) ^[[m
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400 206) ^[[m                {/* Place the full puzzle image inside this small SVG, offset so the correct portion shows */}
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400 207) ^[[m                <SvgImage
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400 208) ^[[m                  x={-targetX}
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400 209) ^[[m                  y={-50}
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400 210) ^[[m                  width={PUZZLE_WIDTH}
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400 211) ^[[m                  height={160}
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400 212) ^[[m                  preserveAspectRatio="xMidYMid slice"
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400 213) ^[[m                  href={currentImage}
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400 214) ^[[m                  clipPath="url(#pieceClip)"
+5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400 216)
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400 217) ^[[m                {/* border stroke */}
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400 218) ^[[m                {shape === 'circle' && (
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400 219) ^[[m                  <SvgCircle cx={PIECE_SIZE / 2} cy={PIECE_SIZE / 2} r={PIECE_SIZE / 2} fill="none" stroke="#fff" strokeWidth={3} />
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400 220) ^[[m                )}
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400 221) ^[[m                {shape === 'diamond' && (
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400 222) ^[[m                  <Polygon points={`${PIECE_SIZE/2},0 ${PIECE_SIZE},${PIECE_SIZE/2} ${PIECE_SIZE/2},${PIECE_SIZE} 0,${PIECE_SIZE/2}`} fill="none" stroke="#fff" strokeWidth={3} />
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400 223) ^[[m                )}
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400 224) ^[[m                {shape === 'rounded' && (
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400 225) ^[[m                  <SvgRectShape x={0} y={0} width={PIECE_SIZE} height={PIECE_SIZE} rx={8} ry={8} fill="none" stroke="#fff" strokeWidth={3} />
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400 226) ^[[m                )}
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400 227) ^[[m              </Svg>
+5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400 241) {/*      <View style={styles.sliderTrack}>
+5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400 243)        </View> */}
+5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400 330)   /* Circle shape support */
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400 331) ^[[m  circleShape: {
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400 332) ^[[m    borderRadius: PIECE_SIZE / 2,
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400 333) ^[[m  },
+
+## SettingsScreen.js
+5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400   2) import React, { useContext, useState, useEffect } from "react";
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400   3) ^[[mimport { SafeAreaView, View, Text, StyleSheet, Switch, TouchableOpacity, Image, Alert } from "react-native";
+5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400   6) import * as ImagePicker from 'expo-image-picker';
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400   7) ^[[mimport AsyncStorage from '@react-native-async-storage/async-storage';
+5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400  11)   const [profileImage, setProfileImage] = useState(null);
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400  12) ^[[m  const [username, setUsername] = useState('Account');
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400  13) ^[[m
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400  14) ^[[m  useEffect(() => {
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400  15) ^[[m    // load saved image uri from AsyncStorage
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400  16) ^[[m    (async () => {
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400  17) ^[[m      try {
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400  18) ^[[m        const uri = await AsyncStorage.getItem('@profile_image');
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400  19) ^[[m        if (uri) setProfileImage(uri);
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400  20) ^[[m        // load cached email to derive username
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400  21) ^[[m        const email = await AsyncStorage.getItem('@user_email');
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400  22) ^[[m        if (email) {
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400  23) ^[[m          const local = String(email).split('@')[0] || 'Account';
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400  24) ^[[m          setUsername(local);
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400  25) ^[[m        }
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400  26) ^[[m      } catch (e) {
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400  27) ^[[m        console.warn('Failed to load profile image', e);
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400  28) ^[[m      }
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400  29) ^[[m    })();
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400  30) ^[[m  }, []);
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400  31) ^[[m
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400  32) ^[[m  // Request gallery permissions
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400  33) ^[[m  const requestPermission = async () => {
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400  34) ^[[m    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400  35) ^[[m    if (status !== 'granted') {
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400  36) ^[[m      Alert.alert('Permission required', 'Permission to access the photo library is required to set a profile picture.');
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400  37) ^[[m      return false;
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400  38) ^[[m    }
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400  39) ^[[m    return true;
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400  40) ^[[m  };
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400  41) ^[[m
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400  42) ^[[m  const pickImage = async () => {
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400  43) ^[[m    const ok = await requestPermission();
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400  44) ^[[m    if (!ok) return;
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400  45) ^[[m
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400  46) ^[[m    try {
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400  47) ^[[m      const result = await ImagePicker.launchImageLibraryAsync({
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400  48) ^[[m        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400  49) ^[[m        allowsEditing: true,
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400  50) ^[[m        aspect: [1, 1],
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400  51) ^[[m        quality: 0.8,
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400  52) ^[[m      });
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400  53) ^[[m
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400  54) ^[[m      // Support both legacy and modern response shapes:
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400  55) ^[[m      // - legacy: { cancelled: false, uri }
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400  56) ^[[m      // - modern: { canceled: false, assets: [{ uri, ... }] }
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400  57) ^[[m      const canceled = result.cancelled === true || result.canceled === true;
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400  58) ^[[m      if (!canceled) {
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400  59) ^[[m        const uri = result.uri || (result.assets && result.assets[0] && result.assets[0].uri);
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400  60) ^[[m        if (uri) {
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400  61) ^[[m          setProfileImage(uri);
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400  62) ^[[m          await AsyncStorage.setItem('@profile_image', uri);
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400  63) ^[[m        }
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400  64) ^[[m      }
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400  65) ^[[m    } catch (e) {
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400  66) ^[[m      console.warn('ImagePicker error', e);
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400  67) ^[[m    }
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400  68) ^[[m  };
+5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400  94)         {/* Profile Image */}
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400  95) ^[[m        <View style={styles.profileRow}>
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400  96) ^[[m          <TouchableOpacity onPress={pickImage} style={styles.avatarWrapper} activeOpacity={0.8}>
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400  97) ^[[m            {profileImage ? (
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400  98) ^[[m              <Image source={{ uri: profileImage }} style={styles.avatar} />
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400  99) ^[[m            ) : (
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400 100) ^[[m              <View style={[styles.avatarPlaceholder, theme === 'dark' && styles.darkAvatarPlaceholder]}>
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400 101) ^[[m                <Text style={[styles.avatarInitial, theme === 'dark' && styles.darkText]}>A</Text>
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400 102) ^[[m              </View>
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400 103) ^[[m            )}
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400 104) ^[[m          </TouchableOpacity>
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400 105) ^[[m          <View style={{ marginLeft: 12 }}>
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400 106) ^[[m            <Text style={[styles.profileLabel, theme === "dark" && styles.darkText]}>{username}</Text>
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400 107) ^[[m            <Text style={[styles.profileHint, theme === "dark" && styles.darkText]}>Tap to change profile picture</Text>
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400 108) ^[[m          </View>
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400 109) ^[[m        </View>
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400 110) ^[[m
+5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400 146)   profileRow: { flexDirection: 'row', alignItems: 'center', marginBottom: 20 },
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400 147) ^[[m  avatarWrapper: { width: 72, height: 72, borderRadius: 36, overflow: 'hidden', justifyContent: 'center', alignItems: 'center' },
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400 148) ^[[m  avatar: { width: 72, height: 72, borderRadius: 36 },
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400 149) ^[[m  avatarPlaceholder: { width: 72, height: 72, borderRadius: 36, backgroundColor: '#e5e7eb', justifyContent: 'center', alignItems: 'center' },
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400 150) ^[[m  darkAvatarPlaceholder: { backgroundColor: '#374151' },
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400 151) ^[[m  avatarInitial: { fontSize: 28, color: '#111827', fontWeight: '700' },
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400 152) ^[[m  profileLabel: { fontSize: 16, fontWeight: '700' },
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400 153) ^[[m  profileHint: { fontSize: 12, color: '#6b7280' },
+
+## SignUpScreen.js
+677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400   1) // SignUpScreen.js
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400   2) ^[[mimport React, { useRef, useState } from "react";
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400   3) ^[[mimport {
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400   4) ^[[m  Platform,
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400   5) ^[[m  KeyboardAvoidingView,
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400   6) ^[[m  ScrollView,
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400   7) ^[[m  View,
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400   8) ^[[m  Text,
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400   9) ^[[m  TextInput,
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400  10) ^[[m  TouchableOpacity,
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400  11) ^[[m  StyleSheet,
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400  12) ^[[m  Alert,
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400  13) ^[[m} from "react-native";
+5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400  16) import AsyncStorage from '@react-native-async-storage/async-storage';
+677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400  21)   const passwordRef = useRef(null);
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400  22) ^[[m  const [loading, setLoading] = useState(false);
+677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400  25)   const onSignUp = async () => {
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400  26) ^[[m    if (!email || !password) {
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400  27) ^[[m      Alert.alert("Missing info", "Enter email and password");
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400  28) ^[[m      return;
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400  29) ^[[m    }
+677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400  37)       setLoading(true);
+677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400  39)       const check = await fetch(
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400  40) ^[[m        `${SUPABASE_URL}/rest/v1/profiles?email=eq.${encodeURIComponent(email)}`,
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400  41) ^[[m        {
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400  42) ^[[m          headers: {
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400  43) ^[[m            apiKey: SUPABASE_ANON_KEY,
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400  44) ^[[m            Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400  45) ^[[m            "Content-Type": "application/json",
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400  46) ^[[m          },
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400  47) ^[[m        }
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400  48) ^[[m      );
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400  49) ^[[m      const existing = await check.json();
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400  50) ^[[m      if (existing?.length > 0) {
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400  51) ^[[m        Alert.alert("Sign up failed", "Email already exists");
+677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400  68)       const [row] = await res.json();
+5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400  70)       // Cache user id and email locally
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400  71) ^[[m      try {
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400  72) ^[[m        await AsyncStorage.setItem('@user_id', String(row.id));
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400  73) ^[[m        await AsyncStorage.setItem('@user_email', row.email || email);
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400  74) ^[[m      } catch (e) {
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400  75) ^[[m        console.warn('Failed to cache user info', e);
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400  76) ^[[m      }
+^[[36m5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400  77) ^[[m
+677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400  78)       navigation.replace("Home", { userId: row.id });
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400  79) ^[[m    } catch (e) {
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400  80) ^[[m      Alert.alert("Error", e.message);
+677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400  82)     } finally {
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400  83) ^[[m      setLoading(false);
+677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400  88)     <View style={styles.safe}>
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400  89) ^[[m      <KeyboardAvoidingView
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400  90) ^[[m        style={{ flex: 1 }}
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400  91) ^[[m        behavior={Platform.OS === "ios" ? "padding" : "height"}
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400  92) ^[[m        keyboardVerticalOffset={Platform.select({ ios: 64, android: 0 })}
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400  93) ^[[m      >
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400  94) ^[[m        <ScrollView contentContainerStyle={{ flexGrow: 1 }} keyboardShouldPersistTaps="handled">
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400  95) ^[[m          <View style={styles.header}>
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400  96) ^[[m            <Text style={styles.headerTitle}>VolBites</Text>
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400  97) ^[[m          </View>
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400  98) ^[[m
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400  99) ^[[m          <View style={styles.container}>
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400 100) ^[[m            <Text style={styles.title}>Create account</Text>
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400 101) ^[[m
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400 102) ^[[m            <Text style={styles.label}>Email</Text>
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400 103) ^[[m            <TextInput
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400 104) ^[[m              style={styles.input}
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400 105) ^[[m              value={email}
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400 106) ^[[m              onChangeText={setEmail}
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400 107) ^[[m              autoCapitalize="none"
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400 108) ^[[m              autoCorrect={false}
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400 109) ^[[m              keyboardType="email-address"
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400 110) ^[[m              returnKeyType="next"
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400 111) ^[[m              blurOnSubmit={false}
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400 112) ^[[m              onSubmitEditing={() => passwordRef.current?.focus()}
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400 113) ^[[m            />
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400 114) ^[[m
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400 115) ^[[m            <Text style={styles.label}>Password</Text>
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400 116) ^[[m            <TextInput
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400 117) ^[[m              ref={passwordRef}
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400 118) ^[[m              style={styles.input}
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400 119) ^[[m              value={password}
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400 120) ^[[m              onChangeText={setPassword}
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400 121) ^[[m              secureTextEntry
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400 122) ^[[m              returnKeyType="done"
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400 123) ^[[m            />
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400 124) ^[[m
+677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400 130)             <TouchableOpacity
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400 131) ^[[m              style={[styles.btn, loading && styles.btnDisabled]}
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400 132) ^[[m              onPress={onSignUp}
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400 133) ^[[m              disabled={loading}
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400 134) ^[[m            >
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400 135) ^[[m              <Text style={styles.btnText}>{loading ? "Creating..." : "Sign up"}</Text>
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400 136) ^[[m            </TouchableOpacity>
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400 137) ^[[m
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400 138) ^[[m            <View style={styles.row}>
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400 139) ^[[m              <Text style={styles.subtle}>Already have an account? </Text>
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400 140) ^[[m              <TouchableOpacity onPress={() => navigation.replace("Login")}>
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400 141) ^[[m                <Text style={styles.link}>Log in</Text>
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400 142) ^[[m              </TouchableOpacity>
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400 143) ^[[m            </View>
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400 144) ^[[m          </View>
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400 145) ^[[m        </ScrollView>
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400 146) ^[[m      </KeyboardAvoidingView>
+677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400 151) const ORANGE = "#f97316", WHITE = "#fff";
+677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400 153)   safe: { flex: 1, backgroundColor: WHITE },
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400 154) ^[[m  header: {
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400 155) ^[[m    backgroundColor: ORANGE,
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400 156) ^[[m    paddingHorizontal: 20,
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400 157) ^[[m    paddingVertical: 14,
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400 158) ^[[m    borderBottomLeftRadius: 16,
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400 159) ^[[m    borderBottomRightRadius: 16,
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400 160) ^[[m    shadowColor: "#000",
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400 161) ^[[m    shadowOpacity: 0.12,
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400 162) ^[[m    shadowRadius: 6,
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400 163) ^[[m    shadowOffset: { width: 0, height: 3 },
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400 164) ^[[m    elevation: 4,
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400 165) ^[[m  },
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400 166) ^[[m  headerTitle: { color: WHITE, fontSize: 20, fontWeight: "700", letterSpacing: 0.3 },
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400 167) ^[[m  container: { flex: 1, padding: 20, justifyContent: "center" },
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400 168) ^[[m  title: { fontSize: 22, fontWeight: "700", marginBottom: 16, color: "#111827" },
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400 169) ^[[m  label: { fontSize: 14, color: "#374151", marginBottom: 6 },
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400 170) ^[[m  input: {
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400 171) ^[[m    height: 48,
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400 172) ^[[m    borderWidth: 1,
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400 173) ^[[m    borderColor: "#e5e7eb",
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400 174) ^[[m    borderRadius: 10,
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400 175) ^[[m    paddingHorizontal: 12,
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400 176) ^[[m    marginBottom: 14,
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400 177) ^[[m    backgroundColor: WHITE,
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400 178) ^[[m  },
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400 179) ^[[m  btn: {
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400 180) ^[[m    backgroundColor: ORANGE,
+677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400 182)     borderRadius: 10,
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400 183) ^[[m    alignItems: "center",
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400 184) ^[[m    marginTop: 6,
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400 185) ^[[m    marginBottom: 8,
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400 186) ^[[m  },
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400 187) ^[[m  btnDisabled: { opacity: 0.6 },
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400 188) ^[[m  btnText: { color: WHITE, fontWeight: "700" },
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400 189) ^[[m  row: { flexDirection: "row", justifyContent: "center", marginTop: 8 },
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400 190) ^[[m  link: { color: ORANGE, fontWeight: "700" },
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400 191) ^[[m  subtle: { color: "#6b7280" },
+
+## package-lock.json
+677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400    14)         "@supabase/supabase-js": "^2.57.4",
+5bb123b2 (Ar-Raniry Nurdin Ar-Rasyid 2025-10-16 00:14:14 -0400    18)         "expo-image-picker": "^17.0.8",
+677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400    20)         "native-base": "^3.4.28",
+677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400    26)         "react-native-screens": "~4.16.0",
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400    27) ^[[m        "react-native-svg": "15.12.1"
+677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400  2447)     "node_modules/@formatjs/ecma402-abstract": {
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400  2448) ^[[m      "version": "2.3.4",
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400  2449) ^[[m      "resolved": "https://registry.npmjs.org/@formatjs/ecma402-abstract/-/ecma402-abstract-2.3.4.tgz",
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400  2450) ^[[m      "integrity": "sha512-qrycXDeaORzIqNhBOx0btnhpD1c+/qFIHAN9znofuMJX6QBwtbrmlpWfD4oiUUD2vJUOIYFA/gYtg2KAMGG7sA==",
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400  2451) ^[[m      "license": "MIT",
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400  2452) ^[[m      "dependencies": {
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400  2453) ^[[m        "@formatjs/fast-memoize": "2.2.7",
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400  2454) ^[[m        "@formatjs/intl-localematcher": "0.6.1",
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400  2455) ^[[m        "decimal.js": "^10.4.3",
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400  2456) ^[[m        "tslib": "^2.8.0"
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400  2457) ^[[m      }
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400  2458) ^[[m    },
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400  2459) ^[[m    "node_modules/@formatjs/fast-memoize": {
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400  2460) ^[[m      "version": "2.2.7",
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400  2461) ^[[m      "resolved": "https://registry.npmjs.org/@formatjs/fast-memoize/-/fast-memoize-2.2.7.tgz",
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400  2462) ^[[m      "integrity": "sha512-Yabmi9nSvyOMrlSeGGWDiH7rf3a7sIwplbvo/dlz9WCIjzIQAfy1RMf4S0X3yG724n5Ghu2GmEl5NJIV6O9sZQ==",
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400  2463) ^[[m      "license": "MIT",
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400  2464) ^[[m      "dependencies": {
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400  2465) ^[[m        "tslib": "^2.8.0"
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400  2466) ^[[m      }
+^[[36m677a1275 (Ar-Raniry Nurdin Ar-Rasyid 2025-09-24 15:19:10 -0400  2467) ^[[m    },
+                                                                                                           

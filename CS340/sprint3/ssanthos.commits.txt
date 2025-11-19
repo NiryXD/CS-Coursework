@@ -1,0 +1,52 @@
+VolBites/geoapify.js
+(2025-10-16 ssanthos) FEAT: Add geocoding function for city name to coordinates
+  + geocodeCity(cityName) uses Geoapify Geocoding API
+  + Returns {lat, lon, name} object with formatted location name
+  + Error handling for invalid city names
+
+VolBites/geoapify.js
+(2025-10-16 ssanthos) REFACTOR: Update getRestaurants() to accept location parameter
+  + Changed from hardcoded KNOXVILLE_COORDS to configurable coords
+  + Default parameter maintains backward compatibility
+  + Exported KNOXVILLE_COORDS constant with name property
+
+VolBites/RestaurantsScreen.js
+(2025-10-16 ssanthos) FEAT: Add location state management with AsyncStorage
+  + loadLocation() retrieves saved location on mount
+  + saveLocation() persists location preference
+  + Defaults to Knoxville if no saved location
+
+VolBites/RestaurantsScreen.js
+(2025-10-16 ssanthos) UI: Add location button next to title
+  + Location icon button opens change location modal
+  + Title dynamically displays current location name
+  + Styled with semi-transparent background
+
+VolBites/RestaurantsScreen.js
+(2025-10-16 ssanthos) FEAT: Location change modal with city input
+  + Modal with TextInput for city name entry
+  + Geocoding validation before saving
+  + Reset button to return to default Knoxville location
+  + Loading indicator during geocoding
+  + Success/error alerts for user feedback
+
+VolBites/RestaurantsScreen.js
+(2025-10-16 ssanthos) REFACTOR: Update fetchRestaurants to use saved location
+  + useCallback for proper dependency management
+  + Automatically fetches restaurants when location changes
+  + Passes location coordinates to getRestaurants()
+
+VolBites/SettingsScreen.js
+(2025-10-16 ssanthos) FIX: Improve dark mode contrast for diet preferences
+  + Added dietChipDark style with visible border (#6b7280)
+  + Added darker background (#374151) for inactive chips
+  + Added dietChipTextDark with light text (#f9fafb)
+  + Conditional styling based on theme
+
+VolBites/UploadRecipeScreen.js
+(2025-10-16 ssanthos) FIX: Enhance dark mode contrast for all text inputs
+  + Updated inputDark background from #111827 to #374151
+  + Changed border color to #6b7280 for better visibility
+  + Added explicit text color to base input/textarea styles
+  + Added placeholderTextColor to all TextInput components
+  + Ensures all text is readable in dark mode

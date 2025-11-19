@@ -1,0 +1,344 @@
+VolBites/HomeScreen.js
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400  11)   ActivityIndicator,
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400  32)   
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 125)   
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 181)   
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 216)           {/* VolBites Title - Tap for Random Recipe */}
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 217)           {!isSearchActive && (
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 218)             <TouchableOpacity
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 219)               onPress={async () => {
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 220)                 setSearching(true);
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 221)                 try {
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 222)                   // Get a random recipe
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 223)                   const randomRecipes = await searchRecipes("", {});
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 224)                   if (randomRecipes.length > 0) {
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 225)                     const randomIndex = Math.floor(Math.random() * randomRecipes.length);
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 226)                     const randomRecipe = randomRecipes[randomIndex];
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 227)                     const details = await getRecipeDetails(randomRecipe.id);
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 228)                     navigation.navigate("RecipeDetail", { recipe: details, userId });
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 229)                   }
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 230)                 } catch (err) {
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 231)                   console.error("Error fetching random recipe:", err);
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 232)                 } finally {
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 233)                   setSearching(false);
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 234)                 }
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 235)               }}
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 236)               activeOpacity={0.7}
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 237)             >
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 238)               <Text style={[styles.appTitle, theme === "dark" && styles.darkText]}>
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 239)                 VolBites
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 240)               </Text>
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 241)             </TouchableOpacity>
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 242)           )}
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 243)           
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 244)           {isSearchActive && (
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 245)             <Text style={[styles.appTitle, theme === "dark" && styles.darkText]}>
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 246)               VolBites
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 247)             </Text>
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 248)           )}
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 249)           
+2c6d17db (Noah Colin Cash            2025-09-29 13:49:12 -0400 272)             />
+d646673a (Noah Colin Cash            2025-10-12 20:44:11 -0400 287)             >
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 536) 
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 537)         {/* Floating Map Button - Hidden when search is active */}
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 538)         {!isSearchActive && (
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 539)           <TouchableOpacity
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 540)             style={styles.floatingMapBtn}
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 541)             onPress={() => navigation.navigate("Restaurants")}
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 542)             activeOpacity={0.8}
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 543)           >
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 544)             <Ionicons name="map" size={36} color="#ffffff" />
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 545)           </TouchableOpacity>
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 546)         )}
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 582)   restaurantsButton: {
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 583)     backgroundColor: ORANGE,
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 584)     padding: 15,
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 585)     borderRadius: 12,
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 586)     flexDirection: "row",
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 587)     alignItems: "center",
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 588)     justifyContent: "center",
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 589)     shadowColor: "#000",
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 590)     shadowOpacity: 0.2,
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 591)     shadowRadius: 8,
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 592)     shadowOffset: { width: 0, height: 4 },
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 593)     elevation: 4,
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 594)   },
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 595)   restaurantsButtonText: {
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 596)     color: "#fff",
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 597)     fontWeight: "700",
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 598)     fontSize: 16,
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 599)   },
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 600)   restaurantsButton: {
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 601)     backgroundColor: ORANGE,
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 602)     padding: 15,
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 603)     borderRadius: 12,
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 604)     flexDirection: "row",
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 605)     alignItems: "center",
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 606)     justifyContent: "center",
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 607)     shadowColor: "#000",
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 608)     shadowOpacity: 0.2,
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 609)     shadowRadius: 8,
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 610)     shadowOffset: { width: 0, height: 4 },
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 611)     elevation: 4,
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 612)   },
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 613)   restaurantsButtonText: {
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 614)     color: "#fff",
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 615)     fontWeight: "700",
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 616)     fontSize: 16,
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 617)   },
+d646673a (Noah Colin Cash            2025-10-12 20:44:11 -0400 730)   cardTitle: { fontSize: 16, fontWeight: "600", color: "#111827" },
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 791)   floatingMapBtn: {
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 792)     position: "absolute",
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 793)     bottom: 30,
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 794)     left: 30,
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 795)     width: 80,
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 796)     height: 80,
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 797)     backgroundColor: ORANGE,
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 798)     borderRadius: 40,
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 799)     justifyContent: "center",
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 800)     alignItems: "center",
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 801)     shadowColor: "#000",
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 802)     shadowOffset: { width: 0, height: 4 },
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 803)     shadowOpacity: 0.3,
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 804)     shadowRadius: 4.65,
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 805)     elevation: 8,
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 806)   },
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 807) });
+
+VolBites/geoapify.js
+eeda75fe (Noah Colin Cash 2025-10-29 14:42:15 -0400  1) import { GEOAPIFY_API_KEY } from "@env";
+eeda75fe (Noah Colin Cash 2025-10-29 14:42:15 -0400  2)
+eeda75fe (Noah Colin Cash 2025-10-29 14:42:15 -0400  3) // Approx center of Knoxville, TN
+eeda75fe (Noah Colin Cash 2025-10-29 14:42:15 -0400  4) const KNOXVILLE_COORDS = {
+eeda75fe (Noah Colin Cash 2025-10-29 14:42:15 -0400  5)   lat: 35.9606,
+eeda75fe (Noah Colin Cash 2025-10-29 14:42:15 -0400  6)   lon: -83.9207,
+eeda75fe (Noah Colin Cash 2025-10-29 14:42:15 -0400  7) };
+eeda75fe (Noah Colin Cash 2025-10-29 14:42:15 -0400  8)
+eeda75fe (Noah Colin Cash 2025-10-29 14:42:15 -0400  9) // Radius in meters (5000 = 5 km)
+eeda75fe (Noah Colin Cash 2025-10-29 14:42:15 -0400 10) const RADIUS = 5000;
+eeda75fe (Noah Colin Cash 2025-10-29 14:42:15 -0400 11)
+eeda75fe (Noah Colin Cash 2025-10-29 14:42:15 -0400 12) export async function getRestaurants() {
+eeda75fe (Noah Colin Cash 2025-10-29 14:42:15 -0400 13)   try {
+eeda75fe (Noah Colin Cash 2025-10-29 14:42:15 -0400 14)     const url = `https://api.geoapify.com/v2/places?categories=catering.restaurant&filter=circle:${KNOXVILLE_COORDS.lon},${KNOXVILLE_COORDS.lat},${RADIUS}&limit=20&apiKey=${GEOAPIFY_API_KEY}`;
+eeda75fe (Noah Colin Cash 2025-10-29 14:42:15 -0400 15)
+eeda75fe (Noah Colin Cash 2025-10-29 14:42:15 -0400 16)     const res = await fetch(url);
+eeda75fe (Noah Colin Cash 2025-10-29 14:42:15 -0400 17)     if (!res.ok) {
+eeda75fe (Noah Colin Cash 2025-10-29 14:42:15 -0400 18)       const text = await res.text();
+eeda75fe (Noah Colin Cash 2025-10-29 14:42:15 -0400 19)       throw new Error(`HTTP ${res.status}: ${text}`);
+eeda75fe (Noah Colin Cash 2025-10-29 14:42:15 -0400 20)     }
+eeda75fe (Noah Colin Cash 2025-10-29 14:42:15 -0400 21)
+eeda75fe (Noah Colin Cash 2025-10-29 14:42:15 -0400 22)     const data = await res.json();
+eeda75fe (Noah Colin Cash 2025-10-29 14:42:15 -0400 23)     const restaurants = data.features.map((f) => ({
+eeda75fe (Noah Colin Cash 2025-10-29 14:42:15 -0400 24)       id: f.properties.place_id,
+eeda75fe (Noah Colin Cash 2025-10-29 14:42:15 -0400 25)       name: f.properties.name,
+eeda75fe (Noah Colin Cash 2025-10-29 14:42:15 -0400 26)       address: f.properties.formatted,
+eeda75fe (Noah Colin Cash 2025-10-29 14:42:15 -0400 27)       hours: f.properties.opening_hours || "Hours not available",
+eeda75fe (Noah Colin Cash 2025-10-29 14:42:15 -0400 28)       lat: f.properties.lat,
+eeda75fe (Noah Colin Cash 2025-10-29 14:42:15 -0400 29)       lon: f.properties.lon,
+eeda75fe (Noah Colin Cash 2025-10-29 14:42:15 -0400 30)     }));
+eeda75fe (Noah Colin Cash 2025-10-29 14:42:15 -0400 31)
+eeda75fe (Noah Colin Cash 2025-10-29 14:42:15 -0400 32)     return restaurants;
+eeda75fe (Noah Colin Cash 2025-10-29 14:42:15 -0400 33)   } catch (err) {
+eeda75fe (Noah Colin Cash 2025-10-29 14:42:15 -0400 34)     console.error("Error fetching restaurants:", err);
+eeda75fe (Noah Colin Cash 2025-10-29 14:42:15 -0400 35)     throw err;
+eeda75fe (Noah Colin Cash 2025-10-29 14:42:15 -0400 36)   }
+eeda75fe (Noah Colin Cash 2025-10-29 14:42:15 -0400 37) }
+
+VolBites/RestaurantsScreen.js
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400   1) // RestaurantsScreen.js
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400   2) import React, { useState, useEffect, useContext } from "react";
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400   3) import {
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400   4)   SafeAreaView,
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400   5)   View,
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400   6)   Text,
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400   7)   FlatList,
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400   8)   TouchableOpacity,
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400   9)   StyleSheet,
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400  10)   ActivityIndicator,
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400  11) } from "react-native";
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400  12) import { useNavigation } from "@react-navigation/native";
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400  13) import { Ionicons } from "@expo/vector-icons";
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400  14) import { ThemeContext } from "./App";
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400  15) import { getRestaurants } from "./geoapify";
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400  16)
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400  17) export default function RestaurantsScreen() {
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400  18)   const navigation = useNavigation();
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400  19)   const { theme } = useContext(ThemeContext);
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400  20)   const [restaurants, setRestaurants] = useState([]);
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400  21)   const [loading, setLoading] = useState(true);
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400  22)
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400  23)   useEffect(() => {
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400  24)     fetchRestaurants();
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400  25)   }, []);
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400  26)
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400  27)   const fetchRestaurants = async () => {
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400  28)     setLoading(true);
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400  29)     try {
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400  30)       const data = await getRestaurants();
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400  31)       setRestaurants(data);
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400  32)     } catch (err) {
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400  33)       console.error("Error fetching restaurants:", err);
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400  34)     } finally {
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400  35)       setLoading(false);
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400  36)     }
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400  37)   };
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400  38)
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400  39)   const renderRestaurantItem = ({ item }) => (
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400  41)       <Text style={[styles.cardTitle, theme === "dark" && styles.darkText]}>
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400  42)         {item.name || "Unnamed Restaurant"}
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400  43)       </Text>
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400  44)       <Text style={[styles.address, theme === "dark" && styles.darkSubText]}>
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400  45)         {item.address}
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400  46)       </Text>
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400  47)       <Text style={[styles.hours, theme === "dark" && styles.darkSubText]}>
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400  48)         {item.hours}
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400  49)       </Text>
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400  50)     </View>
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400  51)   );
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400  52)
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400  53)   return (
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400  55)       {/* Back Button */}
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400  56)       <TouchableOpacity
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400  57)         style={styles.backButton}
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400  58)         onPress={() => navigation.goBack()}
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400  59)       >
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400  60)         <Ionicons name="arrow-back" size={28} color="#ffffff" />
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400  61)       </TouchableOpacity>
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400  62)
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400  63)       <View style={styles.container}>
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400  64)         {/* Title */}
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400  65)         <Text style={styles.title}>Knoxville Restaurants</Text>
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400  66)
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400  67)         {/* Loading Indicator */}
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400  68)         {loading ? (
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400  69)           <View style={styles.loadingContainer}>
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400  70)             <ActivityIndicator size="large" color="#ffffff" />
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400  71)             <Text style={styles.loadingText}>Finding restaurants near you...</Text>
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400  72)           </View>
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400  73)         ) : (
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400  74)           <FlatList
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400  75)             data={restaurants}
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400  76)             keyExtractor={(item) => item.id}
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400  77)             renderItem={renderRestaurantItem}
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400  78)             showsVerticalScrollIndicator={false}
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400  79)             contentContainerStyle={styles.listContent}
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400  80)             ListEmptyComponent={
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400  81)               <View style={styles.emptyContainer}>
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400  82)                 <Ionicons name="restaurant-outline" size={64} color="#ffffff" />
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400  83)                 <Text style={styles.emptyText}>No restaurants found</Text>
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400  84)               </View>
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400  85)             }
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400  86)           />
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400  87)         )}
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400  88)       </View>
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400  89)     </SafeAreaView>
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400  90)   );
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400  91) }
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400  92)
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400  93) const ORANGE = "#f97316";
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400  94)
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400  95) const styles = StyleSheet.create({
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400  96)   safe: {
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400  97)     flex: 1,
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400  98)     backgroundColor: ORANGE,
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400  99)   },
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 104)   backButton: {
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 105)     position: "absolute",
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 106)     top: 50,
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 107)     left: 20,
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 108)     zIndex: 10,
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 109)     padding: 8,
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 110)     backgroundColor: "rgba(0, 0, 0, 0.2)",
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 111)     borderRadius: 20,
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 112)   },
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 113)   container: {
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 114)     flex: 1,
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 115)     padding: 20,
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 116)     paddingTop: 100,
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 117)   },
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 118)   title: {
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 119)     fontSize: 32,
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 120)     fontWeight: "700",
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 121)     color: "#ffffff",
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 122)     textAlign: "center",
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 123)     marginBottom: 20,
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 124)   },
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 125)   loadingContainer: {
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 126)     flex: 1,
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 127)     justifyContent: "center",
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 128)     alignItems: "center",
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 129)   },
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 130)   loadingText: {
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 131)     marginTop: 16,
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 132)     fontSize: 16,
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 133)     color: "#ffffff",
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 134)     fontWeight: "500",
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 135)   },
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 136)   listContent: {
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 137)     paddingBottom: 24,
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 138)   },
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 139)   card: {
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 140)     backgroundColor: "#ffffff",
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 141)     borderRadius: 12,
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 142)     padding: 16,
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 143)     marginBottom: 12,
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 144)     shadowColor: "#000",
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 145)     shadowOpacity: 0.1,
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 146)     shadowRadius: 8,
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 147)     shadowOffset: { width: 0, height: 4 },
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 148)     elevation: 3,
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 149)   },
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 153)   },
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 154)   cardTitle: {
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 155)     fontSize: 18,
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 156)     fontWeight: "700",
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 157)     color: "#111827",
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 158)     marginBottom: 8,
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 159)   },
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 160)   address: {
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 161)     fontSize: 14,
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 162)     color: "#555",
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 163)     marginBottom: 4,
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 164)   },
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 165)   hours: {
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 166)     fontSize: 14,
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 167)     color: "#777",
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 168)     marginTop: 4,
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 169)   },
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 170)   darkText: {
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 171)     color: "#f9fafb",
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 172)   },
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 173)   darkSubText: {
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 174)     color: "#d1d5db",
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 175)   },
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 176)   emptyContainer: {
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 177)     flex: 1,
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 178)     justifyContent: "center",
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 179)     alignItems: "center",
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 180)     paddingTop: 100,
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 181)   },
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 182)   emptyText: {
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 183)     fontSize: 18,
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 184)     color: "#ffffff",
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 185)     marginTop: 16,
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 186)     fontWeight: "500",
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 187)   },
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 188) });
+
+VolBites/.env
+eeda75fe (Noah Colin Cash 2025-10-29 14:42:15 -0400 3) GEOAPIFY_API_KEY=672cd872f28043e6830978f1c58aa0d1
+
+VolBites/App.js
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 14) import RestaurantsScreen from "./RestaurantsScreen";
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 73)           <Stack.Screen
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 74)             name="Restaurants"
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 75)             component={RestaurantsScreen}
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 76)             options={{ headerShown: false }}
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 77)           />
+eeda75fe (Noah Colin Cash            2025-10-29 14:42:15 -0400 82) }
+
+VolBites/RecipeDetailScreen.js
+eeda75fe (Noah Colin Cash      2025-10-29 14:42:15 -0400 274)         {/* Header - Only shows heart/trash, back button removed */}
+eeda75fe (Noah Colin Cash      2025-10-29 14:42:15 -0400 276)           <View style={{ width: 24 }} />
+eeda75fe (Noah Colin Cash      2025-10-29 14:42:15 -0400 546) });
+

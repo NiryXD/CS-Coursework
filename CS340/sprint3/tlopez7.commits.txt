@@ -1,0 +1,371 @@
+// ChatBotScreen.js
+e1aac0a4 (Tristan M Lopez            2025-10-16 09:12:29 -0400   3) import {
+e1aac0a4 (Tristan M Lopez            2025-10-16 09:12:29 -0400   4)   View,
+e1aac0a4 (Tristan M Lopez            2025-10-16 09:12:29 -0400   5)   Text,
+e1aac0a4 (Tristan M Lopez            2025-10-16 09:12:29 -0400   6)   TextInput,
+e1aac0a4 (Tristan M Lopez            2025-10-16 09:12:29 -0400   7)   TouchableOpacity,
+e1aac0a4 (Tristan M Lopez            2025-10-16 09:12:29 -0400   8)   StyleSheet,
+e1aac0a4 (Tristan M Lopez            2025-10-16 09:12:29 -0400   9)   ScrollView,
+e1aac0a4 (Tristan M Lopez            2025-10-16 09:12:29 -0400  10)   KeyboardAvoidingView,
+e1aac0a4 (Tristan M Lopez            2025-10-16 09:12:29 -0400  11)   Platform,
+e1aac0a4 (Tristan M Lopez            2025-10-16 09:12:29 -0400  12)   ActivityIndicator,
+e1aac0a4 (Tristan M Lopez            2025-10-16 09:12:29 -0400  14) } from "react-native";
+e1aac0a4 (Tristan M Lopez            2025-10-16 09:12:29 -0400  15) 
+e1aac0a4 (Tristan M Lopez            2025-10-16 09:12:29 -0400  16) const OPENAI_API_KEY = process.env.OPENAI_API_KEY || "YOUR_API_KEY_HERE";
+e1aac0a4 (Tristan M Lopez            2025-10-16 09:12:29 -0400  17) 
+1aac0a4 (Tristan M Lopez            2025-10-16 09:12:29 -0400  29)   const [inputText, setInputText] = useState("");
+e1aac0a4 (Tristan M Lopez            2025-10-16 09:12:29 -0400  30)   const [loading, setLoading] = useState(false);
+e1aac0a4 (Tristan M Lopez            2025-10-16 09:12:29 -0400  31)   const scrollViewRef = useRef(null);
+e1aac0a4 (Tristan M Lopez            2025-10-16 09:12:29 -0400  32) 
+e1aac0a4 (Tristan M Lopez            2025-10-16 09:12:29 -0400  33)   useEffect(() => {
+e1aac0a4 (Tristan M Lopez            2025-10-16 09:12:29 -0400  34)     scrollViewRef.current?.scrollToEnd({ animated: true });
+e1aac0a4 (Tristan M Lopez            2025-10-16 09:12:29 -0400  35)   }, [messages]);
+e1aac0a4 (Tristan M Lopez            2025-10-16 09:12:29 -0400  36) 
+e1aac0a4 (Tristan M Lopez            2025-10-16 09:12:29 -0400  75)     setMessages((prev) => [...prev, userMessage]);
+e1aac0a4 (Tristan M Lopez            2025-10-16 09:12:29 -0400  76)     setInputText("");
+e1aac0a4 (Tristan M Lopez            2025-10-16 09:12:29 -0400  77)     setLoading(true);
+e1aac0a4 (Tristan M Lopez            2025-10-16 09:12:29 -0400  78) 
+e1aac0a4 (Tristan M Lopez            2025-10-16 09:12:29 -0400 187)     } finally {
+e1aac0a4 (Tristan M Lopez            2025-10-16 09:12:29 -0400 188)       setLoading(false);
+e1aac0a4 (Tristan M Lopez            2025-10-16 09:12:29 -0400 189)     }
+e1aac0a4 (Tristan M Lopez            2025-10-16 09:12:29 -0400 190)   };
+e1aac0a4 (Tristan M Lopez            2025-10-16 09:12:29 -0400 191) 
+e1aac0a4 (Tristan M Lopez            2025-10-16 09:12:29 -0400 225)       {/* Header */}
+e1aac0a4 (Tristan M Lopez            2025-10-16 09:12:29 -0400 226)       <View style={styles.header}>
+e1aac0a4 (Tristan M Lopez            2025-10-16 09:12:29 -0400 227)         <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backBtn}>
+e1aac0a4 (Tristan M Lopez            2025-10-16 09:12:29 -0400 228)           <Text style={styles.backText}>←</Text>
+e1aac0a4 (Tristan M Lopez            2025-10-16 09:12:29 -0400 229)         </TouchableOpacity>
+e1aac0a4 (Tristan M Lopez            2025-10-16 09:12:29 -0400 230)         <Text style={styles.headerTitle}>Chat Assistant</Text>
+e1aac0a4 (Tristan M Lopez            2025-10-16 09:12:29 -0400 231)         <View style={styles.placeholder} />
+e1aac0a4 (Tristan M Lopez            2025-10-16 09:12:29 -0400 232)       </View>
+e1aac0a4 (Tristan M Lopez            2025-10-16 09:12:29 -0400 233) 
+e1aac0a4 (Tristan M Lopez            2025-10-16 09:12:29 -0400 234)       {/* Chat Messages */}
+e1aac0a4 (Tristan M Lopez            2025-10-16 09:12:29 -0400 235)       <KeyboardAvoidingView
+e1aac0a4 (Tristan M Lopez            2025-10-16 09:12:29 -0400 236)         style={{ flex: 1 }}
+e1aac0a4 (Tristan M Lopez            2025-10-16 09:12:29 -0400 237)         behavior={Platform.OS === "ios" ? "padding" : "height"}
+e1aac0a4 (Tristan M Lopez            2025-10-16 09:12:29 -0400 238)       >
+e1aac0a4 (Tristan M Lopez            2025-10-16 09:12:29 -0400 239)         <ScrollView
+e1aac0a4 (Tristan M Lopez            2025-10-16 09:12:29 -0400 242)           contentContainerStyle={styles.messagesContent}
+e1aac0a4 (Tristan M Lopez            2025-10-16 09:12:29 -0400 243)           onContentSizeChange={() => scrollViewRef.current?.scrollToEnd({ animated: true })}
+e1aac0a4 (Tristan M Lopez            2025-10-16 09:12:29 -0400 244)         >
+e1aac0a4 (Tristan M Lopez            2025-10-16 09:12:29 -0400 245)           {messages.map((message) => (
+e1aac0a4 (Tristan M Lopez            2025-10-16 09:12:29 -0400 246)             <View
+e1aac0a4 (Tristan M Lopez            2025-10-16 09:12:29 -0400 247)               key={message.id}
+e1aac0a4 (Tristan M Lopez            2025-10-16 09:12:29 -0400 248)               style={[
+e1aac0a4 (Tristan M Lopez            2025-10-16 09:12:29 -0400 249)                 styles.messageBubble,
+e1aac0a4 (Tristan M Lopez            2025-10-16 09:12:29 -0400 250)                 message.isBot ? styles.botBubble : styles.userBubble,
+e1aac0a4 (Tristan M Lopez            2025-10-16 09:12:29 -0400 252)               ]}
+e1aac0a4 (Tristan M Lopez            2025-10-16 09:12:29 -0400 253)             >
+e1aac0a4 (Tristan M Lopez            2025-10-16 09:12:29 -0400 254)               <Text
+e1aac0a4 (Tristan M Lopez            2025-10-16 09:12:29 -0400 255)                 style={[
+e1aac0a4 (Tristan M Lopez            2025-10-16 09:12:29 -0400 256)                   styles.messageText,
+e1aac0a4 (Tristan M Lopez            2025-10-16 09:12:29 -0400 288)             </View>
+e1aac0a4 (Tristan M Lopez            2025-10-16 09:12:29 -0400 289)           )}
+e1aac0a4 (Tristan M Lopez            2025-10-16 09:12:29 -0400 290)         </ScrollView>
+e1aac0a4 (Tristan M Lopez            2025-10-16 09:12:29 -0400 291) 
+e1aac0a4 (Tristan M Lopez            2025-10-16 09:12:29 -0400 292)         {/* Input Area */}
+e1aac0a4 (Tristan M Lopez            2025-10-16 09:12:29 -0400 296)             value={inputText}
+e1aac0a4 (Tristan M Lopez            2025-10-16 09:12:29 -0400 297)             onChangeText={setInputText}
+e1aac0a4 (Tristan M Lopez            2025-10-16 09:12:29 -0400 298)             placeholder="Ask me anything..."
+e1aac0a4 (Tristan M Lopez            2025-10-16 09:12:29 -0400 300)             multiline
+e1aac0a4 (Tristan M Lopez            2025-10-16 09:12:29 -0400 301)             maxLength={500}
+e1aac0a4 (Tristan M Lopez            2025-10-16 09:12:29 -0400 302)             returnKeyType="send"
+e1aac0a4 (Tristan M Lopez            2025-10-16 09:12:29 -0400 303)             onSubmitEditing={sendMessage}
+e1aac0a4 (Tristan M Lopez            2025-10-16 09:12:29 -0400 304)           />
+e1aac0a4 (Tristan M Lopez            2025-10-16 09:12:29 -0400 305)           <TouchableOpacity
+e1aac0a4 (Tristan M Lopez            2025-10-16 09:12:29 -0400 306)             style={[styles.sendBtn, !inputText.trim() && styles.sendBtnDisabled]}
+e1aac0a4 (Tristan M Lopez            2025-10-16 09:12:29 -0400 307)             onPress={sendMessage}
+e1aac0a4 (Tristan M Lopez            2025-10-16 09:12:29 -0400 308)             disabled={!inputText.trim() || loading}
+e1aac0a4 (Tristan M Lopez            2025-10-16 09:12:29 -0400 309)           >
+e1aac0a4 (Tristan M Lopez            2025-10-16 09:12:29 -0400 310)             <Text style={styles.sendText}>→</Text>
+e1aac0a4 (Tristan M Lopez            2025-10-16 09:12:29 -0400 311)           </TouchableOpacity>
+e1aac0a4 (Tristan M Lopez            2025-10-16 09:12:29 -0400 312)         </View>
+e1aac0a4 (Tristan M Lopez            2025-10-16 09:12:29 -0400 313)       </KeyboardAvoidingView>
+e1aac0a4 (Tristan M Lopez            2025-10-16 09:12:29 -0400 314)     </View>
+e1aac0a4 (Tristan M Lopez            2025-10-16 09:12:29 -0400 315)   );
+e1aac0a4 (Tristan M Lopez            2025-10-16 09:12:29 -0400 316) }
+e1aac0a4 (Tristan M Lopez            2025-10-16 09:12:29 -0400 317) 
+e1aac0a4 (Tristan M Lopez            2025-10-16 09:12:29 -0400 318) const ORANGE = "#f97316";
+e1aac0a4 (Tristan M Lopez            2025-10-16 09:12:29 -0400 319) const styles = StyleSheet.create({
+e1aac0a4 (Tristan M Lopez            2025-10-16 09:12:29 -0400 322)   header: {
+e1aac0a4 (Tristan M Lopez            2025-10-16 09:12:29 -0400 323)     flexDirection: "row",
+e1aac0a4 (Tristan M Lopez            2025-10-16 09:12:29 -0400 324)     alignItems: "center",
+e1aac0a4 (Tristan M Lopez            2025-10-16 09:12:29 -0400 325)     justifyContent: "space-between",
+e1aac0a4 (Tristan M Lopez            2025-10-16 09:12:29 -0400 326)     backgroundColor: ORANGE,
+e1aac0a4 (Tristan M Lopez            2025-10-16 09:12:29 -0400 327)     paddingHorizontal: 16,
+e1aac0a4 (Tristan M Lopez            2025-10-16 09:12:29 -0400 328)     paddingVertical: 14,
+e1aac0a4 (Tristan M Lopez            2025-10-16 09:12:29 -0400 329)     paddingTop: Platform.OS === "ios" ? 50 : 14,
+e1aac0a4 (Tristan M Lopez            2025-10-16 09:12:29 -0400 330)     borderBottomLeftRadius: 16,
+e1aac0a4 (Tristan M Lopez            2025-10-16 09:12:29 -0400 331)     borderBottomRightRadius: 16,
+e1aac0a4 (Tristan M Lopez            2025-10-16 09:12:29 -0400 332)     shadowColor: "#000",
+e1aac0a4 (Tristan M Lopez            2025-10-16 09:12:29 -0400 333)     shadowOpacity: 0.12,
+e1aac0a4 (Tristan M Lopez            2025-10-16 09:12:29 -0400 334)     shadowRadius: 6,
+e1aac0a4 (Tristan M Lopez            2025-10-16 09:12:29 -0400 335)     shadowOffset: { width: 0, height: 3 },
+e1aac0a4 (Tristan M Lopez            2025-10-16 09:12:29 -0400 336)     elevation: 4,
+e1aac0a4 (Tristan M Lopez            2025-10-16 09:12:29 -0400 346)   botBubble: {
+e1aac0a4 (Tristan M Lopez            2025-10-16 09:12:29 -0400 347)     alignSelf: "flex-start",
+e1aac0a4 (Tristan M Lopez            2025-10-16 09:12:29 -0400 348)     backgroundColor: "#fff",
+e1aac0a4 (Tristan M Lopez            2025-10-16 09:12:29 -0400 349)     borderWidth: 1,
+e1aac0a4 (Tristan M Lopez            2025-10-16 09:12:29 -0400 350)     borderColor: "#e5e7eb",
+e1aac0a4 (Tristan M Lopez            2025-10-16 09:12:29 -0400 351)   },
+e1aac0a4 (Tristan M Lopez            2025-10-16 09:12:29 -0400 362)   inputContainer: {
+e1aac0a4 (Tristan M Lopez            2025-10-16 09:12:29 -0400 363)     flexDirection: "row",
+e1aac0a4 (Tristan M Lopez            2025-10-16 09:12:29 -0400 364)     padding: 12,
+e1aac0a4 (Tristan M Lopez            2025-10-16 09:12:29 -0400 365)     backgroundColor: "#fff",
+e1aac0a4 (Tristan M Lopez            2025-10-16 09:12:29 -0400 366)     borderTopWidth: 1,
+e1aac0a4 (Tristan M Lopez            2025-10-16 09:12:29 -0400 367)     borderTopColor: "#e5e7eb",
+e1aac0a4 (Tristan M Lopez            2025-10-16 09:12:29 -0400 368)     alignItems: "flex-end",
+e1aac0a4 (Tristan M Lopez            2025-10-16 09:12:29 -0400 369)   },
+e1aac0a4 (Tristan M Lopez            2025-10-16 09:12:29 -0400 374)   input: {
+e1aac0a4 (Tristan M Lopez            2025-10-16 09:12:29 -0400 375)     flex: 1,
+e1aac0a4 (Tristan M Lopez            2025-10-16 09:12:29 -0400 376)     backgroundColor: "#f3f4f6",
+e1aac0a4 (Tristan M Lopez            2025-10-16 09:12:29 -0400 377)     borderRadius: 20,
+e1aac0a4 (Tristan M Lopez            2025-10-16 09:12:29 -0400 378)     paddingHorizontal: 16,
+e1aac0a4 (Tristan M Lopez            2025-10-16 09:12:29 -0400 379)     paddingVertical: 10,
+e1aac0a4 (Tristan M Lopez            2025-10-16 09:12:29 -0400 380)     maxHeight: 100,
+e1aac0a4 (Tristan M Lopez            2025-10-16 09:12:29 -0400 381)     fontSize: 15,
+e1aac0a4 (Tristan M Lopez            2025-10-16 09:12:29 -0400 382)     color: "#111827",
+e1aac0a4 (Tristan M Lopez            2025-10-16 09:12:29 -0400 383)   },
+e1aac0a4 (Tristan M Lopez            2025-10-16 09:12:29 -0400 389)     width: 44,
+e1aac0a4 (Tristan M Lopez            2025-10-16 09:12:29 -0400 390)     height: 44,
+e1aac0a4 (Tristan M Lopez            2025-10-16 09:12:29 -0400 391)     backgroundColor: ORANGE,
+e1aac0a4 (Tristan M Lopez            2025-10-16 09:12:29 -0400 392)     borderRadius: 22,
+e1aac0a4 (Tristan M Lopez            2025-10-16 09:12:29 -0400 393)     justifyContent: "center",
+e1aac0a4 (Tristan M Lopez            2025-10-16 09:12:29 -0400 394)     alignItems: "center",
+e1aac0a4 (Tristan M Lopez            2025-10-16 09:12:29 -0400 395)     marginLeft: 8,
+e1aac0a4 (Tristan M Lopez            2025-10-16 09:12:29 -0400 396)   },
+
+//RecipeDetailScreen.js
+a76bfb1b (Tristan M Lopez      2025-10-27 11:51:57 -0400  19) import StarRating from "./StarRating";
+529960f8 (Tristan M Lopez      2025-10-27 16:54:47 -0400  20) import { getSimilarRecipes, getRecipeDetails } from "./spoonacular";
+529960f8 (Tristan M Lopez      2025-10-27 16:54:47 -0400  21) import { trackRecipeView } from "./viewHistoryHelper";
+a76bfb1b (Tristan M Lopez      2025-10-27 11:51:57 -0400  29)   const [userRating, setUserRating] = useState(0);
+a76bfb1b (Tristan M Lopez      2025-10-27 11:51:57 -0400  30)   const [averageRating, setAverageRating] = useState(0);
+a76bfb1b (Tristan M Lopez      2025-10-27 11:51:57 -0400  31)   const [totalRatings, setTotalRatings] = useState(0);
+a76bfb1b (Tristan M Lopez      2025-10-27 11:51:57 -0400  32)   const [ratingLoading, setRatingLoading] = useState(false);
+529960f8 (Tristan M Lopez      2025-10-27 16:54:47 -0400  33)   const [similarRecipes, setSimilarRecipes] = useState([]);
+529960f8 (Tristan M Lopez      2025-10-27 16:54:47 -0400  34)   const [loadingSimilar, setLoadingSimilar] = useState(false);
+529960f8 (Tristan M Lopez      2025-10-27 16:54:47 -0400  43)   // Track view on mount
+529960f8 (Tristan M Lopez      2025-10-27 16:54:47 -0400  44)   useEffect(() => {
+529960f8 (Tristan M Lopez      2025-10-27 16:54:47 -0400  45)     trackRecipeView(userId, recipe.id);
+529960f8 (Tristan M Lopez      2025-10-27 16:54:47 -0400  46)   }, [userId, recipe.id]);
+529960f8 (Tristan M Lopez      2025-10-27 16:54:47 -0400  47) 
+a76bfb1b (Tristan M Lopez      2025-10-27 11:51:57 -0400  70)   // Fetch ratings
+a76bfb1b (Tristan M Lopez      2025-10-27 11:51:57 -0400  71)   useEffect(() => {
+a76bfb1b (Tristan M Lopez      2025-10-27 11:51:57 -0400  72)     fetchRatings();
+a76bfb1b (Tristan M Lopez      2025-10-27 11:51:57 -0400  73)   }, [recipe.id, userId]);
+a76bfb1b (Tristan M Lopez      2025-10-27 11:51:57 -0400  74) 
+529960f8 (Tristan M Lopez      2025-10-27 16:54:47 -0400  75)   // Fetch similar recipes
+529960f8 (Tristan M Lopez      2025-10-27 16:54:47 -0400  76)   useEffect(() => {
+529960f8 (Tristan M Lopez      2025-10-27 16:54:47 -0400  77)     fetchSimilarRecipes();
+529960f8 (Tristan M Lopez      2025-10-27 16:54:47 -0400  78)   }, [recipe.id]);
+529960f8 (Tristan M Lopez      2025-10-27 16:54:47 -0400  79) 
+529960f8 (Tristan M Lopez      2025-10-27 16:54:47 -0400  80)   const fetchSimilarRecipes = async () => {
+529960f8 (Tristan M Lopez      2025-10-27 16:54:47 -0400  81)     setLoadingSimilar(true);
+529960f8 (Tristan M Lopez      2025-10-27 16:54:47 -0400  82)     try {
+529960f8 (Tristan M Lopez      2025-10-27 16:54:47 -0400  83)       const similar = await getSimilarRecipes(recipe.id, 4);
+529960f8 (Tristan M Lopez      2025-10-27 16:54:47 -0400  84)       setSimilarRecipes(similar);
+529960f8 (Tristan M Lopez      2025-10-27 16:54:47 -0400  85)     } catch (error) {
+529960f8 (Tristan M Lopez      2025-10-27 16:54:47 -0400  86)       console.error("Error fetching similar recipes:", error);
+529960f8 (Tristan M Lopez      2025-10-27 16:54:47 -0400  87)     } finally {
+529960f8 (Tristan M Lopez      2025-10-27 16:54:47 -0400  88)       setLoadingSimilar(false);
+529960f8 (Tristan M Lopez      2025-10-27 16:54:47 -0400  89)     }
+529960f8 (Tristan M Lopez      2025-10-27 16:54:47 -0400  90)   };
+529960f8 (Tristan M Lopez      2025-10-27 16:54:47 -0400  91) 
+a76bfb1b (Tristan M Lopez      2025-10-27 11:51:57 -0400  92)   const fetchRatings = async () => {
+a76bfb1b (Tristan M Lopez      2025-10-27 11:51:57 -0400  93)     try {
+a76bfb1b (Tristan M Lopez      2025-10-27 11:51:57 -0400  94)       // Get user's rating
+a76bfb1b (Tristan M Lopez      2025-10-27 11:51:57 -0400  95)       const userRes = await fetch(
+a76bfb1b (Tristan M Lopez      2025-10-27 11:51:57 -0400  96)         `${SUPABASE_URL}/rest/v1/recipe_ratings?user_id=eq.${userId}&recipe_id=eq.${recipe.id}&select=rating`,
+a76bfb1b (Tristan M Lopez      2025-10-27 11:51:57 -0400  97)         {
+a76bfb1b (Tristan M Lopez      2025-10-27 11:51:57 -0400  98)           headers: {
+a76bfb1b (Tristan M Lopez      2025-10-27 11:51:57 -0400  99)             apiKey: SUPABASE_ANON_KEY,
+a76bfb1b (Tristan M Lopez      2025-10-27 11:51:57 -0400 100)             Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
+529960f8 (Tristan M Lopez      2025-10-27 16:54:47 -0400 236)   const handleSimilarRecipePress = async (similarRecipe) => {
+529960f8 (Tristan M Lopez      2025-10-27 16:54:47 -0400 237)     try {
+529960f8 (Tristan M Lopez      2025-10-27 16:54:47 -0400 238)       const details = await getRecipeDetails(similarRecipe.id);
+529960f8 (Tristan M Lopez      2025-10-27 16:54:47 -0400 239)       navigation.push("RecipeDetail", { recipe: details, userId });
+529960f8 (Tristan M Lopez      2025-10-27 16:54:47 -0400 240)     } catch (error) {
+529960f8 (Tristan M Lopez      2025-10-27 16:54:47 -0400 241)       console.error("Error fetching similar recipe details:", error);
+529960f8 (Tristan M Lopez      2025-10-27 16:54:47 -0400 242)       Alert.alert("Error", "Failed to load recipe details");
+529960f8 (Tristan M Lopez      2025-10-27 16:54:47 -0400 243)     }
+529960f8 (Tristan M Lopez      2025-10-27 16:54:47 -0400 244)   };
+529960f8 (Tristan M Lopez      2025-10-27 16:54:47 -0400 245) 
+529960f8 (Tristan M Lopez      2025-10-27 16:54:47 -0400 246)   const renderSimilarRecipe = ({ item }) => (
+529960f8 (Tristan M Lopez      2025-10-27 16:54:47 -0400 247)     <TouchableOpacity
+529960f8 (Tristan M Lopez      2025-10-27 16:54:47 -0400 248)       style={[styles.similarCard, theme === "dark" && styles.similarCardDark]}
+529960f8 (Tristan M Lopez      2025-10-27 16:54:47 -0400 249)       onPress={() => handleSimilarRecipePress(item)}
+529960f8 (Tristan M Lopez      2025-10-27 16:54:47 -0400 250)     >
+529960f8 (Tristan M Lopez      2025-10-27 16:54:47 -0400 251)       {item.image && (
+529960f8 (Tristan M Lopez      2025-10-27 16:54:47 -0400 252)         <Image source={{ uri: item.image }} style={styles.similarImage} resizeMode="cover" />
+529960f8 (Tristan M Lopez      2025-10-27 16:54:47 -0400 253)       )}
+529960f8 (Tristan M Lopez      2025-10-27 16:54:47 -0400 254)       <Text style={[styles.similarTitle, theme === "dark" && { color: DARK_TEXT }]} numberOfLines={2}>
+529960f8 (Tristan M Lopez      2025-10-27 16:54:47 -0400 255)         {item.title}
+529960f8 (Tristan M Lopez      2025-10-27 16:54:47 -0400 256)       </Text>
+529960f8 (Tristan M Lopez      2025-10-27 16:54:47 -0400 257)       <Text style={styles.similarTime}>Ready in {item.readyInMinutes} min</Text>
+529960f8 (Tristan M Lopez      2025-10-27 16:54:47 -0400 258)     </TouchableOpacity>
+529960f8 (Tristan M Lopez      2025-10-27 16:54:47 -0400 259)   );
+529960f8 (Tristan M Lopez      2025-10-27 16:54:47 -0400 260) 
+a76bfb1b (Tristan M Lopez      2025-10-27 11:51:57 -0400 315)           {/* Rating Section */}
+a76bfb1b (Tristan M Lopez      2025-10-27 11:51:57 -0400 316)           <View style={[styles.ratingSection, theme === "dark" && { borderColor: DARK_BORDER }]}>
+a76bfb1b (Tristan M Lopez      2025-10-27 11:51:57 -0400 317)             <Text style={[styles.ratingTitle, theme === "dark" && { color: DARK_TEXT }]}>
+a76bfb1b (Tristan M Lopez      2025-10-27 11:51:57 -0400 318)               Rate this recipe
+a76bfb1b (Tristan M Lopez      2025-10-27 11:51:57 -0400 319)             </Text>
+a76bfb1b (Tristan M Lopez      2025-10-27 11:51:57 -0400 320)             
+a76bfb1b (Tristan M Lopez      2025-10-27 11:51:57 -0400 321)             {ratingLoading ? (
+a76bfb1b (Tristan M Lopez      2025-10-27 11:51:57 -0400 322)               <ActivityIndicator color={ORANGE} />
+a76bfb1b (Tristan M Lopez      2025-10-27 11:51:57 -0400 323)             ) : (
+a76bfb1b (Tristan M Lopez      2025-10-27 11:51:57 -0400 324)               <StarRating
+a76bfb1b (Tristan M Lopez      2025-10-27 11:51:57 -0400 325)                 rating={userRating}
+a76bfb1b (Tristan M Lopez      2025-10-27 11:51:57 -0400 326)                 onRate={handleRate}
+a76bfb1b (Tristan M Lopez      2025-10-27 11:51:57 -0400 327)                 size={36}
+a76bfb1b (Tristan M Lopez      2025-10-27 11:51:57 -0400 328)                 color={ORANGE}
+a76bfb1b (Tristan M Lopez      2025-10-27 11:51:57 -0400 329)               />
+a76bfb1b (Tristan M Lopez      2025-10-27 11:51:57 -0400 330)             )}
+a76bfb1b (Tristan M Lopez      2025-10-27 11:51:57 -0400 331)             
+a76bfb1b (Tristan M Lopez      2025-10-27 11:51:57 -0400 332)             {totalRatings > 0 && (
+a76bfb1b (Tristan M Lopez      2025-10-27 11:51:57 -0400 333)               <View style={styles.averageRatingContainer}>
+a76bfb1b (Tristan M Lopez      2025-10-27 11:51:57 -0400 334)                 <Text style={[styles.averageRating, theme === "dark" && { color: DARK_TEXT }]}>
+a76bfb1b (Tristan M Lopez      2025-10-27 11:51:57 -0400 335)                   {averageRating.toFixed(1)} ⭐ ({totalRatings} {totalRatings === 1 ? "rating" : "ratings"})
+a76bfb1b (Tristan M Lopez      2025-10-27 11:51:57 -0400 336)                 </Text>
+a76bfb1b (Tristan M Lopez      2025-10-27 11:51:57 -0400 337)               </View>
+a76bfb1b (Tristan M Lopez      2025-10-27 11:51:57 -0400 338)             )}
+a76bfb1b (Tristan M Lopez      2025-10-27 11:51:57 -0400 339)           </View>
+a76bfb1b (Tristan M Lopez      2025-10-27 11:51:57 -0400 340) 
+529960f8 (Tristan M Lopez      2025-10-27 16:54:47 -0400 405) 
+529960f8 (Tristan M Lopez      2025-10-27 16:54:47 -0400 406)           {/* Similar Recipes */}
+529960f8 (Tristan M Lopez      2025-10-27 16:54:47 -0400 407)           {similarRecipes.length > 0 && (
+529960f8 (Tristan M Lopez      2025-10-27 16:54:47 -0400 408)             <>
+529960f8 (Tristan M Lopez      2025-10-27 16:54:47 -0400 409)               <Text style={[styles.sectionTitle, theme === "dark" && { color: DARK_TEXT }]}>
+529960f8 (Tristan M Lopez      2025-10-27 16:54:47 -0400 410)                 You Might Also Like
+529960f8 (Tristan M Lopez      2025-10-27 16:54:47 -0400 411)               </Text>
+529960f8 (Tristan M Lopez      2025-10-27 16:54:47 -0400 412)               <FlatList
+529960f8 (Tristan M Lopez      2025-10-27 16:54:47 -0400 413)                 data={similarRecipes}
+529960f8 (Tristan M Lopez      2025-10-27 16:54:47 -0400 414)                 renderItem={renderSimilarRecipe}
+529960f8 (Tristan M Lopez      2025-10-27 16:54:47 -0400 415)                 keyExtractor={(item) => String(item.id)}
+529960f8 (Tristan M Lopez      2025-10-27 16:54:47 -0400 416)                 horizontal
+529960f8 (Tristan M Lopez      2025-10-27 16:54:47 -0400 417)                 showsHorizontalScrollIndicator={false}
+529960f8 (Tristan M Lopez      2025-10-27 16:54:47 -0400 418)                 contentContainerStyle={styles.similarList}
+529960f8 (Tristan M Lopez      2025-10-27 16:54:47 -0400 419)               />
+529960f8 (Tristan M Lopez      2025-10-27 16:54:47 -0400 420)             </>
+529960f8 (Tristan M Lopez      2025-10-27 16:54:47 -0400 421)           )}
+529960f8 (Tristan M Lopez      2025-10-27 16:54:47 -0400 422) 
+529960f8 (Tristan M Lopez      2025-10-27 16:54:47 -0400 423)           {loadingSimilar && (
+529960f8 (Tristan M Lopez      2025-10-27 16:54:47 -0400 424)             <View style={styles.loadingContainer}>
+529960f8 (Tristan M Lopez      2025-10-27 16:54:47 -0400 425)               <ActivityIndicator color={ORANGE} />
+529960f8 (Tristan M Lopez      2025-10-27 16:54:47 -0400 426)               <Text style={[styles.loadingText, theme === "dark" && { color: DARK_TEXT }]}>
+529960f8 (Tristan M Lopez      2025-10-27 16:54:47 -0400 427)                 Loading recommendations...
+529960f8 (Tristan M Lopez      2025-10-27 16:54:47 -0400 428)               </Text>
+529960f8 (Tristan M Lopez      2025-10-27 16:54:47 -0400 429)             </View>
+529960f8 (Tristan M Lopez      2025-10-27 16:54:47 -0400 430)           )}
+a76bfb1b (Tristan M Lopez      2025-10-27 11:51:57 -0400 474)   ratingSection: {
+a76bfb1b (Tristan M Lopez      2025-10-27 11:51:57 -0400 475)     paddingVertical: 16,
+a76bfb1b (Tristan M Lopez      2025-10-27 11:51:57 -0400 476)     paddingHorizontal: 12,
+a76bfb1b (Tristan M Lopez      2025-10-27 11:51:57 -0400 477)     borderRadius: 10,
+a76bfb1b (Tristan M Lopez      2025-10-27 11:51:57 -0400 478)     borderWidth: 1,
+a76bfb1b (Tristan M Lopez      2025-10-27 11:51:57 -0400 479)     borderColor: "#e5e7eb",
+a76bfb1b (Tristan M Lopez      2025-10-27 11:51:57 -0400 480)     marginBottom: 16,
+a76bfb1b (Tristan M Lopez      2025-10-27 11:51:57 -0400 481)     alignItems: "center",
+a76bfb1b (Tristan M Lopez      2025-10-27 11:51:57 -0400 482)     backgroundColor: "#fef3c7",
+a76bfb1b (Tristan M Lopez      2025-10-27 11:51:57 -0400 483)   },
+a76bfb1b (Tristan M Lopez      2025-10-27 11:51:57 -0400 484)   ratingTitle: {
+a76bfb1b (Tristan M Lopez      2025-10-27 11:51:57 -0400 485)     fontSize: 16,
+a76bfb1b (Tristan M Lopez      2025-10-27 11:51:57 -0400 486)     fontWeight: "600",
+a76bfb1b (Tristan M Lopez      2025-10-27 11:51:57 -0400 487)     marginBottom: 10,
+a76bfb1b (Tristan M Lopez      2025-10-27 11:51:57 -0400 488)     color: "#111827",
+a76bfb1b (Tristan M Lopez      2025-10-27 11:51:57 -0400 489)   },
+a76bfb1b (Tristan M Lopez      2025-10-27 11:51:57 -0400 490)   averageRatingContainer: {
+a76bfb1b (Tristan M Lopez      2025-10-27 11:51:57 -0400 491)     marginTop: 8,
+a76bfb1b (Tristan M Lopez      2025-10-27 11:51:57 -0400 492)   },
+a76bfb1b (Tristan M Lopez      2025-10-27 11:51:57 -0400 493)   averageRating: {
+a76bfb1b (Tristan M Lopez      2025-10-27 11:51:57 -0400 494)     fontSize: 14,
+a76bfb1b (Tristan M Lopez      2025-10-27 11:51:57 -0400 495)     color: "#6b7280",
+a76bfb1b (Tristan M Lopez      2025-10-27 11:51:57 -0400 496)     fontWeight: "500",
+a76bfb1b (Tristan M Lopez      2025-10-27 11:51:57 -0400 497)   },
+529960f8 (Tristan M Lopez      2025-10-27 16:54:47 -0400 498)   similarList: {
+529960f8 (Tristan M Lopez      2025-10-27 16:54:47 -0400 499)     paddingVertical: 10,
+529960f8 (Tristan M Lopez      2025-10-27 16:54:47 -0400 500)   },
+529960f8 (Tristan M Lopez      2025-10-27 16:54:47 -0400 501)   similarCard: {
+529960f8 (Tristan M Lopez      2025-10-27 16:54:47 -0400 502)     width: 150,
+529960f8 (Tristan M Lopez      2025-10-27 16:54:47 -0400 503)     marginRight: 12,
+529960f8 (Tristan M Lopez      2025-10-27 16:54:47 -0400 504)     backgroundColor: "#fff",
+529960f8 (Tristan M Lopez      2025-10-27 16:54:47 -0400 505)     borderRadius: 12,
+529960f8 (Tristan M Lopez      2025-10-27 16:54:47 -0400 506)     borderWidth: 1,
+529960f8 (Tristan M Lopez      2025-10-27 16:54:47 -0400 507)     borderColor: "#e5e7eb",
+529960f8 (Tristan M Lopez      2025-10-27 16:54:47 -0400 508)     overflow: "hidden",
+529960f8 (Tristan M Lopez      2025-10-27 16:54:47 -0400 509)     shadowColor: "#000",
+529960f8 (Tristan M Lopez      2025-10-27 16:54:47 -0400 510)     shadowOpacity: 0.06,
+529960f8 (Tristan M Lopez      2025-10-27 16:54:47 -0400 511)     shadowRadius: 8,
+529960f8 (Tristan M Lopez      2025-10-27 16:54:47 -0400 512)     shadowOffset: { width: 0, height: 2 },
+529960f8 (Tristan M Lopez      2025-10-27 16:54:47 -0400 513)     elevation: 2,
+529960f8 (Tristan M Lopez      2025-10-27 16:54:47 -0400 514)   },
+529960f8 (Tristan M Lopez      2025-10-27 16:54:47 -0400 515)   similarCardDark: {
+529960f8 (Tristan M Lopez      2025-10-27 16:54:47 -0400 516)     backgroundColor: "#374151",
+529960f8 (Tristan M Lopez      2025-10-27 16:54:47 -0400 517)     borderColor: "#4b5563",
+529960f8 (Tristan M Lopez      2025-10-27 16:54:47 -0400 518)   },
+529960f8 (Tristan M Lopez      2025-10-27 16:54:47 -0400 519)   similarImage: {
+529960f8 (Tristan M Lopez      2025-10-27 16:54:47 -0400 520)     width: "100%",
+529960f8 (Tristan M Lopez      2025-10-27 16:54:47 -0400 521)     height: 100,
+529960f8 (Tristan M Lopez      2025-10-27 16:54:47 -0400 522)   },
+529960f8 (Tristan M Lopez      2025-10-27 16:54:47 -0400 523)   similarTitle: {
+529960f8 (Tristan M Lopez      2025-10-27 16:54:47 -0400 524)     fontSize: 14,
+529960f8 (Tristan M Lopez      2025-10-27 16:54:47 -0400 525)     fontWeight: "600",
+529960f8 (Tristan M Lopez      2025-10-27 16:54:47 -0400 526)     color: "#111827",
+529960f8 (Tristan M Lopez      2025-10-27 16:54:47 -0400 527)     padding: 8,
+529960f8 (Tristan M Lopez      2025-10-27 16:54:47 -0400 528)     paddingBottom: 4,
+529960f8 (Tristan M Lopez      2025-10-27 16:54:47 -0400 529)   },
+529960f8 (Tristan M Lopez      2025-10-27 16:54:47 -0400 530)   similarTime: {
+529960f8 (Tristan M Lopez      2025-10-27 16:54:47 -0400 531)     fontSize: 12,
+529960f8 (Tristan M Lopez      2025-10-27 16:54:47 -0400 532)     color: "#f97316",
+529960f8 (Tristan M Lopez      2025-10-27 16:54:47 -0400 533)     paddingHorizontal: 8,
+529960f8 (Tristan M Lopez      2025-10-27 16:54:47 -0400 534)     paddingBottom: 8,
+529960f8 (Tristan M Lopez      2025-10-27 16:54:47 -0400 535)     fontWeight: "500",
+529960f8 (Tristan M Lopez      2025-10-27 16:54:47 -0400 536)   },
+529960f8 (Tristan M Lopez      2025-10-27 16:54:47 -0400 537)   loadingContainer: {
+529960f8 (Tristan M Lopez      2025-10-27 16:54:47 -0400 538)     paddingVertical: 20,
+529960f8 (Tristan M Lopez      2025-10-27 16:54:47 -0400 539)     alignItems: "center",
+529960f8 (Tristan M Lopez      2025-10-27 16:54:47 -0400 540)   },
+529960f8 (Tristan M Lopez      2025-10-27 16:54:47 -0400 541)   loadingText: {
+529960f8 (Tristan M Lopez      2025-10-27 16:54:47 -0400 542)     marginTop: 8,
+529960f8 (Tristan M Lopez      2025-10-27 16:54:47 -0400 543)     fontSize: 14,
+529960f8 (Tristan M Lopez      2025-10-27 16:54:47 -0400 544)     color: "#6b7280",
+529960f8 (Tristan M Lopez      2025-10-27 16:54:47 -0400 545)   },
+
+//StarRating.js
+a76bfb1b (Tristan M Lopez 2025-10-27 11:51:57 -0400  1) // StarRating.js
+a76bfb1b (Tristan M Lopez 2025-10-27 11:51:57 -0400  2) import React from "react";
+a76bfb1b (Tristan M Lopez 2025-10-27 11:51:57 -0400  3) import { View, TouchableOpacity, Text, StyleSheet } from "react-native";
+a76bfb1b (Tristan M Lopez 2025-10-27 11:51:57 -0400  4) 
+a76bfb1b (Tristan M Lopez 2025-10-27 11:51:57 -0400  5) export default function StarRating({ rating, onRate, size = 32, editable = true, color = "#f97316" }) {
+a76bfb1b (Tristan M Lopez 2025-10-27 11:51:57 -0400  6)   const stars = [1, 2, 3, 4, 5];
+a76bfb1b (Tristan M Lopez 2025-10-27 11:51:57 -0400  7) 
+a76bfb1b (Tristan M Lopez 2025-10-27 11:51:57 -0400  8)   return (
+a76bfb1b (Tristan M Lopez 2025-10-27 11:51:57 -0400  9)     <View style={styles.container}>
+a76bfb1b (Tristan M Lopez 2025-10-27 11:51:57 -0400 10)       {stars.map((star) => (
+a76bfb1b (Tristan M Lopez 2025-10-27 11:51:57 -0400 11)         <TouchableOpacity
+a76bfb1b (Tristan M Lopez 2025-10-27 11:51:57 -0400 12)           key={star}
+a76bfb1b (Tristan M Lopez 2025-10-27 11:51:57 -0400 13)           onPress={() => editable && onRate(star)}
+a76bfb1b (Tristan M Lopez 2025-10-27 11:51:57 -0400 14)           disabled={!editable}
+a76bfb1b (Tristan M Lopez 2025-10-27 11:51:57 -0400 15)           style={styles.star}
+a76bfb1b (Tristan M Lopez 2025-10-27 11:51:57 -0400 16)         >
+a76bfb1b (Tristan M Lopez 2025-10-27 11:51:57 -0400 17)           <Text style={[styles.starText, { fontSize: size, color: star <= rating ? color : "#d1d5db" }]}>
+a76bfb1b (Tristan M Lopez 2025-10-27 11:51:57 -0400 18)             ★
+a76bfb1b (Tristan M Lopez 2025-10-27 11:51:57 -0400 19)           </Text>
+a76bfb1b (Tristan M Lopez 2025-10-27 11:51:57 -0400 20)         </TouchableOpacity>
+a76bfb1b (Tristan M Lopez 2025-10-27 11:51:57 -0400 21)       ))}
+a76bfb1b (Tristan M Lopez 2025-10-27 11:51:57 -0400 22)     </View>
+a76bfb1b (Tristan M Lopez 2025-10-27 11:51:57 -0400 23)   );
+a76bfb1b (Tristan M Lopez 2025-10-27 11:51:57 -0400 24) }
+a76bfb1b (Tristan M Lopez 2025-10-27 11:51:57 -0400 25) 
+a76bfb1b (Tristan M Lopez 2025-10-27 11:51:57 -0400 26) const styles = StyleSheet.create({
+a76bfb1b (Tristan M Lopez 2025-10-27 11:51:57 -0400 27)   container: {
+a76bfb1b (Tristan M Lopez 2025-10-27 11:51:57 -0400 28)     flexDirection: "row",
+a76bfb1b (Tristan M Lopez 2025-10-27 11:51:57 -0400 29)     alignItems: "center",
+a76bfb1b (Tristan M Lopez 2025-10-27 11:51:57 -0400 30)   },
+a76bfb1b (Tristan M Lopez 2025-10-27 11:51:57 -0400 31)   star: {
+a76bfb1b (Tristan M Lopez 2025-10-27 11:51:57 -0400 32)     marginHorizontal: 2,
+a76bfb1b (Tristan M Lopez 2025-10-27 11:51:57 -0400 33)   },
+a76bfb1b (Tristan M Lopez 2025-10-27 11:51:57 -0400 34)   starText: {
+a76bfb1b (Tristan M Lopez 2025-10-27 11:51:57 -0400 35)     fontSize: 32,
+a76bfb1b (Tristan M Lopez 2025-10-27 11:51:57 -0400 36)   },
+a76bfb1b (Tristan M Lopez 2025-10-27 11:51:57 -0400 37) });

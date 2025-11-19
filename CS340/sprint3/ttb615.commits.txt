@@ -1,0 +1,848 @@
+App.js       (jonathan david lange on 10/27/2025 at 21:53): import FavoritesScreen from "./FavoritesScreen";
+App.js       (jonathan david lange on 10/27/2025 at 21:53): import YourRecipesScreen from "./YourRecipesScreen";
+App.js       (jonathan david lange on 10/27/2025 at 21:53):           <Stack.Screen
+App.js       (jonathan david lange on 10/27/2025 at 21:53):             name="Login"
+App.js       (jonathan david lange on 10/27/2025 at 21:53):             component={LoginScreen}
+App.js       (jonathan david lange on 10/27/2025 at 21:53):             options={{ headerShown: false }}
+App.js       (jonathan david lange on 10/27/2025 at 21:53):           <Stack.Screen
+App.js       (jonathan david lange on 10/27/2025 at 21:53):             name="SignUp"
+App.js       (jonathan david lange on 10/27/2025 at 21:53):             component={SignUpScreen}
+App.js       (jonathan david lange on 10/27/2025 at 21:53):             options={{ headerShown: false }}
+App.js       (jonathan david lange on 10/27/2025 at 21:53):           <Stack.Screen
+App.js       (jonathan david lange on 10/27/2025 at 21:53):             name="Home"
+App.js       (jonathan david lange on 10/27/2025 at 21:53):             component={HomeScreen}
+App.js       (jonathan david lange on 10/27/2025 at 21:53):             options={{ headerShown: false }}
+App.js       (jonathan david lange on 10/27/2025 at 21:53):           <Stack.Screen
+App.js       (jonathan david lange on 10/27/2025 at 21:53):             name="Settings"
+App.js       (jonathan david lange on 10/27/2025 at 21:53):             component={SettingsScreen}
+App.js       (jonathan david lange on 10/27/2025 at 21:53):             options={{ title: "Settings" }}
+App.js       (jonathan david lange on 10/27/2025 at 21:53):           <Stack.Screen
+App.js       (jonathan david lange on 10/27/2025 at 21:53):             name="RecipeDetail"
+App.js       (jonathan david lange on 10/27/2025 at 21:53):             component={RecipeDetailScreen}
+App.js       (jonathan david lange on 10/27/2025 at 21:53):             options={{ title: "Recipe Details" }}
+App.js       (jonathan david lange on 10/27/2025 at 21:53):           <Stack.Screen
+App.js       (jonathan david lange on 10/27/2025 at 21:53):             name="ChatBot"
+App.js       (jonathan david lange on 10/27/2025 at 21:53):             component={ChatBotScreen}
+App.js       (jonathan david lange on 10/27/2025 at 21:53):             options={{ headerShown: false }}
+App.js       (jonathan david lange on 10/27/2025 at 21:53):           <Stack.Screen
+App.js       (jonathan david lange on 10/27/2025 at 21:53):             name="Favorites"
+App.js       (jonathan david lange on 10/27/2025 at 21:53):             component={FavoritesScreen}
+App.js       (jonathan david lange on 10/27/2025 at 21:53):             options={{ title: "Favorites" }}
+App.js       (jonathan david lange on 10/27/2025 at 21:53):           />
+App.js       (jonathan david lange on 10/27/2025 at 21:53):           <Stack.Screen
+App.js       (jonathan david lange on 10/27/2025 at 21:53):             name="YourRecipes"
+App.js       (jonathan david lange on 10/27/2025 at 21:53):             component={YourRecipesScreen}
+App.js       (jonathan david lange on 10/27/2025 at 22:55):             options={{ title: "My Recipes" }}
+App.js       (jonathan david lange on 10/27/2025 at 21:53):           />
+RecipeDetailScreen.js (jonathan david lange on 10/27/2025 at 21:53): // RecipeDetailScreen.js
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):   Image,
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53): import { useNavigation } from "@react-navigation/native";
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):   // Determine if UI elements should be hidden
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):   const isSearchActive = showRecent || showFilter || query.trim().length > 0;
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):     updated = updated.slice(0, 3); // max 3
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):     setShowRecent(false); // Hide recent when searching
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):     if (text.trim().length === 0) {
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):       setSearchResults([]);
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):     }
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):     setMinCalories("");
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):     setMaxCalories("");
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):     setMinProtein("");
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):     setMaxProtein("");
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):     setMinFat("");
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):     setMaxFat("");
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):     setMinCarbs("");
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):     setMaxCarbs("");
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):   const exitSearch = () => {
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):     setQuery("");
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):     setSearchResults([]);
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):     setShowRecent(false);
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):     setShowFilter(false);
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):     Keyboard.dismiss();
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):   };
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):   // Render items
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):       <View style={styles.searchResultContainer}>
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):         {item.image && (
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):           <Image
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):             source={{ uri: item.image }}
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):             style={styles.searchResultImage}
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):             resizeMode="cover"
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):           />
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):         )}
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):         <Text
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):           style={[
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):             styles.cardTitle,
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):             theme === "dark" && styles.darkText,
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):             styles.searchResultTitle,
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):           ]}
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):           numberOfLines={2}
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):         >
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):           {item.title}
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):         </Text>
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):       </View>
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):       <Text style={[styles.cardTitle, theme === "dark" && styles.darkText]}>
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):         {item.title}
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):       </Text>
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):       onPress={() => {
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):         setShowRecent(false);
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):         Keyboard.dismiss();
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):       }}
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):         {/* Exit Search Button - Top Left */}
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):         {isSearchActive && (
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):           <TouchableOpacity style={styles.exitButton} onPress={exitSearch}>
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):             <Ionicons
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):               name="close-circle"
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):               size={32}
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):               color="#ef4444"
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):             />
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):         )}
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):         {/* Settings Icon - Top Right */}
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):         <TouchableOpacity
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):           style={styles.settingsButton}
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):           onPress={() => navigation.navigate("Settings")}
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):         >
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):           <Ionicons
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):             name="settings-outline"
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):             size={28}
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):             color={theme === "dark" ? "#f9fafb" : "#111827"}
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):           />
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):         </TouchableOpacity>
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):           <View
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):             style={[
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):               styles.searchBar,
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):               theme === "dark" && {
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):                 borderColor: "#4b5563",
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):                 backgroundColor: "#374151",
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):               },
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):             ]}
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):           >
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):               style={[
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):                 styles.searchInput,
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):                 theme === "dark" && { color: "#ffffff" },
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):               ]}
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):               placeholder="Search"
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):             <TouchableOpacity
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):               style={styles.filterButton}
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):               onPress={() => setShowFilter(!showFilter)}
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):             >
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):               <Ionicons
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):                 name="options-outline"
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):                 size={24}
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):                 color="#ffffff"
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):               />
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):             </TouchableOpacity>
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):               <Ionicons name="search" size={24} color="#ffffff" />
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):             <View
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):               style={[
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):                 styles.filterContainer,
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):                 theme === "dark" && {
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):                   backgroundColor: "#1f2937",
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):                   borderColor: "#4b5563",
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):                 },
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):               ]}
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):             >
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):                 <Text
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):                   style={[
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):                     styles.filterLabel,
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):                     theme === "dark" && { color: "#f9fafb" },
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):                   ]}
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):                 >
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):                   Calories:
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):                 </Text>
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):                   style={[
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):                     styles.filterInput,
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):                     theme === "dark" && styles.filterInputDark,
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):                   ]}
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):                   style={[
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):                     styles.filterInput,
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):                     theme === "dark" && styles.filterInputDark,
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):                   ]}
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):                 <Text
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):                   style={[
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):                     styles.filterLabel,
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):                     theme === "dark" && { color: "#f9fafb" },
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):                   ]}
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):                 >
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):                   Protein:
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):                 </Text>
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):                   style={[
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):                     styles.filterInput,
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):                     theme === "dark" && styles.filterInputDark,
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):                   ]}
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):                   style={[
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):                     styles.filterInput,
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):                     theme === "dark" && styles.filterInputDark,
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):                   ]}
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):                 <Text
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):                   style={[
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):                     styles.filterLabel,
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):                     theme === "dark" && { color: "#f9fafb" },
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):                   ]}
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):                 >
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):                   Fat:
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):                 </Text>
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):                   style={[
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):                     styles.filterInput,
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):                     theme === "dark" && styles.filterInputDark,
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):                   ]}
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):                   style={[
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):                     styles.filterInput,
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):                     theme === "dark" && styles.filterInputDark,
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):                   ]}
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):                 <Text
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):                   style={[
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):                     styles.filterLabel,
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):                     theme === "dark" && { color: "#f9fafb" },
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):                   ]}
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):                 >
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):                   Carbs:
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):                 </Text>
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):                   style={[
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):                     styles.filterInput,
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):                     theme === "dark" && styles.filterInputDark,
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):                   ]}
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):                   style={[
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):                     styles.filterInput,
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):                     theme === "dark" && styles.filterInputDark,
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):                   ]}
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):               <View style={styles.filterButtonsRow}>
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):                 <TouchableOpacity
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):                   onPress={() => setShowFilter(false)}
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):                   style={styles.closeFiltersButton}
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):                 >
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):                   <Ionicons name="close" size={20} color="#fff" />
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):                 </TouchableOpacity>
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):                 <TouchableOpacity
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):                   onPress={clearFilters}
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):                   style={styles.clearFiltersButton}
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):                 >
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):                   <Text style={styles.clearFiltersText}>Clear</Text>
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):                 </TouchableOpacity>
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):               </View>
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):             <View
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):               style={[
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):                 styles.recentDropdown,
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):                 theme === "dark" && styles.darkCard,
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):               ]}
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):             >
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):           {/* Search results or buttons */}
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):             <FlatList
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):               data={searchResults}
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):               keyExtractor={(item) => String(item.id)}
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):               renderItem={renderSearchItem}
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):               showsVerticalScrollIndicator={false}
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):               contentContainerStyle={styles.listContent}
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):             />
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):             !isSearchActive && (
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):               <View style={styles.buttonsContainer}>
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):                 <TouchableOpacity
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):                   style={[
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):                     styles.bigButton,
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):                     theme === "dark" && styles.darkCard,
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):                   ]}
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):                   onPress={() => navigation.navigate("Favorites", { userId })}
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):                 >
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):                   <Ionicons
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):                     name="heart"
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):                     size={64}
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):                     color={ORANGE}
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):                     style={styles.buttonIcon}
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):                   />
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):                   <Text
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):                     style={[
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):                       styles.buttonText,
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):                       theme === "dark" && styles.darkText,
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):                     ]}
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):                   >
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):                     Favorites
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):                   </Text>
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):                 </TouchableOpacity>
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):                 <TouchableOpacity
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):                   style={[
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):                     styles.bigButton,
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):                     theme === "dark" && styles.darkCard,
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):                   ]}
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):                   onPress={() => navigation.navigate("YourRecipes", { userId })}
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):                 >
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):                   <Ionicons
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):                     name="book"
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):                     size={64}
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):                     color={ORANGE}
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):                     style={styles.buttonIcon}
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):                   />
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):                   <Text
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):                     style={[
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):                       styles.buttonText,
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):                       theme === "dark" && styles.darkText,
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):                     ]}
+HomeScreen.js (jonathan david lange on 10/27/2025 at 22:55):                     My Recipes
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):                   </Text>
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):                 </TouchableOpacity>
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):               </View>
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):             )
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):         {/* Floating Chat Button - Hidden when search is active */}
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):         {!isSearchActive && (
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):           <TouchableOpacity
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):             style={styles.floatingChatBtn}
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):             onPress={() => navigation.navigate("ChatBot")}
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):             activeOpacity={0.8}
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):           >
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):             <Ionicons name="chatbubble-ellipses" size={36} color="#ffffff" />
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):           </TouchableOpacity>
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):         )}
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):   exitButton: {
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):     position: "absolute",
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):     top: 50,
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):     left: 20,
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):     zIndex: 10,
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):     padding: 8,
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):   },
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):   settingsButton: {
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):     position: "absolute",
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):     top: 50,
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):     right: 20,
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):     zIndex: 10,
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):     padding: 8,
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):   },
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):   container: { flex: 1, padding: 20, justifyContent: "center" },
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):   appTitle: {
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):     fontSize: 48,
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):     fontWeight: "700",
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):     color: ORANGE,
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):     textAlign: "center",
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):     marginBottom: 30,
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):   },
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):   searchBar: {
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):     flexDirection: "row",
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):     marginBottom: 20,
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):     borderWidth: 1,
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):     borderColor: "#e5e7eb",
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):     borderRadius: 12,
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):     overflow: "hidden",
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):     backgroundColor: WHITE,
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):     alignItems: "center",
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):   },
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):   searchInput: {
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):     flex: 1,
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):     paddingHorizontal: 16,
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):     paddingVertical: 14,
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):     fontSize: 16,
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):   },
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):   filterButton: {
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):     paddingHorizontal: 14,
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):     paddingVertical: 12,
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):     backgroundColor: ORANGE,
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):     justifyContent: "center",
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):     alignItems: "center",
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):   },
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):   searchButton: {
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):     paddingHorizontal: 14,
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):     paddingVertical: 12,
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):     backgroundColor: ORANGE,
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):     justifyContent: "center",
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):     alignItems: "center",
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):   },
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):   filterContainer: {
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):     padding: 12,
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):     borderRadius: 10,
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):     borderWidth: 1,
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):     borderColor: "#e5e7eb",
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):     marginBottom: 16,
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):     backgroundColor: WHITE,
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):   },
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):   filterRow: {
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):     flexDirection: "row",
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):     alignItems: "center",
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):     marginBottom: 8,
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):   },
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):   filterLabel: {
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):     width: 70,
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):     fontSize: 14,
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):     color: "#111827",
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):   },
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):   filterInput: {
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):     flex: 1,
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):     borderWidth: 1,
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):     borderColor: "#e5e7eb",
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):     borderRadius: 6,
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):     paddingHorizontal: 8,
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):     paddingVertical: 6,
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):     marginLeft: 4,
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):     fontSize: 14,
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):   },
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):   filterInputDark: {
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):     backgroundColor: "#111827",
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):     borderColor: "#9ca3af",
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):     color: "#f9fafb",
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):   },
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):   filterButtonsRow: {
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):     flexDirection: "row",
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):     justifyContent: "flex-end",
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):     gap: 8,
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):     marginTop: 8,
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):   },
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):   closeFiltersButton: {
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):     paddingHorizontal: 12,
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):     paddingVertical: 6,
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):     backgroundColor: "#ef4444",
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):     borderRadius: 6,
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):     justifyContent: "center",
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):     alignItems: "center",
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):   },
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):   clearFiltersButton: {
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):     paddingHorizontal: 12,
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):     paddingVertical: 6,
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):     backgroundColor: "#ef4444",
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):     borderRadius: 6,
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):   },
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):   clearFiltersText: { color: "#fff", fontWeight: "700" },
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):   recentDropdown: {
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):     backgroundColor: WHITE,
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):     borderColor: "#e5e7eb",
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):     borderWidth: 1,
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):     borderRadius: 10,
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):     maxHeight: 200,
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):     marginBottom: 16,
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):   },
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):   recentItem: {
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):     padding: 12,
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):     borderBottomWidth: 1,
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):     borderBottomColor: "#eee",
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):   },
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):   card: {
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):     backgroundColor: WHITE,
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):     borderRadius: 12,
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):     padding: 14,
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):     marginBottom: 12,
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):     borderWidth: 1,
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):     borderColor: "#e5e7eb",
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):     shadowColor: "#000",
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):     shadowOpacity: 0.06,
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):     shadowRadius: 8,
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):     shadowOffset: { width: 0, height: 4 },
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):     elevation: 2,
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):   },
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):   searchResultContainer: {
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):     flexDirection: "row",
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):     alignItems: "center",
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):     gap: 12,
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):   },
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):   searchResultImage: {
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):     width: 80,
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):     height: 80,
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):     borderRadius: 8,
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):   },
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):   searchResultTitle: {
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):     flex: 1,
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):   },
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):   buttonsContainer: {
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):     flexDirection: "row",
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):     gap: 16,
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):     marginTop: 20,
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):   },
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):   bigButton: {
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):     flex: 1,
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):     backgroundColor: WHITE,
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):     borderRadius: 16,
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):     paddingVertical: 40,
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):     paddingHorizontal: 20,
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):     alignItems: "center",
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):     justifyContent: "center",
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):     borderWidth: 2,
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):     borderColor: "#e5e7eb",
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):     shadowColor: "#000",
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):     shadowOpacity: 0.1,
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):     shadowRadius: 10,
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):     shadowOffset: { width: 0, height: 4 },
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):     elevation: 4,
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):   },
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):   buttonIcon: {
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):     marginBottom: 12,
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):   },
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):   buttonText: {
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):     fontSize: 18,
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):     fontWeight: "700",
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):     color: "#111827",
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):     textAlign: "center",
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):   },
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):     position: "absolute",
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):     bottom: 30,
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):     right: 30,
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):     width: 80,
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):     height: 80,
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):     borderRadius: 40,
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):     justifyContent: "center",
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):     alignItems: "center",
+HomeScreen.js (jonathan david lange on 10/27/2025 at 21:53):     shadowColor: "#000",
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53): // YourRecipesScreen.js
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53): import React, { useState, useCallback, useContext } from "react";
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53): import {
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53):   SafeAreaView,
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53):   View,
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53):   Text,
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53):   FlatList,
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53):   TouchableOpacity,
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53):   StyleSheet,
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53):   Image,
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53):   Alert,
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53): } from "react-native";
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53): import { useNavigation, useFocusEffect } from "@react-navigation/native";
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53): import { ThemeContext } from "./App";
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53): import { getUserRecipes, removeUserRecipe } from "./userRecipesStorage";
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53): export default function YourRecipesScreen({ route }) {
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53):   const navigation = useNavigation();
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53):   const { userId } = route.params;
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53):   const [userRecipes, setUserRecipes] = useState([]);
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53):   const { theme } = useContext(ThemeContext);
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53):   // Load user recipes
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53):   useFocusEffect(
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53):     useCallback(() => {
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53):       const loadUserRecipes = async () => {
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53):         const saved = await getUserRecipes();
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53):         setUserRecipes(saved);
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53):       };
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53):       loadUserRecipes();
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53):     }, [])
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53):   );
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53):   const handleDeleteRecipe = (item) => {
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53):     Alert.alert(
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53):       "Delete Recipe",
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53):       `Are you sure you want to delete "${item.title}"?`,
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53):       [
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53):         { text: "Cancel", style: "cancel" },
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53):         {
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53):           text: "Delete",
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53):           style: "destructive",
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53):           onPress: async () => {
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53):             try {
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53):               await removeUserRecipe(item.id);
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53):               const updated = await getUserRecipes();
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53):               setUserRecipes(updated);
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53):             } catch (e) {
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53):               console.warn("Failed to delete local recipe", e?.message);
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53):             }
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53):           },
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53):         },
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53):       ]
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53):     );
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53):   };
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53):   const renderRecipeItem = ({ item }) => (
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53):     <TouchableOpacity
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53):       style={[styles.card, theme === "dark" && styles.darkCard]}
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53):       onPress={() => navigation.navigate("RecipeDetail", { recipe: item, userId })}
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53):       onLongPress={() => handleDeleteRecipe(item)}
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53):     >
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53):       {item.image && (
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53):         <Image
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53):           source={{ uri: item.image }}
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53):           style={styles.recipeImage}
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53):           resizeMode="cover"
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53):         />
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53):       )}
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53):       <View style={styles.recipeInfo}>
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53):         <Text
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53):           style={[styles.cardTitle, theme === "dark" && styles.darkText]}
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53):           numberOfLines={2}
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53):         >
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53):           {item.title}
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53):         </Text>
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53):         <Text style={[styles.meta, theme === "dark" && styles.darkText]}>
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53):           Local Recipe
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53):         </Text>
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53):       </View>
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53):     </TouchableOpacity>
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53):   );
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53):   return (
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53):     <SafeAreaView style={[styles.safe, theme === "dark" && styles.darkSafe]}>
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53):       <View style={styles.container}>
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53):         <View style={styles.headerRow}>
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53):           <Text style={[styles.title, theme === "dark" && styles.darkText]}>
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 22:55):             My Recipes
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53):           </Text>
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53):           <TouchableOpacity
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53):             style={styles.addButton}
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53):             onPress={() => navigation.navigate("UploadRecipe", { userId })}
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53):           >
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53):             <Text style={styles.addButtonText}>+ Add</Text>
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53):           </TouchableOpacity>
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53):         </View>
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53):         <FlatList
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53):           data={userRecipes}
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53):           keyExtractor={(item) => String(item.id)}
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53):           renderItem={renderRecipeItem}
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53):           contentContainerStyle={[
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53):             styles.listContent,
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53):             userRecipes.length === 0 && styles.emptyStateContainer,
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53):           ]}
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53):           ListEmptyComponent={
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53):             userRecipes.length === 0 && (
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53):               <View style={styles.emptyState}>
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53):                 <Text
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53):                   style={[styles.emptyTitle, theme === "dark" && styles.darkText]}
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53):                 >
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53):                   No recipes yet
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53):                 </Text>
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53):                 <Text
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53):                   style={[styles.emptyText, theme === "dark" && styles.darkText]}
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53):                 >
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53):                   Tap the "+ Add" button to create your first recipe.
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53):                 </Text>
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53):               </View>
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53):             )
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53):           }
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53):           showsVerticalScrollIndicator={false}
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53):         />
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53):       </View>
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53):     </SafeAreaView>
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53):   );
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53): }
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53): const ORANGE = "#f97316";
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53): const WHITE = "#ffffff";
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53): const DARK_BG = "#1f2937";
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53): const DARK_TEXT = "#f9fafb";
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53): const styles = StyleSheet.create({
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53):   safe: { flex: 1, backgroundColor: WHITE },
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53):   darkSafe: { backgroundColor: DARK_BG },
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53):   container: { flex: 1, padding: 20 },
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53):   headerRow: {
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53):     flexDirection: "row",
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53):     justifyContent: "space-between",
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53):     alignItems: "center",
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53):     marginBottom: 16,
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53):   },
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53):   title: {
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53):     fontSize: 24,
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53):     fontWeight: "700",
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53):     color: "#111827",
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53):   },
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53):   addButton: {
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53):     backgroundColor: ORANGE,
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53):     paddingHorizontal: 16,
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53):     paddingVertical: 8,
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53):     borderRadius: 8,
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53):   },
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53):   addButtonText: {
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53):     color: WHITE,
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53):     fontWeight: "700",
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53):     fontSize: 16,
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53):   },
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53):   listContent: { paddingBottom: 24 },
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53):   card: {
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53):     backgroundColor: WHITE,
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53):     borderRadius: 12,
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53):     padding: 14,
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53):     marginBottom: 12,
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53):     borderWidth: 1,
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53):     borderColor: "#e5e7eb",
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53):     shadowColor: "#000",
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53):     shadowOpacity: 0.06,
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53):     shadowRadius: 8,
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53):     shadowOffset: { width: 0, height: 4 },
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53):     elevation: 2,
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53):   },
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53):   darkCard: { backgroundColor: "#374151", borderColor: "#4b5563" },
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53):   cardTitle: { fontSize: 16, fontWeight: "600", color: "#111827" },
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53):   meta: { marginTop: 6, color: "#6b7280", fontSize: 12 },
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53):   emptyStateContainer: { flexGrow: 1, justifyContent: "center" },
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53):   emptyState: { alignItems: "center", paddingVertical: 40 },
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53):   emptyTitle: {
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53):     fontSize: 18,
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53):     fontWeight: "700",
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53):     marginBottom: 8,
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53):     color: "#111827",
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53):   },
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53):   emptyText: {
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53):     color: "#6b7280",
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53):     textAlign: "center",
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53):     marginBottom: 16,
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53):   },
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53):   darkText: { color: DARK_TEXT },
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53):   recipeImage: {
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53):     width: "100%",
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53):     height: 160,
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53):     borderRadius: 10,
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53):     marginBottom: 8,
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53):   },
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53):   recipeInfo: { flexDirection: "column" },
+YourRecipesScreen.js (jonathan david lange on 10/27/2025 at 21:53): });
+spoonacular.js (jonathan david lange on 10/27/2025 at 21:53): // spoonacular.js
+UploadRecipeScreen.js (jonathan david lange on 10/27/2025 at 21:53): // UploadRecipeScreen.js
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53): // FavoritesScreen.js
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53): import React, { useState, useCallback, useContext } from "react";
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53): import {
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53):   SafeAreaView,
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53):   View,
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53):   Text,
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53):   FlatList,
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53):   TouchableOpacity,
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53):   RefreshControl,
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53):   StyleSheet,
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53):   Image,
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53): } from "react-native";
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53): import { SUPABASE_URL, SUPABASE_ANON_KEY } from "./supabaseConfig";
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53): import { useNavigation, useFocusEffect } from "@react-navigation/native";
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53): import { ThemeContext } from "./App";
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53): import { getRecipeDetails } from "./spoonacular";
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53): export default function FavoritesScreen({ route }) {
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53):   const navigation = useNavigation();
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53):   const { userId } = route.params;
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53):   const [favorites, setFavorites] = useState([]);
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53):   const [loading, setLoading] = useState(true);
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53):   const [refreshing, setRefreshing] = useState(false);
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53):   const { theme } = useContext(ThemeContext);
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53):   // Fetch favorites from Supabase
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53):   const fetchFavorites = useCallback(async () => {
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53):     try {
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53):       setLoading(true);
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53):       const res = await fetch(
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53):         `${SUPABASE_URL}/rest/v1/saved_recipes?user_id=eq.${userId}&select=*`,
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53):         {
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53):           headers: {
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53):             apiKey: SUPABASE_ANON_KEY,
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53):             Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53):           },
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53):         }
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53):       );
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53):       const data = await res.json();
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53):       setFavorites(Array.isArray(data) ? data : []);
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53):     } catch (e) {
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53):       console.warn("Failed to load favorites:", e?.message);
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53):     } finally {
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53):       setLoading(false);
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53):     }
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53):   }, [userId]);
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53):   useFocusEffect(
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53):     useCallback(() => {
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53):       fetchFavorites();
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53):     }, [fetchFavorites])
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53):   );
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53):   const onRefresh = async () => {
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53):     setRefreshing(true);
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53):     await fetchFavorites();
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53):     setRefreshing(false);
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53):   };
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53):   const renderFavoriteItem = ({ item }) => (
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53):     <TouchableOpacity
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53):       style={[styles.card, theme === "dark" && styles.darkCard]}
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53):       onPress={async () => {
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53):         try {
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53):           const details = await getRecipeDetails(item.recipe_id);
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53):           navigation.navigate("RecipeDetail", { recipe: details, userId });
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53):         } catch (err) {
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53):           console.error("Error fetching recipe details:", err);
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53):         }
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53):       }}
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53):     >
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53):       {item.image && (
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53):         <Image
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53):           source={{ uri: item.image }}
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53):           style={styles.favoriteImage}
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53):           resizeMode="cover"
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53):         />
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53):       )}
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53):       <View style={styles.favoriteInfo}>
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53):         <Text
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53):           style={[styles.cardTitle, theme === "dark" && styles.darkText]}
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53):           numberOfLines={2}
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53):         >
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53):           {item.recipe_name}
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53):         </Text>
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53):         {item.created_at && (
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53):           <Text style={[styles.meta, theme === "dark" && styles.darkText]}>
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53):             Saved {new Date(item.created_at).toLocaleDateString()}
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53):           </Text>
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53):         )}
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53):       </View>
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53):     </TouchableOpacity>
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53):   );
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53):   return (
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53):     <SafeAreaView style={[styles.safe, theme === "dark" && styles.darkSafe]}>
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53):       <View style={styles.container}>
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53):         <Text style={[styles.title, theme === "dark" && styles.darkText]}>
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53):           Your Favorites
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53):         </Text>
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53):         <FlatList
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53):           data={favorites}
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53):           keyExtractor={(item) => String(item.recipe_id)}
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53):           renderItem={renderFavoriteItem}
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53):           refreshControl={
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53):             <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53):           }
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53):           contentContainerStyle={[
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53):             styles.listContent,
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53):             favorites.length === 0 && styles.emptyStateContainer,
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53):           ]}
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53):           ListEmptyComponent={
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53):             !loading && (
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53):               <View style={styles.emptyState}>
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53):                 <Text
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53):                   style={[styles.emptyTitle, theme === "dark" && styles.darkText]}
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53):                 >
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53):                   No favorites yet
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53):                 </Text>
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53):                 <Text
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53):                   style={[styles.emptyText, theme === "dark" && styles.darkText]}
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53):                 >
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53):                   Save a recipe from search and it'll show up here.
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53):                 </Text>
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53):               </View>
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53):             )
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53):           }
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53):           showsVerticalScrollIndicator={false}
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53):         />
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53):       </View>
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53):     </SafeAreaView>
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53):   );
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53): }
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53): const ORANGE = "#f97316";
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53): const WHITE = "#ffffff";
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53): const DARK_BG = "#1f2937";
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53): const DARK_TEXT = "#f9fafb";
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53): const styles = StyleSheet.create({
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53):   safe: { flex: 1, backgroundColor: WHITE },
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53):   darkSafe: { backgroundColor: DARK_BG },
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53):   container: { flex: 1, padding: 20 },
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53):   title: {
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53):     fontSize: 24,
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53):     fontWeight: "700",
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53):     marginBottom: 16,
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53):     color: "#111827",
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53):   },
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53):   listContent: { paddingBottom: 24 },
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53):   card: {
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53):     backgroundColor: WHITE,
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53):     borderRadius: 12,
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53):     padding: 14,
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53):     marginBottom: 12,
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53):     borderWidth: 1,
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53):     borderColor: "#e5e7eb",
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53):     shadowColor: "#000",
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53):     shadowOpacity: 0.06,
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53):     shadowRadius: 8,
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53):     shadowOffset: { width: 0, height: 4 },
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53):     elevation: 2,
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53):   },
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53):   darkCard: { backgroundColor: "#374151", borderColor: "#4b5563" },
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53):   cardTitle: { fontSize: 16, fontWeight: "600", color: "#111827" },
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53):   meta: { marginTop: 6, color: "#6b7280", fontSize: 12 },
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53):   emptyStateContainer: { flexGrow: 1, justifyContent: "center" },
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53):   emptyState: { alignItems: "center", paddingVertical: 40 },
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53):   emptyTitle: {
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53):     fontSize: 18,
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53):     fontWeight: "700",
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53):     marginBottom: 8,
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53):     color: "#111827",
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53):   },
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53):   emptyText: {
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53):     color: "#6b7280",
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53):     textAlign: "center",
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53):     marginBottom: 16,
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53):   },
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53):   darkText: { color: DARK_TEXT },
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53):   favoriteImage: {
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53):     width: "100%",
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53):     height: 160,
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53):     borderRadius: 10,
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53):     marginBottom: 8,
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53):   },
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53):   favoriteInfo: { flexDirection: "column" },
+FavoritesScreen.js (jonathan david lange on 10/27/2025 at 21:53): });

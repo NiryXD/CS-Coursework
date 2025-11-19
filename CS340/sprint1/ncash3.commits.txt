@@ -1,0 +1,200 @@
+VolBites/spoonacular.js
+92911352 (Noah Colin Cash 2025-10-02 18:34:18 -0400  1) // spoonacular.js
+92911352 (Noah Colin Cash 2025-10-02 18:34:18 -0400  2) const API_KEY = process.env.SPOONACULAR_API_KEY;
+92911352 (Noah Colin Cash 2025-10-02 18:34:18 -0400  3) const BASE_URL = "https://api.spoonacular.com/recipes";
+2c6d17db (Noah Colin Cash 2025-09-29 13:49:12 -0400  4) 
+92911352 (Noah Colin Cash 2025-10-02 18:34:18 -0400  5) // Search recipes by query
+2c6d17db (Noah Colin Cash 2025-09-29 13:49:12 -0400  6) export async function searchRecipes(query) {
+92911352 (Noah Colin Cash 2025-10-02 18:34:18 -0400  7)   const url = `${BASE_URL}/complexSearch?query=${encodeURIComponent(query)}&number=10&apiKey=${API_KEY}`;
+92911352 (Noah Colin Cash 2025-10-02 18:34:18 -0400  8)   console.log("Fetching search:", url);
+92911352 (Noah Colin Cash 2025-10-02 18:34:18 -0400  9)   const res = await fetch(url);
+92911352 (Noah Colin Cash 2025-10-02 18:34:18 -0400 10)   if (!res.ok) throw new Error(`HTTP ${res.status}: ${await res.text()}`);
+92911352 (Noah Colin Cash 2025-10-02 18:34:18 -0400 11)   const data = await res.json();
+92911352 (Noah Colin Cash 2025-10-02 18:34:18 -0400 12)   return data.results || [];
+92911352 (Noah Colin Cash 2025-10-02 18:34:18 -0400 13) }
+2c6d17db (Noah Colin Cash 2025-09-29 13:49:12 -0400 14) 
+92911352 (Noah Colin Cash 2025-10-02 18:34:18 -0400 15) // Get recipe details (includes instructions)
+92911352 (Noah Colin Cash 2025-10-02 18:34:18 -0400 16) export async function getRecipeDetails(id) {
+92911352 (Noah Colin Cash 2025-10-02 18:34:18 -0400 17)   const url = `${BASE_URL}/${id}/information?includeNutrition=false&apiKey=${API_KEY}`;
+92911352 (Noah Colin Cash 2025-10-02 18:34:18 -0400 18)   console.log("Fetching details for:", id);
+92911352 (Noah Colin Cash 2025-10-02 18:34:18 -0400 19)   const res = await fetch(url);
+92911352 (Noah Colin Cash 2025-10-02 18:34:18 -0400 20)   if (!res.ok) throw new Error(`HTTP ${res.status}: ${await res.text()}`);
+92911352 (Noah Colin Cash 2025-10-02 18:34:18 -0400 21)   const data = await res.json();
+92911352 (Noah Colin Cash 2025-10-02 18:34:18 -0400 22)   return data; // includes extendedIngredients, analyzedInstructions, etc.
+2c6d17db (Noah Colin Cash 2025-09-29 13:49:12 -0400 23) }
+
+VolBites/HomeScreen.js
+2c6d17db (Noah Colin Cash            2025-09-29 13:49:12 -0400  10)   TextInput,
+2c6d17db (Noah Colin Cash            2025-09-29 13:49:12 -0400  15) import { ThemeContext } from "./App"; 
+92911352 (Noah Colin Cash            2025-10-02 18:34:18 -0400  16) import { searchRecipes , getRecipeDetails } from "./spoonacular"; // import search
+92911352 (Noah Colin Cash            2025-10-02 18:34:18 -0400  25)   const [query, setQuery] = useState(""); //  search input
+92911352 (Noah Colin Cash            2025-10-02 18:34:18 -0400  26)   const [searchResults, setSearchResults] = useState([]); //  search results
+2c6d17db (Noah Colin Cash            2025-09-29 13:49:12 -0400  27)   const [searching, setSearching] = useState(false);
+2c6d17db (Noah Colin Cash            2025-09-29 13:49:12 -0400  29)   const { theme } = useContext(ThemeContext);
+2c6d17db (Noah Colin Cash            2025-09-29 13:49:12 -0400  30) 
+2c6d17db (Noah Colin Cash            2025-09-29 13:49:12 -0400  31)   // Fetch favorites from Supabase
+92911352 (Noah Colin Cash            2025-10-02 18:34:18 -0400  63)   // Handle recipe search
+2c6d17db (Noah Colin Cash            2025-09-29 13:49:12 -0400  64)   const handleSearch = async () => {
+2c6d17db (Noah Colin Cash            2025-09-29 13:49:12 -0400  65)     if (!query.trim()) return;
+2c6d17db (Noah Colin Cash            2025-09-29 13:49:12 -0400  66)     setSearching(true);
+2c6d17db (Noah Colin Cash            2025-09-29 13:49:12 -0400  67)     try {
+2c6d17db (Noah Colin Cash            2025-09-29 13:49:12 -0400  68)       const results = await searchRecipes(query.trim());
+2c6d17db (Noah Colin Cash            2025-09-29 13:49:12 -0400  69)       setSearchResults(results);
+2c6d17db (Noah Colin Cash            2025-09-29 13:49:12 -0400  70)     } catch (err) {
+2c6d17db (Noah Colin Cash            2025-09-29 13:49:12 -0400  71)       console.error("Error fetching recipes:", err);
+2c6d17db (Noah Colin Cash            2025-09-29 13:49:12 -0400  72)     } finally {
+2c6d17db (Noah Colin Cash            2025-09-29 13:49:12 -0400  73)       setSearching(false);
+2c6d17db (Noah Colin Cash            2025-09-29 13:49:12 -0400  74)     }
+2c6d17db (Noah Colin Cash            2025-09-29 13:49:12 -0400  75)   };
+2c6d17db (Noah Colin Cash            2025-09-29 13:49:12 -0400  76) 
+92911352 (Noah Colin Cash            2025-10-02 18:34:18 -0400  77)   // Render favorites list item
+2c6d17db (Noah Colin Cash            2025-09-29 13:49:12 -0400  78)   const renderFavoriteItem = ({ item }) => (
+92911352 (Noah Colin Cash            2025-10-02 18:34:18 -0400  93)   // Render search result item
+2c6d17db (Noah Colin Cash            2025-09-29 13:49:12 -0400  94)   const renderSearchItem = ({ item }) => (
+92911352 (Noah Colin Cash            2025-10-02 18:34:18 -0400  95)     <TouchableOpacity
+92911352 (Noah Colin Cash            2025-10-02 18:34:18 -0400  96)       style={[styles.card, theme === "dark" && styles.darkCard]}
+92911352 (Noah Colin Cash            2025-10-02 18:34:18 -0400  97)         onPress={async () => {
+92911352 (Noah Colin Cash            2025-10-02 18:34:18 -0400  98)         try {
+92911352 (Noah Colin Cash            2025-10-02 18:34:18 -0400  99)          console.log("Fetching details for:", item.id); // log once
+92911352 (Noah Colin Cash            2025-10-02 18:34:18 -0400 100)          const details = await getRecipeDetails(item.id);
+92911352 (Noah Colin Cash            2025-10-02 18:34:18 -0400 101)          navigation.navigate("RecipeDetail", { recipe: details }); // pass full recipe
+92911352 (Noah Colin Cash            2025-10-02 18:34:18 -0400 102)         } catch (err) {
+92911352 (Noah Colin Cash            2025-10-02 18:34:18 -0400 103)           console.error("Error fetching details:", err);
+92911352 (Noah Colin Cash            2025-10-02 18:34:18 -0400 104) 		}
+92911352 (Noah Colin Cash            2025-10-02 18:34:18 -0400 105)       }}
+92911352 (Noah Colin Cash            2025-10-02 18:34:18 -0400 106)      >
+92911352 (Noah Colin Cash            2025-10-02 18:34:18 -0400 107)       <Text style={[styles.cardTitle, theme === "dark" && styles.darkText]}>
+92911352 (Noah Colin Cash            2025-10-02 18:34:18 -0400 108)       {item.title}
+92911352 (Noah Colin Cash            2025-10-02 18:34:18 -0400 109)          </Text>
+92911352 (Noah Colin Cash            2025-10-02 18:34:18 -0400 110)     </TouchableOpacity>
+92911352 (Noah Colin Cash            2025-10-02 18:34:18 -0400 111) 
+2c6d17db (Noah Colin Cash            2025-09-29 13:49:12 -0400 112)   );
+2c6d17db (Noah Colin Cash            2025-09-29 13:49:12 -0400 113) 
+2c6d17db (Noah Colin Cash            2025-09-29 13:49:12 -0400 134)         {/* Search bar */}
+2c6d17db (Noah Colin Cash            2025-09-29 13:49:12 -0400 135)         <View style={styles.searchBar}>
+2c6d17db (Noah Colin Cash            2025-09-29 13:49:12 -0400 136)           <TextInput
+2c6d17db (Noah Colin Cash            2025-09-29 13:49:12 -0400 137)             style={styles.searchInput}
+2c6d17db (Noah Colin Cash            2025-09-29 13:49:12 -0400 138)             placeholder="Search for recipes..."
+2c6d17db (Noah Colin Cash            2025-09-29 13:49:12 -0400 139)             value={query}
+2c6d17db (Noah Colin Cash            2025-09-29 13:49:12 -0400 140)             onChangeText={setQuery}
+2c6d17db (Noah Colin Cash            2025-09-29 13:49:12 -0400 141)           />
+2c6d17db (Noah Colin Cash            2025-09-29 13:49:12 -0400 142)           <TouchableOpacity style={styles.searchButton} onPress={handleSearch}>
+2c6d17db (Noah Colin Cash            2025-09-29 13:49:12 -0400 143)             <Text style={styles.searchButtonText}>Search</Text>
+2c6d17db (Noah Colin Cash            2025-09-29 13:49:12 -0400 144)           </TouchableOpacity>
+2c6d17db (Noah Colin Cash            2025-09-29 13:49:12 -0400 145)         </View>
+2c6d17db (Noah Colin Cash            2025-09-29 13:49:12 -0400 147)         {/* Search results OR Favorites */}
+2c6d17db (Noah Colin Cash            2025-09-29 13:49:12 -0400 148)         {searchResults.length > 0 ? (
+2c6d17db (Noah Colin Cash            2025-09-29 13:49:12 -0400 149)           <>
+2c6d17db (Noah Colin Cash            2025-09-29 13:49:12 -0400 150)             <Text style={[styles.sectionTitle, theme === "dark" && styles.darkText]}>
+2c6d17db (Noah Colin Cash            2025-09-29 13:49:12 -0400 151)               Search Results
+2c6d17db (Noah Colin Cash            2025-09-29 13:49:12 -0400 152)             </Text>
+2c6d17db (Noah Colin Cash            2025-09-29 13:49:12 -0400 153)             <FlatList
+2c6d17db (Noah Colin Cash            2025-09-29 13:49:12 -0400 154)               data={searchResults}
+2c6d17db (Noah Colin Cash            2025-09-29 13:49:12 -0400 155)               keyExtractor={(item) => String(item.id)}
+2c6d17db (Noah Colin Cash            2025-09-29 13:49:12 -0400 156)               renderItem={renderSearchItem}
+2c6d17db (Noah Colin Cash            2025-09-29 13:49:12 -0400 157)               showsVerticalScrollIndicator={false}
+2c6d17db (Noah Colin Cash            2025-09-29 13:49:12 -0400 158)             />
+2c6d17db (Noah Colin Cash            2025-09-29 13:49:12 -0400 159)           </>
+2c6d17db (Noah Colin Cash            2025-09-29 13:49:12 -0400 160)         ) : (
+2c6d17db (Noah Colin Cash            2025-09-29 13:49:12 -0400 161)           <>
+2c6d17db (Noah Colin Cash            2025-09-29 13:49:12 -0400 162)             <Text style={[styles.sectionTitle, theme === "dark" && styles.darkText]}>
+2c6d17db (Noah Colin Cash            2025-09-29 13:49:12 -0400 163)               Your Favorites
+2c6d17db (Noah Colin Cash            2025-09-29 13:49:12 -0400 164)             </Text>
+2c6d17db (Noah Colin Cash            2025-09-29 13:49:12 -0400 165)             <FlatList
+2c6d17db (Noah Colin Cash            2025-09-29 13:49:12 -0400 166)               data={favorites}
+2c6d17db (Noah Colin Cash            2025-09-29 13:49:12 -0400 167)               keyExtractor={(item) => String(item.recipe_id)}
+2c6d17db (Noah Colin Cash            2025-09-29 13:49:12 -0400 168)               renderItem={renderFavoriteItem}
+2c6d17db (Noah Colin Cash            2025-09-29 13:49:12 -0400 169)               refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
+2c6d17db (Noah Colin Cash            2025-09-29 13:49:12 -0400 170)               contentContainerStyle={[
+2c6d17db (Noah Colin Cash            2025-09-29 13:49:12 -0400 171)                 styles.listContent,
+2c6d17db (Noah Colin Cash            2025-09-29 13:49:12 -0400 172)                 favorites.length === 0 && styles.emptyStateContainer,
+2c6d17db (Noah Colin Cash            2025-09-29 13:49:12 -0400 173)               ]}
+2c6d17db (Noah Colin Cash            2025-09-29 13:49:12 -0400 174)               ListEmptyComponent={
+2c6d17db (Noah Colin Cash            2025-09-29 13:49:12 -0400 175)                 !loading && (
+2c6d17db (Noah Colin Cash            2025-09-29 13:49:12 -0400 176)                   <View style={styles.emptyState}>
+2c6d17db (Noah Colin Cash            2025-09-29 13:49:12 -0400 177)                     <Text style={[styles.emptyTitle, theme === "dark" && styles.darkText]}>
+2c6d17db (Noah Colin Cash            2025-09-29 13:49:12 -0400 178)                       No favorites yet
+2c6d17db (Noah Colin Cash            2025-09-29 13:49:12 -0400 179)                     </Text>
+2c6d17db (Noah Colin Cash            2025-09-29 13:49:12 -0400 180)                     <Text style={[styles.emptyText, theme === "dark" && styles.darkText]}>
+2c6d17db (Noah Colin Cash            2025-09-29 13:49:12 -0400 181)                       Save a recipe from search and it’ll show up here.
+2c6d17db (Noah Colin Cash            2025-09-29 13:49:12 -0400 182)                     </Text>
+2c6d17db (Noah Colin Cash            2025-09-29 13:49:12 -0400 183)                   </View>
+2c6d17db (Noah Colin Cash            2025-09-29 13:49:12 -0400 184)                 )
+2c6d17db (Noah Colin Cash            2025-09-29 13:49:12 -0400 185)               }
+2c6d17db (Noah Colin Cash            2025-09-29 13:49:12 -0400 186)               showsVerticalScrollIndicator={false}
+2c6d17db (Noah Colin Cash            2025-09-29 13:49:12 -0400 187)             />
+2c6d17db (Noah Colin Cash            2025-09-29 13:49:12 -0400 188)           </>
+2c6d17db (Noah Colin Cash            2025-09-29 13:49:12 -0400 189)         )}
+2c6d17db (Noah Colin Cash            2025-09-29 13:49:12 -0400 246) 
+2c6d17db (Noah Colin Cash            2025-09-29 13:49:12 -0400 247)   // Search styles
+2c6d17db (Noah Colin Cash            2025-09-29 13:49:12 -0400 248)   searchBar: {
+2c6d17db (Noah Colin Cash            2025-09-29 13:49:12 -0400 249)     flexDirection: "row",
+2c6d17db (Noah Colin Cash            2025-09-29 13:49:12 -0400 250)     marginBottom: 16,
+2c6d17db (Noah Colin Cash            2025-09-29 13:49:12 -0400 251)     borderWidth: 1,
+2c6d17db (Noah Colin Cash            2025-09-29 13:49:12 -0400 252)     borderColor: "#e5e7eb",
+2c6d17db (Noah Colin Cash            2025-09-29 13:49:12 -0400 253)     borderRadius: 10,
+2c6d17db (Noah Colin Cash            2025-09-29 13:49:12 -0400 254)     overflow: "hidden",
+2c6d17db (Noah Colin Cash            2025-09-29 13:49:12 -0400 255)   },
+2c6d17db (Noah Colin Cash            2025-09-29 13:49:12 -0400 256)   searchInput: {
+2c6d17db (Noah Colin Cash            2025-09-29 13:49:12 -0400 257)     flex: 1,
+2c6d17db (Noah Colin Cash            2025-09-29 13:49:12 -0400 258)     paddingHorizontal: 12,
+2c6d17db (Noah Colin Cash            2025-09-29 13:49:12 -0400 259)     paddingVertical: 8,
+2c6d17db (Noah Colin Cash            2025-09-29 13:49:12 -0400 260)   },
+2c6d17db (Noah Colin Cash            2025-09-29 13:49:12 -0400 261)   searchButton: {
+2c6d17db (Noah Colin Cash            2025-09-29 13:49:12 -0400 262)     backgroundColor: ORANGE,
+2c6d17db (Noah Colin Cash            2025-09-29 13:49:12 -0400 263)     paddingHorizontal: 16,
+2c6d17db (Noah Colin Cash            2025-09-29 13:49:12 -0400 264)     justifyContent: "center",
+2c6d17db (Noah Colin Cash            2025-09-29 13:49:12 -0400 265)   },
+2c6d17db (Noah Colin Cash            2025-09-29 13:49:12 -0400 266)   searchButtonText: {
+2c6d17db (Noah Colin Cash            2025-09-29 13:49:12 -0400 267)     color: WHITE,
+2c6d17db (Noah Colin Cash            2025-09-29 13:49:12 -0400 268)     fontWeight: "700",
+2c6d17db (Noah Colin Cash            2025-09-29 13:49:12 -0400 269)   },
+
+VolBites/babel.config.js
+2c6d17db (Noah Colin Cash 2025-09-29 13:49:12 -0400  1) module.exports = function (api) {
+2c6d17db (Noah Colin Cash 2025-09-29 13:49:12 -0400  2)   api.cache(true);
+2c6d17db (Noah Colin Cash 2025-09-29 13:49:12 -0400  3)   return {
+2c6d17db (Noah Colin Cash 2025-09-29 13:49:12 -0400  4)     presets: ["babel-preset-expo"],
+2c6d17db (Noah Colin Cash 2025-09-29 13:49:12 -0400  5)     plugins: [
+2c6d17db (Noah Colin Cash 2025-09-29 13:49:12 -0400  6)       ["module:react-native-dotenv", {
+2c6d17db (Noah Colin Cash 2025-09-29 13:49:12 -0400  7)         "moduleName": "@env",
+2c6d17db (Noah Colin Cash 2025-09-29 13:49:12 -0400  8)         "path": ".env",
+2c6d17db (Noah Colin Cash 2025-09-29 13:49:12 -0400  9)       }],
+2c6d17db (Noah Colin Cash 2025-09-29 13:49:12 -0400 10)     ],
+2c6d17db (Noah Colin Cash 2025-09-29 13:49:12 -0400 11)   };
+2c6d17db (Noah Colin Cash 2025-09-29 13:49:12 -0400 12) };
+
+VolBites/.env
+2c6d17db (Noah Colin Cash 2025-09-29 13:49:12 -0400 1) SPOONACULAR_API_KEY=466a56af9e6f4ef3b0f3c884a5ca5d2f
+
+VolBites/RecipeDetailScreen.js
+92911352 (Noah Colin Cash 2025-10-02 18:34:18 -0400  1) import React from "react";
+92911352 (Noah Colin Cash 2025-10-02 18:34:18 -0400  2) import { View, Text, Image, ScrollView, StyleSheet } from "react-native";
+92911352 (Noah Colin Cash 2025-10-02 18:34:18 -0400  3)
+92911352 (Noah Colin Cash 2025-10-02 18:34:18 -0400  4) export default function RecipeDetail({ route }) {
+92911352 (Noah Colin Cash 2025-10-02 18:34:18 -0400  5)   const { recipe } = route.params; // get the recipe object passed from HomeScreen
+92911352 (Noah Colin Cash 2025-10-02 18:34:18 -0400  6)
+92911352 (Noah Colin Cash 2025-10-02 18:34:18 -0400  7)   if (!recipe) {
+92911352 (Noah Colin Cash 2025-10-02 18:34:18 -0400  8)     return <Text>No recipe details found.</Text>;
+92911352 (Noah Colin Cash 2025-10-02 18:34:18 -0400  9)   }
+92911352 (Noah Colin Cash 2025-10-02 18:34:18 -0400 10)
+92911352 (Noah Colin Cash 2025-10-02 18:34:18 -0400 11)   return (
+92911352 (Noah Colin Cash 2025-10-02 18:34:18 -0400 12)     <ScrollView style={styles.container}>
+92911352 (Noah Colin Cash 2025-10-02 18:34:18 -0400 13)       <Text style={styles.title}>{recipe.title}</Text>
+92911352 (Noah Colin Cash 2025-10-02 18:34:18 -0400 14)       {recipe.image && <Image source={{ uri: recipe.image }} style={styles.image} />}
+92911352 (Noah Colin Cash 2025-10-02 18:34:18 -0400 15)       <Text style={styles.section}>Ingredients:</Text>
+92911352 (Noah Colin Cash 2025-10-02 18:34:18 -0400 16)       {recipe.extendedIngredients?.map((ing, idx) => (
+92911352 (Noah Colin Cash 2025-10-02 18:34:18 -0400 17)         <Text key={idx}>- {ing.original}</Text>
+92911352 (Noah Colin Cash 2025-10-02 18:34:18 -0400 18)       ))}
+92911352 (Noah Colin Cash 2025-10-02 18:34:18 -0400 19)       <Text style={styles.section}>Instructions:</Text>
+92911352 (Noah Colin Cash 2025-10-02 18:34:18 -0400 20)       <Text>{recipe.instructions || "No instructions available."}</Text>
+92911352 (Noah Colin Cash 2025-10-02 18:34:18 -0400 21)     </ScrollView>
+92911352 (Noah Colin Cash 2025-10-02 18:34:18 -0400 22)   );
+92911352 (Noah Colin Cash 2025-10-02 18:34:18 -0400 23) }
+92911352 (Noah Colin Cash 2025-10-02 18:34:18 -0400 24)
+92911352 (Noah Colin Cash 2025-10-02 18:34:18 -0400 25) const styles = StyleSheet.create({
+92911352 (Noah Colin Cash 2025-10-02 18:34:18 -0400 26)   container: { padding: 16 },
+92911352 (Noah Colin Cash 2025-10-02 18:34:18 -0400 27)   title: { fontSize: 22, fontWeight: "bold", marginBottom: 8 },
+92911352 (Noah Colin Cash 2025-10-02 18:34:18 -0400 28)   image: { width: "100%", height: 200, borderRadius: 8, marginBottom: 16 },
+92911352 (Noah Colin Cash 2025-10-02 18:34:18 -0400 29)   section: { marginTop: 12, fontSize: 18, fontWeight: "600" },
+92911352 (Noah Colin Cash 2025-10-02 18:34:18 -0400 30) });

@@ -1,0 +1,231 @@
+VolBites/RecipeDetailScreen.js
+d646673a (Noah Colin Cash 2025-10-12 20:44:11 -0400  32)   // Toggle save/unsave
+d646673a (Noah Colin Cash 2025-10-12 20:44:11 -0400  33)   const toggleFavorite = async () => {
+d646673a (Noah Colin Cash 2025-10-12 20:44:11 -0400  34)     try {
+d646673a (Noah Colin Cash 2025-10-12 20:44:11 -0400  35)       if (favorite) {
+d646673a (Noah Colin Cash 2025-10-12 20:44:11 -0400  36)         // Remove from saved_recipes
+d646673a (Noah Colin Cash 2025-10-12 20:44:11 -0400  37)         await fetch(
+d646673a (Noah Colin Cash 2025-10-12 20:44:11 -0400  38)           `${SUPABASE_URL}/rest/v1/saved_recipes?user_id=eq.${userId}&recipe_id=eq.${recipe.id}`,
+d646673a (Noah Colin Cash 2025-10-12 20:44:11 -0400  39)           {
+d646673a (Noah Colin Cash 2025-10-12 20:44:11 -0400  40)             method: "DELETE",
+d646673a (Noah Colin Cash 2025-10-12 20:44:11 -0400  41)             headers: {
+d646673a (Noah Colin Cash 2025-10-12 20:44:11 -0400  42)               apiKey: SUPABASE_ANON_KEY,
+d646673a (Noah Colin Cash 2025-10-12 20:44:11 -0400  43)               Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
+d646673a (Noah Colin Cash 2025-10-12 20:44:11 -0400  44)             },
+d646673a (Noah Colin Cash 2025-10-12 20:44:11 -0400  45)           }
+d646673a (Noah Colin Cash 2025-10-12 20:44:11 -0400  46)         );
+d646673a (Noah Colin Cash 2025-10-12 20:44:11 -0400  47)         setFavorite(false);
+d646673a (Noah Colin Cash 2025-10-12 20:44:11 -0400  48)       } else {
+d646673a (Noah Colin Cash 2025-10-12 20:44:11 -0400  49)         // Add to saved_recipes
+d646673a (Noah Colin Cash 2025-10-12 20:44:11 -0400  50)         await fetch(`${SUPABASE_URL}/rest/v1/saved_recipes`, {
+d646673a (Noah Colin Cash 2025-10-12 20:44:11 -0400  51)           method: "POST",
+d646673a (Noah Colin Cash 2025-10-12 20:44:11 -0400  52)           headers: {
+d646673a (Noah Colin Cash 2025-10-12 20:44:11 -0400  53)             "Content-Type": "application/json",
+d646673a (Noah Colin Cash 2025-10-12 20:44:11 -0400  54)             apiKey: SUPABASE_ANON_KEY,
+d646673a (Noah Colin Cash 2025-10-12 20:44:11 -0400  55)             Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
+d646673a (Noah Colin Cash 2025-10-12 20:44:11 -0400  56)           },
+d646673a (Noah Colin Cash 2025-10-12 20:44:11 -0400  57)           body: JSON.stringify({
+d646673a (Noah Colin Cash 2025-10-12 20:44:11 -0400  58)             user_id: userId,
+d646673a (Noah Colin Cash 2025-10-12 20:44:11 -0400  59)             recipe_id: recipe.id,
+d646673a (Noah Colin Cash 2025-10-12 20:44:11 -0400  60)             recipe_name: recipe.title,
+d646673a (Noah Colin Cash 2025-10-12 20:44:11 -0400  61)             image: recipe.image,
+d646673a (Noah Colin Cash 2025-10-12 20:44:11 -0400  62)           }),
+d646673a (Noah Colin Cash 2025-10-12 20:44:11 -0400  63)         });
+d646673a (Noah Colin Cash 2025-10-12 20:44:11 -0400  64)         setFavorite(true);
+d646673a (Noah Colin Cash 2025-10-12 20:44:11 -0400  65)       }
+d646673a (Noah Colin Cash 2025-10-12 20:44:11 -0400  66)     } catch (err) {
+d646673a (Noah Colin Cash 2025-10-12 20:44:11 -0400  67)       console.error("Error toggling favorite:", err);
+d646673a (Noah Colin Cash 2025-10-12 20:44:11 -0400  68)     }
+d646673a (Noah Colin Cash 2025-10-12 20:44:11 -0400  69)   };
+d646673a (Noah Colin Cash 2025-10-12 20:44:11 -0400  70) 
+d646673a (Noah Colin Cash 2025-10-12 20:44:11 -0400  71)   if (!recipe) return <Text>No recipe details found.</Text>;
+d646673a (Noah Colin Cash 2025-10-12 20:44:11 -0400  72) 
+d646673a (Noah Colin Cash 2025-10-12 20:44:11 -0400  73)   // Nutrition
+9a9474de (Noah Colin Cash 2025-10-10 16:29:47 -0400  74)   const nutrients = recipe?.nutrition?.nutrients || [];
+9a9474de (Noah Colin Cash 2025-10-10 16:29:47 -0400  75)   const calories = nutrients.find((n) => n.name.toLowerCase() === "calories");
+9a9474de (Noah Colin Cash 2025-10-10 16:29:47 -0400  76)   const protein = nutrients.find((n) => n.name.toLowerCase() === "protein");
+9a9474de (Noah Colin Cash 2025-10-10 16:29:47 -0400  77)   const fat = nutrients.find((n) => n.name.toLowerCase() === "fat");
+9a9474de (Noah Colin Cash 2025-10-10 16:29:47 -0400  78)   const carbs = nutrients.find((n) => n.name.toLowerCase() === "carbohydrates");
+9a9474de (Noah Colin Cash 2025-10-10 16:29:47 -0400  79) 
+92911352 (Noah Colin Cash 2025-10-02 18:34:18 -0400  80)   return (
+92911352 (Noah Colin Cash 2025-10-02 18:34:18 -0400  81)     <ScrollView style={styles.container}>
+d646673a (Noah Colin Cash 2025-10-12 20:44:11 -0400  82)       <View style={styles.headerRow}>
+d646673a (Noah Colin Cash 2025-10-12 20:44:11 -0400  83)         <Text style={styles.title}>{recipe.title}</Text>
+d646673a (Noah Colin Cash 2025-10-12 20:44:11 -0400  84) 
+d646673a (Noah Colin Cash 2025-10-12 20:44:11 -0400  85)         {/* Favorite Button */}
+d646673a (Noah Colin Cash 2025-10-12 20:44:11 -0400  86)         <TouchableOpacity onPress={toggleFavorite}>
+d646673a (Noah Colin Cash 2025-10-12 20:44:11 -0400  87)           <Ionicons
+d646673a (Noah Colin Cash 2025-10-12 20:44:11 -0400  88)             name={favorite ? "heart" : "heart-outline"}
+d646673a (Noah Colin Cash 2025-10-12 20:44:11 -0400  89)             size={28}
+d646673a (Noah Colin Cash 2025-10-12 20:44:11 -0400  90)             color={favorite ? "#ef4444" : "#9ca3af"}
+d646673a (Noah Colin Cash 2025-10-12 20:44:11 -0400  91)           />
+d646673a (Noah Colin Cash 2025-10-12 20:44:11 -0400  92)         </TouchableOpacity>
+d646673a (Noah Colin Cash 2025-10-12 20:44:11 -0400  93)       </View>
+9a9474de (Noah Colin Cash 2025-10-10 16:29:47 -0400  94) 
+92911352 (Noah Colin Cash 2025-10-02 18:34:18 -0400  95)       {recipe.image && <Image source={{ uri: recipe.image }} style={styles.image} />}
+9a9474de (Noah Colin Cash 2025-10-10 16:29:47 -0400  96) 
+d646673a (Noah Colin Cash 2025-10-12 20:44:11 -0400  97)       {/* Nutrition Info */}
+9a9474de (Noah Colin Cash 2025-10-10 16:29:47 -0400  98)       <View style={styles.nutritionCard}>
+9a9474de (Noah Colin Cash 2025-10-10 16:29:47 -0400  99)         <Text style={styles.sectionTitle}>Nutrition Information</Text>
+9a9474de (Noah Colin Cash 2025-10-10 16:29:47 -0400 100)         <View style={styles.nutritionRow}>
+9a9474de (Noah Colin Cash 2025-10-10 16:29:47 -0400 101)           <Text style={styles.label}>Calories:</Text>
+d646673a (Noah Colin Cash 2025-10-12 20:44:11 -0400 102)           <Text style={styles.value}>{calories ? `${Math.round(calories.amount)}` : "N/A"}</Text>
+9a9474de (Noah Colin Cash 2025-10-10 16:29:47 -0400 103)         </View>
+9a9474de (Noah Colin Cash 2025-10-10 16:29:47 -0400 104)         <View style={styles.nutritionRow}>
+9a9474de (Noah Colin Cash 2025-10-10 16:29:47 -0400 105)           <Text style={styles.label}>Protein:</Text>
+9a9474de (Noah Colin Cash 2025-10-10 16:29:47 -0400 106)           <Text style={styles.value}>
+9a9474de (Noah Colin Cash 2025-10-10 16:29:47 -0400 107)             {protein ? `${protein.amount.toFixed(1)} ${protein.unit}` : "N/A"}
+9a9474de (Noah Colin Cash 2025-10-10 16:29:47 -0400 108)           </Text>
+9a9474de (Noah Colin Cash 2025-10-10 16:29:47 -0400 109)         </View>
+9a9474de (Noah Colin Cash 2025-10-10 16:29:47 -0400 110)         <View style={styles.nutritionRow}>
+9a9474de (Noah Colin Cash 2025-10-10 16:29:47 -0400 111)           <Text style={styles.label}>Fat:</Text>
+d646673a (Noah Colin Cash 2025-10-12 20:44:11 -0400 112)           <Text style={styles.value}>{fat ? `${fat.amount.toFixed(1)} ${fat.unit}` : "N/A"}</Text>
+9a9474de (Noah Colin Cash 2025-10-10 16:29:47 -0400 113)         </View>
+9a9474de (Noah Colin Cash 2025-10-10 16:29:47 -0400 114)         <View style={styles.nutritionRow}>
+9a9474de (Noah Colin Cash 2025-10-10 16:29:47 -0400 115)           <Text style={styles.label}>Carbohydrates:</Text>
+9a9474de (Noah Colin Cash 2025-10-10 16:29:47 -0400 116)           <Text style={styles.value}>
+9a9474de (Noah Colin Cash 2025-10-10 16:29:47 -0400 117)             {carbs ? `${carbs.amount.toFixed(1)} ${carbs.unit}` : "N/A"}
+9a9474de (Noah Colin Cash 2025-10-10 16:29:47 -0400 118)           </Text>
+9a9474de (Noah Colin Cash 2025-10-10 16:29:47 -0400 119)         </View>
+9a9474de (Noah Colin Cash 2025-10-10 16:29:47 -0400 120)       </View>
+9a9474de (Noah Colin Cash 2025-10-10 16:29:47 -0400 121) 
+d646673a (Noah Colin Cash 2025-10-12 20:44:11 -0400 122)       {/* Ingredients */}
+92911352 (Noah Colin Cash 2025-10-02 18:34:18 -0400 123)       <Text style={styles.section}>Ingredients:</Text>
+92911352 (Noah Colin Cash 2025-10-02 18:34:18 -0400 124)       {recipe.extendedIngredients?.map((ing, idx) => (
+9a9474de (Noah Colin Cash 2025-10-10 16:29:47 -0400 125)         <Text key={idx} style={styles.text}>• {ing.original}</Text>
+92911352 (Noah Colin Cash 2025-10-02 18:34:18 -0400 126)       ))}
+9a9474de (Noah Colin Cash 2025-10-10 16:29:47 -0400 127) 
+d646673a (Noah Colin Cash 2025-10-12 20:44:11 -0400 128)       {/* Instructions */}
+92911352 (Noah Colin Cash 2025-10-02 18:34:18 -0400 129)       <Text style={styles.section}>Instructions:</Text>
+d646673a (Noah Colin Cash 2025-10-12 20:44:11 -0400 130)       <Text style={styles.text}>{recipe.instructions || "No instructions available."}</Text>
+92911352 (Noah Colin Cash 2025-10-02 18:34:18 -0400 131)     </ScrollView>
+92911352 (Noah Colin Cash 2025-10-02 18:34:18 -0400 132)   );
+92911352 (Noah Colin Cash 2025-10-02 18:34:18 -0400 133) }
+-------------------------------------------------------------------------------------------------------------------------------------------------
+VolBites/favoritesStorage.js
+d646673a (Noah Colin Cash      2025-10-12 20:44:11 -0400  2) import AsyncStorage from '@react-native-async-storage/async-storage';
+d646673a (Noah Colin Cash      2025-10-12 20:44:11 -0400  3) 
+d646673a (Noah Colin Cash      2025-10-12 20:44:11 -0400  4) const FAVORITES_KEY = 'FAVORITE_RECIPES';
+d646673a (Noah Colin Cash      2025-10-12 20:44:11 -0400  5) 
+d646673a (Noah Colin Cash      2025-10-12 20:44:11 -0400  6) export async function getFavorites() {
+d646673a (Noah Colin Cash      2025-10-12 20:44:11 -0400  7)   try {
+d646673a (Noah Colin Cash      2025-10-12 20:44:11 -0400  8)     const jsonValue = await AsyncStorage.getItem(FAVORITES_KEY);
+d646673a (Noah Colin Cash      2025-10-12 20:44:11 -0400  9)     return jsonValue != null ? JSON.parse(jsonValue) : [];
+d646673a (Noah Colin Cash      2025-10-12 20:44:11 -0400 10)   } catch (e) {
+d646673a (Noah Colin Cash      2025-10-12 20:44:11 -0400 11)     console.error('Error reading favorites', e);
+d646673a (Noah Colin Cash      2025-10-12 20:44:11 -0400 12)     return [];
+d646673a (Noah Colin Cash      2025-10-12 20:44:11 -0400 13)   }
+d646673a (Noah Colin Cash      2025-10-12 20:44:11 -0400 14) }
+d646673a (Noah Colin Cash      2025-10-12 20:44:11 -0400 15) 
+d646673a (Noah Colin Cash      2025-10-12 20:44:11 -0400 16) export async function saveFavorites(favorites) {
+d646673a (Noah Colin Cash      2025-10-12 20:44:11 -0400 17)   try {
+d646673a (Noah Colin Cash      2025-10-12 20:44:11 -0400 18)     const jsonValue = JSON.stringify(favorites);
+d646673a (Noah Colin Cash      2025-10-12 20:44:11 -0400 19)     await AsyncStorage.setItem(FAVORITES_KEY, jsonValue);
+d646673a (Noah Colin Cash      2025-10-12 20:44:11 -0400 20)   } catch (e) {
+d646673a (Noah Colin Cash      2025-10-12 20:44:11 -0400 21)     console.error('Error saving favorites', e);
+d646673a (Noah Colin Cash      2025-10-12 20:44:11 -0400 22)   }
+d646673a (Noah Colin Cash      2025-10-12 20:44:11 -0400 23) }
+d646673a (Noah Colin Cash      2025-10-12 20:44:11 -0400 24) 
+d646673a (Noah Colin Cash      2025-10-12 20:44:11 -0400 25) export async function toggleFavorite(recipe) {
+d646673a (Noah Colin Cash      2025-10-12 20:44:11 -0400 26)   const current = await getFavorites();
+d646673a (Noah Colin Cash      2025-10-12 20:44:11 -0400 27)   const exists = current.find(r => r.id === recipe.id);
+d646673a (Noah Colin Cash      2025-10-12 20:44:11 -0400 28)   let updated;
+d646673a (Noah Colin Cash      2025-10-12 20:44:11 -0400 29)   if (exists) {
+d646673a (Noah Colin Cash      2025-10-12 20:44:11 -0400 30)     updated = current.filter(r => r.id !== recipe.id);
+d646673a (Noah Colin Cash      2025-10-12 20:44:11 -0400 31)   } else {
+d646673a (Noah Colin Cash      2025-10-12 20:44:11 -0400 32)     updated = [...current, recipe];
+d646673a (Noah Colin Cash      2025-10-12 20:44:11 -0400 33)   }
+d646673a (Noah Colin Cash      2025-10-12 20:44:11 -0400 34)   await saveFavorites(updated);
+d646673a (Noah Colin Cash      2025-10-12 20:44:11 -0400 35)   return updated;
+d646673a (Noah Colin Cash      2025-10-12 20:44:11 -0400 36) }
+d646673a (Noah Colin Cash      2025-10-12 20:44:11 -0400 37) 
+d646673a (Noah Colin Cash      2025-10-12 20:44:11 -0400 38) export async function isFavorite(recipeId) {
+d646673a (Noah Colin Cash      2025-10-12 20:44:11 -0400 39)   const current = await getFavorites();
+d646673a (Noah Colin Cash      2025-10-12 20:44:11 -0400 40)   return current.some(r => r.id === recipeId);
+d646673a (Noah Colin Cash      2025-10-12 20:44:11 -0400 41) }
+-------------------------------------------------------------------------------------------------------------------------------------------------
+VolBites/HomeScreen.js
+d646673a (Noah Colin Cash            2025-10-12 20:44:11 -0400  12)   Image,
+d646673a (Noah Colin Cash            2025-10-12 20:44:11 -0400  18) import { useNavigation, useFocusEffect } from "@react-navigation/native";
+d646673a (Noah Colin Cash            2025-10-12 20:44:11 -0400  20) import { ThemeContext } from "./App";
+d646673a (Noah Colin Cash            2025-10-12 20:44:11 -0400  21) import { searchRecipes, getRecipeDetails } from "./spoonacular";
+d646673a (Noah Colin Cash            2025-10-12 20:44:11 -0400  30)   const [query, setQuery] = useState("");
+d646673a (Noah Colin Cash            2025-10-12 20:44:11 -0400  31)   const [searchResults, setSearchResults] = useState([]);
+d646673a (Noah Colin Cash            2025-10-12 20:44:11 -0400  56)   // Fetch favorites from Supabase
+d646673a (Noah Colin Cash            2025-10-12 20:44:11 -0400  61)         `${SUPABASE_URL}/rest/v1/saved_recipes?user_id=eq.${userId}&select=*`,
+d646673a (Noah Colin Cash            2025-10-12 20:44:11 -0400  78)   useFocusEffect(
+d646673a (Noah Colin Cash            2025-10-12 20:44:11 -0400  79)     useCallback(() => {
+d646673a (Noah Colin Cash            2025-10-12 20:44:11 -0400  80)       fetchFavorites();
+d646673a (Noah Colin Cash            2025-10-12 20:44:11 -0400  81)     }, [fetchFavorites])
+d646673a (Noah Colin Cash            2025-10-12 20:44:11 -0400  82)   );
+92911352 (Noah Colin Cash            2025-10-02 18:34:18 -0400  90)   // Handle recipe search
+d646673a (Noah Colin Cash            2025-10-12 20:44:11 -0400  92)     if (!query.trim()) {
+d646673a (Noah Colin Cash            2025-10-12 20:44:11 -0400  95)       return;
+d646673a (Noah Colin Cash            2025-10-12 20:44:11 -0400  96)     }
+d646673a (Noah Colin Cash            2025-10-12 20:44:11 -0400 110)   // Clear results as user deletes all text
+d646673a (Noah Colin Cash            2025-10-12 20:44:11 -0400 111)   const handleQueryChange = (text) => {
+d646673a (Noah Colin Cash            2025-10-12 20:44:11 -0400 112)     setQuery(text);
+d646673a (Noah Colin Cash            2025-10-12 20:44:11 -0400 113)     if (text.trim().length === 0) {
+d646673a (Noah Colin Cash            2025-10-12 20:44:11 -0400 114)       setSearchResults([]);
+d646673a (Noah Colin Cash            2025-10-12 20:44:11 -0400 115)     }
+d646673a (Noah Colin Cash            2025-10-12 20:44:11 -0400 116)   };
+d646673a (Noah Colin Cash            2025-10-12 20:44:11 -0400 117)
+d646673a (Noah Colin Cash            2025-10-12 20:44:11 -0400 120)     <TouchableOpacity
+d646673a (Noah Colin Cash            2025-10-12 20:44:11 -0400 121)       style={[styles.card, theme === "dark" && styles.darkCard]}
+d646673a (Noah Colin Cash            2025-10-12 20:44:11 -0400 122)       onPress={async () => {
+d646673a (Noah Colin Cash            2025-10-12 20:44:11 -0400 123)         try {
+d646673a (Noah Colin Cash            2025-10-12 20:44:11 -0400 124)           const details = await getRecipeDetails(item.recipe_id);
+d646673a (Noah Colin Cash            2025-10-12 20:44:11 -0400 125)           navigation.navigate("RecipeDetail", { recipe: details, userId });
+d646673a (Noah Colin Cash            2025-10-12 20:44:11 -0400 127)         } catch (err) {
+d646673a (Noah Colin Cash            2025-10-12 20:44:11 -0400 128)           console.error("Error fetching recipe details:", err);
+d646673a (Noah Colin Cash            2025-10-12 20:44:11 -0400 129)         }
+d646673a (Noah Colin Cash            2025-10-12 20:44:11 -0400 130)       }}
+d646673a (Noah Colin Cash            2025-10-12 20:44:11 -0400 131)     >
+d646673a (Noah Colin Cash            2025-10-12 20:44:11 -0400 132)       {item.image && (
+d646673a (Noah Colin Cash            2025-10-12 20:44:11 -0400 133)         <Image
+d646673a (Noah Colin Cash            2025-10-12 20:44:11 -0400 134)           source={{ uri: item.image }}
+d646673a (Noah Colin Cash            2025-10-12 20:44:11 -0400 135)           style={styles.favoriteImage}
+d646673a (Noah Colin Cash            2025-10-12 20:44:11 -0400 136)           resizeMode="cover"
+d646673a (Noah Colin Cash            2025-10-12 20:44:11 -0400 137)         />
+d646673a (Noah Colin Cash            2025-10-12 20:44:11 -0400 138)       )}
+d646673a (Noah Colin Cash            2025-10-12 20:44:11 -0400 139)       <View style={styles.favoriteInfo}>
+d646673a (Noah Colin Cash            2025-10-12 20:44:11 -0400 140)         <Text
+d646673a (Noah Colin Cash            2025-10-12 20:44:11 -0400 141)           style={[styles.cardTitle, theme === "dark" && styles.darkText]}
+d646673a (Noah Colin Cash            2025-10-12 20:44:11 -0400 142)           numberOfLines={2}
+d646673a (Noah Colin Cash            2025-10-12 20:44:11 -0400 143)         >
+d646673a (Noah Colin Cash            2025-10-12 20:44:11 -0400 144)           {item.recipe_name}
+d646673a (Noah Colin Cash            2025-10-12 20:44:11 -0400 146)         {item.created_at ? (
+d646673a (Noah Colin Cash            2025-10-12 20:44:11 -0400 147)           <Text style={[styles.meta, theme === "dark" && styles.darkText]}>
+d646673a (Noah Colin Cash            2025-10-12 20:44:11 -0400 148)             Saved {new Date(item.created_at).toLocaleDateString()}
+d646673a (Noah Colin Cash            2025-10-12 20:44:11 -0400 149)           </Text>
+d646673a (Noah Colin Cash            2025-10-12 20:44:11 -0400 150)         ) : null}
+d646673a (Noah Colin Cash            2025-10-12 20:44:11 -0400 152)     </TouchableOpacity>
+9a9474de (Noah Colin Cash            2025-10-10 16:29:47 -0400 159)       onPress={async () => {
+d646673a (Noah Colin Cash            2025-10-12 20:44:11 -0400 160)         try {
+d646673a (Noah Colin Cash            2025-10-12 20:44:11 -0400 161)           const details = await getRecipeDetails(item.id);
+d646673a (Noah Colin Cash            2025-10-12 20:44:11 -0400 162)           navigation.navigate("RecipeDetail", { recipe: details, userId });
+d646673a (Noah Colin Cash            2025-10-12 20:44:11 -0400 164)         } catch (err) {
+d646673a (Noah Colin Cash            2025-10-12 20:44:11 -0400 165)           console.error("Error fetching instructions:", err);
+d646673a (Noah Colin Cash            2025-10-12 20:44:11 -0400 166)         }
+d646673a (Noah Colin Cash            2025-10-12 20:44:11 -0400 167)       }}
+9a9474de (Noah Colin Cash            2025-10-10 16:29:47 -0400 168)     >
+d646673a (Noah Colin Cash            2025-10-12 20:44:11 -0400 169)       <Text style={[styles.cardTitle, theme === "dark" && styles.darkText]}>
+d646673a (Noah Colin Cash            2025-10-12 20:44:11 -0400 170)         {item.title}
+d646673a (Noah Colin Cash            2025-10-12 20:44:11 -0400 171)       </Text>
+9a9474de (Noah Colin Cash            2025-10-10 16:29:47 -0400 229)             style={[
+9a9474de (Noah Colin Cash            2025-10-10 16:29:47 -0400 232)             ]}
+d646673a (Noah Colin Cash            2025-10-12 20:44:11 -0400 247)             >
+d646673a (Noah Colin Cash            2025-10-12 20:44:11 -0400 363)   cardTitle: { fontSize: 16, fontWeight: "600", color: "#111827" },
+9a9474de (Noah Colin Cash            2025-10-10 16:29:47 -0400 377)     backgroundColor: WHITE,
+d646673a (Noah Colin Cash            2025-10-12 20:44:11 -0400 388)     borderRadius: 10,
+d646673a (Noah Colin Cash            2025-10-12 20:44:11 -0400 391)   },
+-------------------------------------------------------------------------------------------------------------------------------------------------
+VolBites/spoonacular.js
+9a9474de (Noah Colin Cash 2025-10-10 16:29:47 -0400  5) // search recipes by query
+9a9474de (Noah Colin Cash 2025-10-10 16:29:47 -0400  7)   const url = `${BASE_URL}/complexSearch?query=${encodeURIComponent(
+9a9474de (Noah Colin Cash 2025-10-10 16:29:47 -0400  8)     query
+9a9474de (Noah Colin Cash 2025-10-10 16:29:47 -0400  9)   )}&number=10&apiKey=${API_KEY}`;
+9a9474de (Noah Colin Cash 2025-10-10 16:29:47 -0400 17) // get recipe details (includes instructions & nutrition)
+9a9474de (Noah Colin Cash 2025-10-10 16:29:47 -0400 19)   const url = `${BASE_URL}/${id}/information?includeNutrition=true&apiKey=${API_KEY}`;
+9a9474de (Noah Colin Cash 2025-10-10 16:29:47 -0400 24)   return data; // includes extendedIngredients, analyzedInstructions, nutrition, etc.
+

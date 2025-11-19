@@ -1,0 +1,96 @@
+SettingsScreen.js (jonathan david lange on 09/25/2025 at 15:06): // SettingsScreen.js
+SettingsScreen.js (jonathan david lange on 09/25/2025 at 15:06): import React, { useContext } from "react";
+SettingsScreen.js (jonathan david lange on 09/25/2025 at 15:06): import { SafeAreaView, View, Text, StyleSheet, Switch, TouchableOpacity } from "react-native";
+SettingsScreen.js (jonathan david lange on 09/25/2025 at 15:06): import { ThemeContext } from "./App";
+SettingsScreen.js (jonathan david lange on 09/25/2025 at 15:06): export default function SettingsScreen({ navigation }) {
+SettingsScreen.js (jonathan david lange on 09/25/2025 at 15:06):   const { theme, setTheme } = useContext(ThemeContext);
+SettingsScreen.js (jonathan david lange on 09/25/2025 at 15:06):   // Toggle light/dark theme
+SettingsScreen.js (jonathan david lange on 09/25/2025 at 15:06):   const toggleTheme = () => {
+SettingsScreen.js (jonathan david lange on 09/25/2025 at 15:06):     setTheme(theme === "light" ? "dark" : "light");
+SettingsScreen.js (jonathan david lange on 09/25/2025 at 15:06):   };
+SettingsScreen.js (jonathan david lange on 09/25/2025 at 15:06):   // Log out user
+SettingsScreen.js (jonathan david lange on 09/25/2025 at 15:06):   return (
+SettingsScreen.js (jonathan david lange on 09/25/2025 at 15:06):     <SafeAreaView style={[styles.safe, theme === "dark" && styles.darkSafe]}>
+SettingsScreen.js (jonathan david lange on 09/25/2025 at 15:06):       <View style={styles.container}>
+SettingsScreen.js (jonathan david lange on 09/25/2025 at 15:06):         <Text style={[styles.title, theme === "dark" && styles.darkText]}>Settings</Text>
+SettingsScreen.js (jonathan david lange on 09/25/2025 at 15:06):         {/* Theme Switch */}
+SettingsScreen.js (jonathan david lange on 09/25/2025 at 15:06):         <View style={styles.row}>
+SettingsScreen.js (jonathan david lange on 09/25/2025 at 15:06):           <Text style={[styles.label, theme === "dark" && styles.darkText]}>Dark Theme</Text>
+SettingsScreen.js (jonathan david lange on 09/25/2025 at 15:06):           <Switch
+SettingsScreen.js (jonathan david lange on 09/25/2025 at 15:06):             value={theme === "dark"}
+SettingsScreen.js (jonathan david lange on 09/25/2025 at 15:06):             onValueChange={toggleTheme}
+SettingsScreen.js (jonathan david lange on 09/25/2025 at 15:06):           />
+SettingsScreen.js (jonathan david lange on 09/25/2025 at 15:06):         </View>
+SettingsScreen.js (jonathan david lange on 09/25/2025 at 15:06):         {/* Log Out Button */}
+SettingsScreen.js (jonathan david lange on 09/25/2025 at 15:06):         <TouchableOpacity style={styles.btn} onPress={handleLogout}>
+SettingsScreen.js (jonathan david lange on 09/25/2025 at 15:06):           <Text style={styles.btnText}>Log Out</Text>
+SettingsScreen.js (jonathan david lange on 09/25/2025 at 15:06):         </TouchableOpacity>
+SettingsScreen.js (jonathan david lange on 09/25/2025 at 15:06):       </View>
+SettingsScreen.js (jonathan david lange on 09/25/2025 at 15:06):     </SafeAreaView>
+SettingsScreen.js (jonathan david lange on 09/25/2025 at 15:06):   );
+SettingsScreen.js (jonathan david lange on 09/25/2025 at 15:06): }
+SettingsScreen.js (jonathan david lange on 09/25/2025 at 15:06): const ORANGE = "#f97316", WHITE = "#fff", DARK_BG = "#1f2937", DARK_TEXT = "#f9fafb";
+SettingsScreen.js (jonathan david lange on 09/25/2025 at 15:06): const styles = StyleSheet.create({
+SettingsScreen.js (jonathan david lange on 09/25/2025 at 15:06):   safe: { flex: 1, backgroundColor: WHITE },
+SettingsScreen.js (jonathan david lange on 09/25/2025 at 15:06):   darkSafe: { backgroundColor: DARK_BG },
+SettingsScreen.js (jonathan david lange on 09/25/2025 at 15:06):   container: { flex: 1, padding: 20 },
+SettingsScreen.js (jonathan david lange on 09/25/2025 at 15:06):   title: { fontSize: 22, fontWeight: "700", marginBottom: 20, color: "#111827" },
+SettingsScreen.js (jonathan david lange on 09/25/2025 at 15:06):   darkText: { color: DARK_TEXT },
+SettingsScreen.js (jonathan david lange on 09/25/2025 at 15:06):   row: { flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginBottom: 30 },
+SettingsScreen.js (jonathan david lange on 09/25/2025 at 15:06):   label: { fontSize: 16 },
+SettingsScreen.js (jonathan david lange on 09/25/2025 at 15:06):   btn: {
+SettingsScreen.js (jonathan david lange on 09/25/2025 at 15:06):     backgroundColor: ORANGE,
+SettingsScreen.js (jonathan david lange on 09/25/2025 at 15:06):     paddingVertical: 12,
+SettingsScreen.js (jonathan david lange on 09/25/2025 at 15:06):     borderRadius: 10,
+SettingsScreen.js (jonathan david lange on 09/25/2025 at 15:06):     alignItems: "center",
+SettingsScreen.js (jonathan david lange on 09/25/2025 at 15:06):   },
+SettingsScreen.js (jonathan david lange on 09/25/2025 at 15:06):   btnText: { color: WHITE, fontWeight: "700", fontSize: 16 },
+SettingsScreen.js (jonathan david lange on 09/25/2025 at 16:03): });
+app.json     (jonathan david lange on 09/25/2025 at 11:58):     "icon": "/home/ttb615/VolBites/VolBites/assets/icon.png",
+app.json     (jonathan david lange on 09/25/2025 at 11:45):       "image": "./assets/splash-icon.png",
+HomeScreen.js (jonathan david lange on 09/25/2025 at 15:06): import React, { useEffect, useState, useCallback, useContext } from "react";
+HomeScreen.js (jonathan david lange on 09/25/2025 at 15:06): import { useNavigation } from "@react-navigation/native";
+HomeScreen.js (jonathan david lange on 09/25/2025 at 15:06): import { Ionicons } from "@expo/vector-icons";
+HomeScreen.js (jonathan david lange on 09/25/2025 at 15:06):   const navigation = useNavigation();
+HomeScreen.js (jonathan david lange on 09/25/2025 at 15:06):     <View style={[styles.card, theme === "dark" && styles.darkCard]}>
+HomeScreen.js (jonathan david lange on 09/25/2025 at 15:06):         <Text style={[styles.cardTitle, theme === "dark" && styles.darkText]} numberOfLines={2}>
+HomeScreen.js (jonathan david lange on 09/25/2025 at 15:06):         <Text style={[styles.meta, theme === "dark" && styles.darkText]}>
+HomeScreen.js (jonathan david lange on 09/25/2025 at 15:06):     <SafeAreaView style={[styles.safe, theme === "dark" && styles.darkSafe]}>
+HomeScreen.js (jonathan david lange on 09/25/2025 at 15:06):       <View style={[styles.header, theme === "dark" && styles.darkHeader]}>
+HomeScreen.js (jonathan david lange on 09/25/2025 at 15:06):         <Text style={[styles.headerTitle, theme === "dark" && styles.darkText]}>VolBites</Text>
+HomeScreen.js (jonathan david lange on 09/25/2025 at 15:06):         {/* Settings button */}
+HomeScreen.js (jonathan david lange on 09/25/2025 at 15:06):         <TouchableOpacity
+HomeScreen.js (jonathan david lange on 09/25/2025 at 15:06):           style={{ position: "absolute", right: 20, top: 14 }}
+HomeScreen.js (jonathan david lange on 09/25/2025 at 15:06):           onPress={() => navigation.navigate("Settings")}
+HomeScreen.js (jonathan david lange on 09/25/2025 at 15:06):         >
+HomeScreen.js (jonathan david lange on 09/25/2025 at 15:06):           <Ionicons name="settings-outline" size={24} color="white" />
+HomeScreen.js (jonathan david lange on 09/25/2025 at 15:06):         </TouchableOpacity>
+HomeScreen.js (jonathan david lange on 09/25/2025 at 15:06):         <Text style={[styles.title, theme === "dark" && styles.darkText]}>Welcome 👋</Text>
+HomeScreen.js (jonathan david lange on 09/25/2025 at 15:06):         <Text style={[styles.subtle, theme === "dark" && styles.darkText]}>User ID: {userId}</Text>
+HomeScreen.js (jonathan david lange on 09/25/2025 at 15:06): const ORANGE = "#f97316";
+HomeScreen.js (jonathan david lange on 09/25/2025 at 15:06): const DARK_BG = "#1f2937";
+HomeScreen.js (jonathan david lange on 09/25/2025 at 15:06): const DARK_TEXT = "#f9fafb";
+HomeScreen.js (jonathan david lange on 09/25/2025 at 15:06):   darkSafe: { backgroundColor: DARK_BG },
+HomeScreen.js (jonathan david lange on 09/25/2025 at 15:06):   darkHeader: { backgroundColor: "#111827" },
+HomeScreen.js (jonathan david lange on 09/25/2025 at 15:06):   headerTitle: { color: WHITE, fontSize: 20, fontWeight: "700", letterSpacing: 0.3 },
+HomeScreen.js (jonathan david lange on 09/25/2025 at 15:06):   sectionTitle: { fontSize: 18, fontWeight: "700", marginBottom: 10, color: "#111827" },
+HomeScreen.js (jonathan david lange on 09/25/2025 at 15:06):   darkCard: { backgroundColor: "#374151", borderColor: "#4b5563" },
+HomeScreen.js (jonathan david lange on 09/25/2025 at 15:06):   cardHeader: { flexDirection: "row", alignItems: "center", justifyContent: "space-between" },
+HomeScreen.js (jonathan david lange on 09/25/2025 at 15:06):   cta: { backgroundColor: ORANGE, paddingHorizontal: 16, paddingVertical: 10, borderRadius: 10 },
+HomeScreen.js (jonathan david lange on 09/25/2025 at 15:06):   darkText: { color: DARK_TEXT },
+App.js       (jonathan david lange on 09/25/2025 at 15:06): import React, { useState, createContext } from "react";
+App.js       (jonathan david lange on 09/25/2025 at 15:06): import HomeScreen from "./HomeScreen";
+App.js       (jonathan david lange on 09/25/2025 at 15:06): import SettingsScreen from "./SettingsScreen";
+App.js       (jonathan david lange on 09/25/2025 at 15:06): export const ThemeContext = createContext();
+App.js       (jonathan david lange on 09/25/2025 at 15:06):   const [theme, setTheme] = useState("light"); // "light" or "dark"
+App.js       (jonathan david lange on 09/25/2025 at 15:06):     <ThemeContext.Provider value={{ theme, setTheme }}>
+App.js       (jonathan david lange on 09/25/2025 at 15:06):       <NavigationContainer>
+App.js       (jonathan david lange on 09/25/2025 at 15:06):         <Stack.Navigator initialRouteName="Login">
+App.js       (jonathan david lange on 09/25/2025 at 15:06):           <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
+App.js       (jonathan david lange on 09/25/2025 at 15:06):           <Stack.Screen name="SignUp" component={SignUpScreen} options={{ headerShown: false }} />
+App.js       (jonathan david lange on 09/25/2025 at 15:06):           <Stack.Screen name="Home" component={HomeScreen} options={{ title: "Home" }} />
+App.js       (jonathan david lange on 09/25/2025 at 15:06):           <Stack.Screen name="Settings" component={SettingsScreen} options={{ title: "Settings" }} />
+App.js       (jonathan david lange on 09/25/2025 at 15:06):         </Stack.Navigator>
+App.js       (jonathan david lange on 09/25/2025 at 15:06):       </NavigationContainer>
+App.js       (jonathan david lange on 09/25/2025 at 15:06):     </ThemeContext.Provider>
+LoginScreen.js (jonathan david lange on 09/25/2025 at 11:07):             <Text style={styles.title}>Welcome back jit</Text>

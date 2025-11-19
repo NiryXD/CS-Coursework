@@ -1,0 +1,300 @@
+// ChatBotScreen.js
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400   2) import React, { 516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400  13)   Alert,
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400  18) import { ThemeContext } from "./App";
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400  19) import AsyncStorage from '@react-native-async-storage/async-storage';
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400  20) import { searchRecipes, getRecipeDetails } from "./spoonacular";
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400  21) import { getRestaurants } from "./geoapify";
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400  22) import { SUPABASE_URL, SUPABASE_ANON_KEY } from "./supabaseConfig";
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400  23)
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400  25)   const { theme } = useContext(ThemeContext);
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400  26)   const [preferences, setPreferences] = useState(null);
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400  27)   const [userId, setUserId] = useState(null);
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400  28)   const [messages, setMessages] = useState([]);
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400  37)   useEffect(() => {
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400  38)     // load cached preferences and user id
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400  39)     (async () => {
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400  40)       try {
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400  41)         const prefs = await AsyncStorage.getItem('userPreferences');
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400  42)         if (prefs) setPreferences(JSON.parse(prefs));
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400  43)         const uid = await AsyncStorage.getItem('@user_id');
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400  44)         if (uid) setUserId(uid);
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400  45)       } catch (e) {
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400  46)         console.warn('Failed to load preferences', e);
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400  47)       }
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400  48)     })();
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400  49)   }, []);
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400  51)   // compose initial greeting after preferences load
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400  52)   useEffect(() => {
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400  53)     const introBase = "Hello! I'm Angel, your friendly VolBites nutritionist! 🥕✨\n\n" +
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400  54)       "I recommend recipes based on what your preferences and ingredients you have available. You can specify calories or time as well.";
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400  55)
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400  56)     let prefsText = '';
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400  57)     if (preferences) {
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400  58)       const diet = preferences.diet && preferences.diet !== 'None' ? `Diet: ${preferences.diet}` : null;
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400  59)       const allergens = preferences.allergens && preferences.allergens.length ? `Allergens: ${preferences.allergens.join(', ')}` : null;
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400  60)       const parts = [diet, allergens].filter(Boolean);
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400  61)   if (parts.length) prefsText = `I see your preferences — ${parts.join(' • ')}. I'll keep that in mind.`;
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400  62)     }
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400  63)
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400  64)     const intro = prefsText ? introBase + prefsText : introBase + "What can I help you cook today?";
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400  65)     // set initial message only if empty
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400  66)     if (messages.length === 0) {
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400  67)       setMessages([{ id: Date.now(), text: intro, isBot: true }]);
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400  68)     }
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400  69)   }, [preferences]);
+e1aac0a4 (Tristan M Lopez            2025-10-16 09:12:29 -0400  70)
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400  71)   const sendMessage = async () => {
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400  72)     if (!inputText.trim()) return;
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400  73)     const userText = inputText.trim();
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400  74)     const userMessage = { id: Date.now(), text: userText, isBot: false };
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400  79)     // Detect recipe or restaurant intents
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400  80)     const recipePattern = /recipe|make|cook|ingredients|dish|calories|servings|minutes|min|ready in/i;
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400  81)     const restaurantPattern = /restaurant|near me|nearby|eat|restaurants/i;
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400  82)
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400  83)     // helper: parse numeric filters (calories, time) from user text and return a cleaned query
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400  84)     const parseRecipeFilters = (text) => {
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400  85)       const filters = {};
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400  86)       let cleaned = String(text);
+e1aac0a4 (Tristan M Lopez            2025-10-16 09:12:29 -0400  87)
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400  88)       // calories
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400  89)       const aboveCal = cleaned.match(/(?:above|over|greater than|more than|>=)\s*(\d{2,5})\s*calorie/i);
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400  90)       const belowCal = cleaned.match(/(?:under|below|less than|<=|no more than)\s*(\d{2,5})\s*calorie/i);
+
+
+
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400  91)       const explicitCal = cleaned.match(/(\d{2,5})\s*calorie/i);
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400  92)       if (aboveCal) {
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400  93)         filters.minCalories = Number(aboveCal[1]);
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400  94)         cleaned = cleaned.replace(aboveCal[0], '');
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400  95)       } else if (belowCal) {
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400  96)         filters.maxCalories = Number(belowCal[1]);
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400  97)         cleaned = cleaned.replace(belowCal[0], '');
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400  98)       } else if (explicitCal) {
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400  99)         filters.maxCalories = Number(explicitCal[1]);
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400 100)         cleaned = cleaned.replace(explicitCal[0], '');
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400 101)       }
+b4279e86 (Jonathan David Lange       2025-10-27 21:53:35 -0400 102)
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400 103)       // time (in minutes)
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400 104)       const underTime = cleaned.match(/(?:under|below|less than|<=|or under|or less than|no more than|within)\s*(\d{1,3})\s*(min|mins|minute>
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400 105)       const exactTime = cleaned.match(/(?:takes|in|ready in)\s*(\d{1,3})\s*(min|mins|minute|minutes|hr|hour|hours)/i);
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400 106)       const overTime = cleaned.match(/(?:over|more than|greater than|>)\s*(\d{1,3})\s*(min|mins|minute|minutes|hr|hour|hours)/i);
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400 107)       if (underTime) {
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400 108)         let n = Number(underTime[1]);
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400 109)         const unit = (underTime[2] || '').toLowerCase();
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400 110)         if (unit.includes('hour') || unit.includes('hr')) n = n * 60;
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400 111)         filters.maxReadyTime = n;
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400 112)         cleaned = cleaned.replace(underTime[0], '');
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400 113)       } else if (exactTime) {
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400 114)         let n = Number(exactTime[1]);
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400 115)         const unit = (exactTime[2] || '').toLowerCase();
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400 116)         if (unit.includes('hour') || unit.includes('hr')) n = n * 60;
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400 117)         filters.maxReadyTime = n;
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400 118)         cleaned = cleaned.replace(exactTime[0], '');
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400 119)       } else if (overTime) {
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400 120)         let n = Number(overTime[1]);
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400 121)         const unit = (overTime[2] || '').toLowerCase();
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400 122)         if (unit.includes('hour') || unit.includes('hr')) n = n * 60;
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400 123)         filters.minReadyTime = n;
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400 124)         cleaned = cleaned.replace(overTime[0], '');
+
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400 127)       // remove filler words and common verbs to produce a clean search query
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400 128)       cleaned = cleaned.replace(/\b(give me|show me|find|please|recipe|recipes|that|for|me|a|an|the|give|find|list of)\b/ig, '');
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400 129)       // remove leftover numeric tokens
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400 130)       cleaned = cleaned.replace(/\b\d+\b/g, '');
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400 131)       cleaned = cleaned.replace(/[^\w\s-]/g, '');
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400 132)       cleaned = cleaned.replace(/\s+/g, ' ').trim();
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400 133)
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400 134)       return { filters, cleanedQuery: cleaned };
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400 135)     };
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400 136)
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400 137)     try {
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400 138)       if (restaurantPattern.test(userText)) {
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400 139)         // Use geoapify to fetch restaurants (RestaurantsScreen also exists)
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400 140)         const results = await getRestaurants();
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400 141)         const summary = results && results.length > 0
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400 142)           ? `I found ${results.length} restaurants nearby. Showing top results.`
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400 143)           : "I couldn't find nearby restaurants.";
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400 144)         setMessages((prev) => [...prev, { id: Date.now() + 1, text: summary, isBot: true, type: 'restaurants', payload: results }]);
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400 145)       } else if (recipePattern.test(userText)) {
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400 146)         // Use Spoonacular to search for recipes
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400 147)   const { filters, cleanedQuery } = parseRecipeFilters(userText);
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400 148)   const queryForSearch = cleanedQuery && cleanedQuery.length > 2 ? cleanedQuery : 'recipe';
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400 149)   const results = await searchRecipes(queryForSearch, filters);
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400 150)         if (results && results.length > 0) {
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400 151)           const top = results[0];
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400 152)           const details = await getRecipeDetails(top.id);
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400 153)           const summary = `${top.title}\n\n🕒 ${details.readyInMinutes} min | 🍽️ ${details.servings} servings\n\nMain ingredients: ${details.>
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400 154)           setMessages((prev) => [...prev, { id: Date.now() + 1, text: summary, isBot: true, type: 'recipe', payload: { summary, recipe: { ..>
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400 155)         } else {
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400 156)           setMessages((prev) => [...prev, { id: Date.now() + 1, text: "I couldn't find a recipe for that. Try a different query.", isBot: tr>
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400 157)         }
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400 158)       } else {
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400 159)         // Default to OpenAI conversation with persona and preferences
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400 160)   const systemPrompt = `You are Angel — a hip, friendly VolBites nutritionist 🥕✨. Keep replies upbeat, helpful and concise (under 150 word>
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400 161)
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400 162)         const response = await fetch("https://api.openai.com/v1/chat/completions", {
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400 163)           method: "POST",
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400 164)           headers: {
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400 165)             "Content-Type": "application/json",
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400 166)             Authorization: `Bearer ${OPENAI_API_KEY}`,
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400 167)           },
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400 168)           body: JSON.stringify({
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400 169)             model: "gpt-3.5-turbo",
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400 170)             messages: [
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400 171)               { role: "system", content: systemPrompt },
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400 172)               { role: "user", content: userText },
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400 173)             ],
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400 174)             max_tokens: 200,
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400 175)             temperature: 0.7,
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400 176)           }),
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400 177)         });
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400 178)
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400 179)         const data = await response.json();
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400 180)         if (!response.ok) throw new Error(data.error?.message || 'API request failed');
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400 181)         const botText = data.choices?.[0]?.message?.content || "Hmm, I didn’t get that.";
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400 182)         setMessages((prev) => [...prev, { id: Date.now() + 1, text: botText, isBot: true }]);
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400 183)       }
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400 184)     } catch (err) {
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400 185)       console.error(err);
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400 186)       setMessages((prev) => [...prev, { id: Date.now() + 1, text: "Something went wrong 😅", isBot: true }]);
+
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400 192)   const viewFullRecipe = async (recipe) => {
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400 193)     try {
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400 194)       const details = await getRecipeDetails(recipe.id);
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400 195)       navigation.navigate('RecipeDetail', { recipe: details, userId });
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400 196)     } catch (e) {
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400 197)       Alert.alert('Error', 'Failed to load recipe details');
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400 198)     }
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400 199)   };
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400 200)
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400 201)   const saveToFavorites = async (recipe) => {
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400 202)     if (!userId) return Alert.alert('Not signed in', 'You need to be signed in to save favorites');
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400 203)     try {
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400 204)       const res = await fetch(`${SUPABASE_URL}/rest/v1/saved_recipes`, {
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400 205)         method: 'POST',
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400 206)         headers: {
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400 207)           apiKey: SUPABASE_ANON_KEY,
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400 208)           Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400 209)           'Content-Type': 'application/json',
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400 210)           Prefer: 'return=representation',
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400 211)         },
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400 212)         body: JSON.stringify({ user_id: userId, recipe_id: recipe.id, recipe_name: recipe.title || recipe.name, image: recipe.image }),
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400 213)       });
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400 214)       if (!res.ok) throw new Error('Failed to save');
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400 215)       Alert.alert('Saved', 'Recipe saved to your favorites');
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400 216)     } catch (e) {
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400 217)       console.error('Save favorite error', e);
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400 218)       Alert.alert('Error', 'Could not save recipe');
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400 219)     }
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400 220)   };
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400 221)
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400 222)
+e1aac0a4 (Tristan M Lopez            2025-10-16 09:12:29 -0400 223)   return (
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400 224)     <View style={[styles.container, theme === 'dark' && styles.containerDark]}>
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400 241)           style={[styles.messagesContainer, theme === 'dark' && styles.messagesContainerDark]}
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400 251)                 message.isBot && theme === 'dark' ? styles.botBubbleDark : null,
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400 257)                   message.isBot ? (theme === 'dark' ? styles.botTextDark : styles.botText) : styles.userText,
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400 262)
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400 263)               {/* Inline actions for structured messages */}
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400 264)               {message.type === 'recipe' && message.payload && (
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400 265)                 <View style={styles.actionRow}>
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400 266)                   <TouchableOpacity style={styles.actionBtn} onPress={() => viewFullRecipe(message.payload.recipe)}>
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400 267)                     <Text style={styles.actionBtnText}>View Full Recipe</Text>
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400 268)                   </TouchableOpacity>
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400 269)                   <TouchableOpacity style={styles.actionBtn} onPress={() => saveToFavorites(message.payload.recipe)}>
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400 270)                     <Text style={styles.actionBtnText}>Save to Favorites</Text>
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400 271)                   </TouchableOpacity>
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400 272)                 </View>
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400 273)               )}
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400 274)
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400 275)               {message.type === 'restaurants' && message.payload && (
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400 276)                 <View style={styles.actionRow}>
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400 277)                   <TouchableOpacity style={styles.actionBtn} onPress={() => navigation.navigate('Restaurants')}>
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400 278)                     <Text style={styles.actionBtnText}>Open Restaurants</Text>
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400 279)                   </TouchableOpacity>
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400 280)                 </View>
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400 281)               )}
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400 285)             <View style={[styles.messageBubble, styles.botBubble, theme === 'dark' && styles.botBubbleDark]}>
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400 287)               <Text style={[styles.loadingText, theme === 'dark' && { color: '#d1d5db' }]}>Thinking...</Text>
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400 293)         <View style={[styles.inputContainer, theme === 'dark' && styles.inputContainerDark]}>
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400 295)             style={[styles.input, theme === 'dark' && styles.inputDark]}
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400 299)             placeholderTextColor={theme === 'dark' ? '#d1d5db' : '#9ca3af'}
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400 321)   containerDark: { backgroundColor: '#1f2937' },
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400 343)   messagesContainerDark: { backgroundColor: '#1f2937' },
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400 352)   botBubbleDark: {
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400 353)     backgroundColor: '#1f2937',
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400 354)     borderColor: '#4b5563',
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400 355)   },
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400 359)   botTextDark: { color: '#d1d5db' },
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400 370)   inputContainerDark: {
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400 371)     backgroundColor: '#1f2937',
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400 372)     borderTopColor: '#4b5563',
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400 373)   },
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400 384)   inputDark: {
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400 385)     backgroundColor: '#4b5563',
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400 386)     color: '#ffffff',
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400 387)   },
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400 399)   actionRow: { flexDirection: 'row', marginTop: 10, justifyContent: 'flex-start', flexWrap: 'wrap' },
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400 400)   actionBtn: { backgroundColor: '#111827', paddingVertical: 8, paddingHorizontal: 12, borderRadius: 8, marginRight: 8, marginTop: 6 },
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400 401)   actionBtnText: { color: '#fff', fontWeight: '700', fontSize: 12 },
+
+
+
+
+// RestaurantsScreen.js
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400  40)     <View 
+
+// SettingsScreen.js
+
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400   3) import { SafeAreaView, 
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400   6) import { Ionicons } from 
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400  14)   const [diet, setDiet] = useState('');
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400  15)   const [restrictionsText, setRestrictionsText] = useState('');
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400  16)
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400  17)   const DIETS = ['None', 'Vegetarian', 'Vegan', 'Low-carb', 'Keto', 'Paleo'];
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400  18)   const [showPrefs, 
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400  32)         // load preferences if present (support legacy 'allergens' key)
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400  33)         const prefs = await AsyncStorage.getItem('userPreferences');
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400  34)         if (prefs) {
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400  35)           try {
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400  36)             const parsed = JSON.parse(prefs);
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400  37)             if (parsed.diet) setDiet(parsed.diet);
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400  38)             if (parsed.restrictions) setRestrictionsText(Array.isArray(parsed.restrictions) ? parsed.restrictions.join(' ') : String(parsed.>
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400  39)             else if (parsed.allergens) setRestrictionsText(Array.isArray(parsed.allergens) ? parsed.allergens.join(' ') : String(parsed.alle>
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400  40)           } catch (e) {
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400  41)             console.warn('Failed to parse userPreferences', e);
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400  42)           }
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400  43)         }
+
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400  50)   const savePreferences = async () => {
+
+
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400   3) import { SafeAreaView, View, Text, StyleSheet, Switch, TouchableOpacity, Image, Alert, TextInput } from "react-native";
+
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400   6) import { Ionicons } from '@expo/vector-icons';
+
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400  14)   const [diet, setDiet] = useState('');
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400  15)   const [restrictionsText, setRestrictionsText] = useState('');
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400  16)
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400  17)   const DIETS = ['None', 'Vegetarian', 'Vegan', 'Low-carb', 'Keto', 'Paleo'];
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400  18)   const [showPrefs, setShowPrefs] = useState(false);
+
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400  32)         // load preferences if present (support legacy 'allergens' key)
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400  33)         const prefs = await AsyncStorage.getItem('userPreferences');
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400  34)         if (prefs) {
+
+
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400  35)           try {
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400  36)             const parsed = JSON.parse(prefs);
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400  37)             if (parsed.diet) setDiet(parsed.diet);
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400  38)             if (parsed.restrictions) setRestrictionsText(Array.isArray(parsed.restrictions) ? parsed.restrictions.join(' ') : String(parsed.>
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400  39)             else if (parsed.allergens) setRestrictionsText(Array.isArray(parsed.allergens) ? parsed.allergens.join(' ') : String(parsed.alle>
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400  40)           } catch (e) {
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400  41)             console.warn('Failed to parse userPreferences', e);
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400  42)           }
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400  43)         }
+
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400  50)   const 
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400 21)   // ready time filters (in minutes)
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400 22)   if (filters.minReadyTime) params.append("minReadyTime", filters.minReadyTime);
+516b215b (Ar-Raniry Nurdin Ar-Rasyid 2025-10-30 01:04:44 -0400 23)   if (filters.maxReadyTime) params.append("maxReadyTime", filters.maxReadyTime);
