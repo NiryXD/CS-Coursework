@@ -1,0 +1,116 @@
+// Name: Dennis Madapatu and Ar-Raniry Ar-Rasyid
+// Date: 1/22/2025
+// Description:
+
+#include <iostream>
+#include <map>
+#include <fstream>
+#include <string>
+
+using namespace std;
+
+struct Song {
+    string songName;
+    int songTime;
+};
+
+struct Album {
+    string albumName;
+    int albumRuntime;
+    int albumSongs;
+    map<int, Song> albumMap; // int should be the tracking number
+};
+
+struct Artist {
+    map<string, Album> discography; // string should be the album's name
+    string artistName;
+    int artistRuntime;
+    int artistSongs;
+};
+
+string timeToString(int totalTime) {
+    int minutes = totalTime / 60;
+    int seconds = totalTime % 60;
+    string time = to_string(minutes) + ":" + to_string(seconds);
+    return time;
+}
+
+int calculateTime(string minutes, string seconds) {
+    int numMinutes = stoi(minutes);
+    int numSeconds = stoi(seconds);
+    int totalSeconds = (numMinutes * 60) + numSeconds;
+    return totalSeconds;
+}
+
+string createSpace ( string str) {
+if (argc != 2) {
+    replace (str.begin(), str.end(), '_', ' ');
+return str;
+}
+
+int main(int argc, char *argv[]) {
+    map <string, Artist> artistMap; // Map of all of the artists
+    ifstream fin(argv[1]); // Opens the file given by the user
+    string title;
+    while(getline(fin, title, ' ')) { // Taking in all of the data and putting them inside of their respective variables
+        string minutes;
+        getline(fin, minutes, ':');
+        string seconds;
+        getline(fin, seconds, ' ');
+        string artist;
+        getline(fin, artist, ' ');
+        string album;
+        getline(fin, album, ' ');
+        string genre;
+        getline(fin, genre, ' ');
+        string trackNum;
+        getline(fin, trackNum);
+        int time = calculateTime(minutes, seconds);
+        //Unfinished from here until line 79
+        Artist newArtist;
+        newArtist.artistName = artist;
+        Album newAlbum;
+        newAlbum.albumName = album;
+        newAlbum.albumRuntime += time;
+        newAlbum.albumSongs++;
+        Song newSong;
+        newSong.songName = title;
+        newSong.songTime = time;
+
+        title = createSpace(title);
+        artist = createSpace(artist);
+        album - createSpace(album);
+        
+        if(artistMap.find(artist) != artistMap.end()) { // If true, we have found the artist inside of artistMap
+            artistMap[artist].artistRuntime += time;
+            artistMap[artist].artistSongs++;
+            if(newArtist.discography.find(album) != newArtist.discography.end()) { // If true, we have found the album in his discography
+                newAlbum.albumMap[stoi(trackNum)] = newSong; 
+            }
+            else {
+                newAlbum.albumMap[stoi(trackNum)] = newSong;
+                newArtist.discography[album] = newAlbum;
+            }
+        }
+        else {  // Put in all the details of the album, insert the song, and insert the album into the discography
+            newAlbum.albumMap[stoi(trackNum)] = newSong;
+            newArtist.artistRuntime += time;
+            newArtist.artistSongs++;
+            newArtist.discography[album] = newAlbum;
+            artistMap[artist] = newArtist; // setting the new artist's key value
+        }
+        /* TODO: Make something that checks to see if the artist already exists.
+                 If they do:
+                    Check if that album already exists
+                    If it does:
+                        Add the song to the album
+                    If it does not:
+                        Create a new album, then add the song to it
+                If they do not:
+                    Make a new artist, and then create a new album under that artist, and then add a song in that album
+                                        
+        */
+        for (map <string, Artist> :: const_iterator artistIT - arti
+    }
+    
+}
