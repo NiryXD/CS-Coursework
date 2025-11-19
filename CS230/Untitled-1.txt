@@ -1,0 +1,54 @@
+map:
+    # Set up: Reserve space on the stack and save important registers
+    addi sp, sp, -40        # Make space on the stack
+    sd ra, 32(sp)           # Save return address (so we know where to come back)
+    sd s0, 24(sp)           # Save s0 (we will use it to hold the array's address)
+    sd s3, 16(sp)           # Save s3 (for the mapping function address)
+    sd s4, 8(sp)            # Save s4 (for number of elements in the array)
+    sd s5, 0(sp)            # Save s5 (for the loop counter)
+
+    # Copy input values into safer registers
+    mv s0, a0               # s0 = address of the array
+    mv s3, a2               # s3 = address of the mapping function
+    mv s4, a1               # s4 = total number of elements in the array
+    fmv.d fs0, fa0          # fs0 = map_value (the value we will apply to each element)
+
+    # Initialize loop counter
+    li s5, 0                # i = 0
+
+# --------- Start of loop ----------
+1:
+    bge s5, s4, 1f          # If i >= number of elements, exit loop
+
+    # Compute the address of values[i]
+    slli t0, s5, 3          # Each double is 8 bytes, so i * 8 gives correct offset
+    add t1, s0, t0          # t1 = &values[i] (address of the i-th element)
+    fld fa0, 0(t1)          # Load values[i] into fa0
+
+    # Prepare for function call
+    fmv.d fa1, fs0          # Move map_value into fa1 (second argument)
+
+    # Call the mapping function (map_add, map_sub, map_min, or map_max)
+    jalr s3                 # Call the function
+
+    # Store the result back into values[i]
+    fsd fa0, 0(t1)          # Save the result back to array
+
+    # Update loop counter
+    addi s5, s5, 1          # i++
+
+    # Repeat loop
+    j 1b
+# --------- End of loop ----------
+
+1:
+    # Restore saved registers and clean up stack
+    ld ra, 32(sp)           # Restore return address
+    ld s0, 24(sp)           # Restore s0
+    ld s3, 16(sp)           # Restore s3
+    ld s4, 8(sp)            # Restore s4
+    ld s5, 0(sp)            # Restore s5
+    addi sp, sp, 40         # Free stack space
+
+    # Return to the caller
+    ret
