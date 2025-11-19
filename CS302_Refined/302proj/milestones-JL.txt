@@ -1,0 +1,57 @@
+Repository Link: https://github.com/tlopez7/Scott-Emrich-Vs-The-World
+
+Summary:
+I wanted to learn how to use Unity and make it work with GitHub. I also wanted to figure out how to use Unity's input system so that I could control something in-game. Other than these things, I just needed to learn how to use Unity in general, such as scenes, objects, and properties (like rendering, physics, and scripts). 
+
+
+Rubric (weight for each category is shown):
+
+Performance (10 Points)
+Runs smoothly with no lag or frame drops
+No game breaking or noticeable glitches
+
+Code Efficiency (10 Points)
+The code is well structured and optimized
+Not overly complex
+
+Animation and Transitions (8 Points)
+Fluid animations
+Seamless transitions between scenes
+
+UI and Visuals (7 Points)
+Clean user interface
+All graphics look like they belong together, and nothing looks out of place
+
+Sound Design (5 Points)
+High-quality sound effects and music
+All sound effects are well timed and fitting
+
+
+Time Log:
+
+3/26/2025:
+~1:00 PM: Discuss details about the project with the group in lab (~1 hour)
+
+3/28/2025:
+~4:00 PM: Download Unity and GitHub Desktop to collaborate and integrate the two together (~30 minutes)
+
+3/30/2025:
+~7:00 PM: Learn Unity mechanics, C#, and how objects/scenes/properties work (~2.5 hours)
+
+3/31/2025:
+~1:00 PM: Draw temporary sprites for the fighter character and add animation when the spacebar is pressed. (~1.5 hours)
+~2:00 PM: Ensure that collaborating on a Unity project works among team members (~30 minutes)
+
+Total Time: ~6 hours
+
+
+Individual Compilable Task:
+I made a couple of temporary sprites for the main controllable character, an idle sprite, and a punching sprite. I also wrote code so that when a key is pressed, the character does a single punch, then goes back to the idle animation. This will be a key component in the game we are making. 
+
+
+Short Report:
+This challenge was helpful because it allowed me to familiarize myself with Unity and the collaboration of games in a group when we are not in the same place. Integrating Unity and GitHub was really helpful in allowing us to communicate with each other and show what each of us contributed to the project. 
+
+
+Next Plan:
+Next, I would like to focus on the actual game, such as the timing of the spawning of the enemies and how the punches interact with the enemies. I also would like to implement a “game over” mechanic so there are actual stakes in the game. 
