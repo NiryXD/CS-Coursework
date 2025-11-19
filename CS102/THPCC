@@ -1,0 +1,98 @@
+#include <iostream>
+#include <iomanip>
+
+using namespace std;
+
+// Constants for tax brackets and rates
+const double MIN_WAGE = 15080;
+const double BR1 = 10275;
+const double BR2 = 41775;
+const double BR3 = 89075;
+const double BR4 = 170050;
+const double BR5 = 215950;
+const double BR6 = 539900;
+const double SS_RATE = 0.062;
+const double MED_RATE = 0.0145;
+const double BR1_RATE = 0.10;
+const double BR2_RATE = 0.12;
+const double BR3_RATE = 0.22;
+const double BR4_RATE = 0.24;
+const double BR5_RATE = 0.32;
+const double BR6_RATE = 0.35;
+const double BR7_RATE = 0.37;
+
+// Function to calculate income tax based on salary
+double calculateIncomeTax(double salary) {
+    double tax = 0.0;
+    double taxable_income = 0.0;
+
+    // Calculate tax for each tax bracket
+    if (salary > BR6) {
+        taxable_income = salary - BR6;
+        tax += taxable_income * BR7_RATE;
+        salary = BR6;
+    }
+    if (salary > BR5) {
+        taxable_income = salary - BR5;
+        tax += taxable_income * BR6_RATE;
+        salary = BR5;
+    }
+    if (salary > BR4) {
+        taxable_income = salary - BR4;
+        tax += taxable_income * BR5_RATE;
+        salary = BR4;
+    }
+    if (salary > BR3) {
+        taxable_income = salary - BR3;
+        tax += taxable_income * BR4_RATE;
+        salary = BR3;
+    }
+    if (salary > BR2) {
+        taxable_income = salary - BR2;
+        tax += taxable_income * BR3_RATE;
+        salary = BR2;
+    }
+    if (salary > BR1) {
+        taxable_income = salary - BR1;
+        tax += taxable_income * BR2_RATE;
+        salary = BR1;
+    }
+    // Calculate tax for the first bracket
+    taxable_income = salary;
+    tax += taxable_income * BR1_RATE;
+
+    return tax;
+}
+
+int main() {
+    // Prompt user for salary input
+    cout << "Enter a salary: $";
+    double salary;
+    cin >> salary;
+
+    // Check if salary is below minimum wage
+    if (salary < MIN_WAGE) {
+        cout << "Error: Salary is less than minimum wage for a yearly salary ($15080)." << endl;
+        return 1;
+    }
+
+    // Calculate taxes and net salary
+    double ss_tax = salary * SS_RATE;
+    double med_tax = salary * MED_RATE;
+    double income_tax = calculateIncomeTax(salary);
+    double take_home_salary = salary - ss_tax - med_tax - income_tax;
+    double monthly_take_home_pay = take_home_salary / 12;
+
+    // Output results with proper formatting
+    cout << setprecision(2) << fixed;
+    cout << "-----------------------------------" << endl;
+    cout << left << setw(25) << "Yearly Salary:" << right << setw(9) << "$" << setw(9) << salary << endl;
+    cout << left << setw(25) << "Social Security Tax:" << right << setw(9) << "$" << setw(9) << ss_tax << endl;
+    cout << left << setw(25) << "Medicare Tax:" << right << setw(9) << "$" << setw(9) << med_tax << endl;
+    cout << left << setw(25) << "Income Tax:" << right << setw(9) << "$" << setw(9) << income_tax << endl;
+    cout << "-----------------------------------" << endl;
+    cout << left << setw(25) << "Take Home Salary:" << right << setw(9) << "$" << setw(9) << take_home_salary << endl;
+    cout << left << setw(25) << "Take Home Monthly Pay:" << right << setw(9) << "$" << setw(9) << monthly_take_home_pay << endl;
+
+    return 0;
+}
